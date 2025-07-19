@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Confirmação de Presença</title>
   <style>
     body {
@@ -9,63 +9,22 @@
       padding: 20px;
       background: #fffafc;
       color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      text-align: center;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
+      max-width: 500px;
+      margin: 0 auto;
     }
 
     h2 {
       color: #a3478f;
-      margin-bottom: 20px;
-      z-index: 1;
+      text-align: center;
     }
 
     select, input[type="text"], button {
       margin: 10px 0;
-      padding: 8px;
+      padding: 10px;
       width: 100%;
-      max-width: 400px;
-      border-radius: 6px;
+      border-radius: 5px;
       border: 1px solid #ccc;
-      font-size: 1rem;
-      box-sizing: border-box;
-      z-index: 1;
-    }
-
-    form#formulario {
-      margin-top: 10px;
-      width: 100%;
-      max-width: 420px;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 25px 20px 30px 20px;
-      border-radius: 15px;
-      box-shadow: 0 6px 20px rgba(163, 71, 143, 0.3);
-      z-index: 1;
-    }
-
-    .pessoa {
-      margin-bottom: 12px;
-      text-align: left;
-      font-weight: 600;
-      color: #4b3053;
-      user-select: none;
-    }
-
-    .pessoa label {
-      margin-right: 12px;
-      font-weight: 600;
-      color: #5a3a71;
-    }
-
-    .pessoa input[type="radio"] {
-      margin-right: 6px;
-      cursor: pointer;
+      font-size: 16px;
     }
 
     button {
@@ -73,73 +32,50 @@
       color: white;
       border: none;
       cursor: pointer;
-      font-weight: 600;
+      font-weight: bold;
       transition: background-color 0.3s;
     }
+
     button:hover {
       background-color: #7a2f68;
     }
 
-    #status {
-      margin-top: 15px;
+    .pessoa {
+      margin-bottom: 15px;
       padding: 10px;
+      background-color: #f9f0f7;
+      border-radius: 5px;
+    }
+
+    .contador {
+      margin: 15px 0;
+      font-weight: bold;
+      text-align: center;
+      color: #5a3a71;
+    }
+
+    .status {
+      padding: 10px;
+      margin: 10px 0;
       border-radius: 5px;
       display: none;
     }
-    .success {
+
+    .sucesso {
       background-color: #d4edda;
       color: #155724;
     }
-    .error {
+
+    .erro {
       background-color: #f8d7da;
       color: #721c24;
-    }
-
-    .balloon {
-      position: fixed;
-      bottom: -60px;
-      width: 25px;
-      height: 35px;
-      border-radius: 50% / 60%;
-      background: linear-gradient(135deg, #ff7eb9, #ff65a3);
-      box-shadow: inset -5px -5px 10px rgba(255,255,255,0.6);
-      animation-name: rise;
-      animation-timing-function: ease-out;
-      animation-iteration-count: infinite;
-      filter: drop-shadow(0 1px 2px #b7447d);
-      z-index: 0;
-    }
-    .balloon::after {
-      content: "";
-      position: absolute;
-      bottom: -15px;
-      left: 50%;
-      width: 2px;
-      height: 15px;
-      background: #c34274;
-      transform: translateX(-50%);
-      border-radius: 1px;
-    }
-
-    @keyframes rise {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-120vh) scale(1.1);
-        opacity: 0;
-      }
     }
   </style>
 </head>
 <body>
   <h2>Confirmar Presença</h2>
 
-  <label for="familia" style="font-weight:600; color:#6e3c7a;">Escolha uma família:</label>
+  <label for="familia">Escolha uma família:</label>
   <select id="familia" onchange="mostrarMembros()" required>
     <option value="">-- Selecione --</option>
     <option value="sueli">Família Sueli Félix</option>
@@ -149,19 +85,15 @@
   <form id="formulario" onsubmit="enviarFormulario(event)">
     <div id="membros"></div>
 
-    <label for="responsavel" style="font-weight:600; color:#6e3c7a;">Responsável pelo preenchimento:</label>
+    <label for="responsavel">Responsável pelo preenchimento:</label>
     <input type="text" id="responsavel" name="responsavel" required>
 
-    <button type="submit">Enviar</button>
+    <div class="contador" id="contador"></div>
+
+    <div class="status" id="status"></div>
+
+    <button type="submit">Enviar Confirmação</button>
   </form>
-
-  <div id="status"></div>
-
-  <!-- Balões -->
-  <div class="balloon" style="left: 20%; animation-duration: 12s; animation-delay: 0s;"></div>
-  <div class="balloon" style="left: 40%; animation-duration: 14s; animation-delay: 3s;"></div>
-  <div class="balloon" style="left: 60%; animation-duration: 13s; animation-delay: 6s;"></div>
-  <div class="balloon" style="left: 80%; animation-duration: 15s; animation-delay: 2s;"></div>
 
   <script>
     const familias = {
@@ -180,18 +112,29 @@
           container.className = "pessoa";
           container.innerHTML = `
             <label>${nome}:</label>
-            <input type="radio" name="${nome}" value="Sim" required> Sim
-            <input type="radio" name="${nome}" value="Não" required> Não
+            <input type="radio" name="${nome}" value="Sim" onclick="atualizarContagem()" required> Sim
+            <input type="radio" name="${nome}" value="Não" onclick="atualizarContagem()" required> Não
           `;
           membrosDiv.appendChild(container);
         });
       }
     }
 
-    function mostrarStatus(mensagem, isSuccess) {
+    function atualizarContagem() {
+      let sim = 0;
+      let nao = 0;
+      document.querySelectorAll("#membros .pessoa").forEach(div => {
+        const inputs = div.querySelectorAll("input[type=radio]");
+        if (inputs[0].checked) sim++;
+        if (inputs[1].checked) nao++;
+      });
+      document.getElementById("contador").innerText = `Total: ${sim} confirmados, ${nao} não confirmados.`;
+    }
+
+    function mostrarStatus(mensagem, sucesso) {
       const statusDiv = document.getElementById("status");
       statusDiv.textContent = mensagem;
-      statusDiv.className = isSuccess ? "success" : "error";
+      statusDiv.className = sucesso ? "status sucesso" : "status erro";
       statusDiv.style.display = "block";
       
       setTimeout(() => {
@@ -199,17 +142,18 @@
       }, 5000);
     }
 
-    function enviarFormulario(event) {
+    async function enviarFormulario(event) {
       event.preventDefault();
-      const familia = document.getElementById("familia").value;
-      const responsavel = document.getElementById("responsavel").value;
-
+      
       // Validar se todos os membros foram respondidos
       const radios = document.querySelectorAll("#membros input[type=radio]:checked");
       if (radios.length !== document.querySelectorAll("#membros .pessoa").length) {
         mostrarStatus("Por favor, responda por todos os membros da família.", false);
         return;
       }
+
+      const familia = document.getElementById("familia").value;
+      const responsavel = document.getElementById("responsavel").value;
 
       const dados = {
         familia: familia,
@@ -223,52 +167,29 @@
         dados.confirmacoes[nome] = resposta ? resposta.value : "";
       });
 
-      // URL do seu Apps Script (substitua pela sua URL real)
-      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwXzcWOU2T42JKyByjUuYa40OK8rItA8svGCmx68tbGKGsEM2HfnevzNZMMp9P1UbEnzA/exec";
-      
       mostrarStatus("Enviando dados...", true);
 
-      fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: 'no-cors', // Adicione esta linha
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dados)
-      })
-      .then(response => {
-        if (!response.ok) throw new Error("Erro na rede");
-        return response.text();
-      })
-      .then(resultado => {
-        console.log("Resposta do servidor:", resultado);
+      try {
+        // URL do seu Google Apps Script
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyoKtnc3LJliwsVmmsEbMDik0IyrxP_YWIwYk69IuWkVub7KG-_t5tF1ckr7qQurG68ew/exec";
+        
+        // Usando fetch com redirecionamento
+        const response = await fetch(`${SCRIPT_URL}?dados=${encodeURIComponent(JSON.stringify(dados))}`, {
+          method: "GET", // Usando GET para evitar CORS
+          redirect: "follow"
+        });
+
+        if (!response.ok) throw new Error("Erro na resposta do servidor");
+        
         mostrarStatus("Confirmação enviada com sucesso!", true);
         document.getElementById("formulario").reset();
         document.getElementById("membros").innerHTML = "";
-      })
-      .catch(err => {
-        console.error("Erro:", err);
-        mostrarStatus(`Erro ao enviar: ${err.message}`, false);
-      });
+        document.getElementById("contador").innerText = "";
+      } catch (error) {
+        console.error("Erro:", error);
+        mostrarStatus(`Erro ao enviar: ${error.message}`, false);
+      }
     }
-
-    // Função para testar a conexão com o servidor
-    function testarConexao() {
-      fetch("https://script.google.com/macros/s/AKfycbxFbAH9-ZGtOL3roK4Y1aOMn-GH84AoCHrSePcEmjLWmXYKOEvaUeQH4SdOrexcLfm4CA/exec", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({teste: "conexao"})
-      })
-      .then(response => response.text())
-      .then(console.log)
-      .catch(console.error);
-    }
-
-    // Descomente para testar a conexão ao carregar a página
-    // window.addEventListener('load', testarConexao);
   </script>
 </body>
 </html>
-
