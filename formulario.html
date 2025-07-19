@@ -9,8 +9,6 @@
       padding: 20px;
       background: #fffafc;
       color: #333;
-
-      /* Centralizar tudo */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -82,7 +80,21 @@
       background-color: #7a2f68;
     }
 
-    /* Balões animados */
+    #status {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 5px;
+      display: none;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
     .balloon {
       position: fixed;
       bottom: -60px;
@@ -108,12 +120,6 @@
       transform: translateX(-50%);
       border-radius: 1px;
     }
-
-    /* Diferentes posições e tempos para balões */
-    .balloon:nth-child(1) { left: 20%; animation-duration: 12s; animation-delay: 0s; }
-    .balloon:nth-child(2) { left: 40%; animation-duration: 14s; animation-delay: 3s; }
-    .balloon:nth-child(3) { left: 60%; animation-duration: 13s; animation-delay: 6s; }
-    .balloon:nth-child(4) { left: 80%; animation-duration: 15s; animation-delay: 2s; }
 
     @keyframes rise {
       0% {
@@ -149,11 +155,13 @@
     <button type="submit">Enviar</button>
   </form>
 
+  <div id="status"></div>
+
   <!-- Balões -->
-  <div class="balloon"></div>
-  <div class="balloon"></div>
-  <div class="balloon"></div>
-  <div class="balloon"></div>
+  <div class="balloon" style="left: 20%; animation-duration: 12s; animation-delay: 0s;"></div>
+  <div class="balloon" style="left: 40%; animation-duration: 14s; animation-delay: 3s;"></div>
+  <div class="balloon" style="left: 60%; animation-duration: 13s; animation-delay: 6s;"></div>
+  <div class="balloon" style="left: 80%; animation-duration: 15s; animation-delay: 2s;"></div>
 
   <script>
     const familias = {
@@ -180,10 +188,28 @@
       }
     }
 
+    function mostrarStatus(mensagem, isSuccess) {
+      const statusDiv = document.getElementById("status");
+      statusDiv.textContent = mensagem;
+      statusDiv.className = isSuccess ? "success" : "error";
+      statusDiv.style.display = "block";
+      
+      setTimeout(() => {
+        statusDiv.style.display = "none";
+      }, 5000);
+    }
+
     function enviarFormulario(event) {
       event.preventDefault();
       const familia = document.getElementById("familia").value;
       const responsavel = document.getElementById("responsavel").value;
+
+      // Validar se todos os membros foram respondidos
+      const radios = document.querySelectorAll("#membros input[type=radio]:checked");
+      if (radios.length !== document.querySelectorAll("#membros .pessoa").length) {
+        mostrarStatus("Por favor, responda por todos os membros da família.", false);
+        return;
+      }
 
       const dados = {
         familia: familia,
@@ -197,23 +223,50 @@
         dados.confirmacoes[nome] = resposta ? resposta.value : "";
       });
 
-      fetch("https://script.google.com/macros/s/AKfycbxFbAH9-ZGtOL3roK4Y1aOMn-GH84AoCHrSePcEmjLWmXYKOEvaUeQH4SdOrexcLfm4CA/exec", {
+      // URL do seu Apps Script (substitua pela sua URL real)
+      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxFbAH9-ZGtOL3roK4Y1aOMn-GH84AoCHrSePcEmjLWmXYKOEvaUeQH4SdOrexcLfm4CA/exec";
+      
+      mostrarStatus("Enviando dados...", true);
+
+      fetch(SCRIPT_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(dados)
       })
-      .then(response => response.text())
-      .then(() => {
-        alert("Confirmação enviada com sucesso!");
+      .then(response => {
+        if (!response.ok) throw new Error("Erro na rede");
+        return response.text();
+      })
+      .then(resultado => {
+        console.log("Resposta do servidor:", resultado);
+        mostrarStatus("Confirmação enviada com sucesso!", true);
         document.getElementById("formulario").reset();
         document.getElementById("membros").innerHTML = "";
       })
       .catch(err => {
-        alert("Erro ao enviar confirmação: " + err.message);
+        console.error("Erro:", err);
+        mostrarStatus(`Erro ao enviar: ${err.message}`, false);
       });
     }
+
+    // Função para testar a conexão com o servidor
+    function testarConexao() {
+      fetch("https://script.google.com/macros/s/AKfycbxFbAH9-ZGtOL3roK4Y1aOMn-GH84AoCHrSePcEmjLWmXYKOEvaUeQH4SdOrexcLfm4CA/exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({teste: "conexao"})
+      })
+      .then(response => response.text())
+      .then(console.log)
+      .catch(console.error);
+    }
+
+    // Descomente para testar a conexão ao carregar a página
+    // window.addEventListener('load', testarConexao);
   </script>
 </body>
 </html>
