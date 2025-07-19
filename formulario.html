@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Confirmação de Presença</title>
   <style>
     body {
@@ -9,10 +9,23 @@
       padding: 20px;
       background: #fffafc;
       color: #333;
+
+      /* Centralizar tudo */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
     }
 
     h2 {
       color: #a3478f;
+      margin-bottom: 20px;
+      z-index: 1;
     }
 
     select, input[type="text"], button {
@@ -20,26 +33,107 @@
       padding: 8px;
       width: 100%;
       max-width: 400px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      box-sizing: border-box;
+      z-index: 1;
+    }
+
+    form#formulario {
+      margin-top: 10px;
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 25px 20px 30px 20px;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(163, 71, 143, 0.3);
+      z-index: 1;
     }
 
     .pessoa {
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #4b3053;
+      user-select: none;
     }
 
-    .contador {
-      margin-top: 15px;
-      font-weight: bold;
+    .pessoa label {
+      margin-right: 12px;
+      font-weight: 600;
+      color: #5a3a71;
     }
 
-    .oculto {
-      display: none;
+    .pessoa input[type="radio"] {
+      margin-right: 6px;
+      cursor: pointer;
+    }
+
+    button {
+      background-color: #a3478f;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #7a2f68;
+    }
+
+    /* Balões animados */
+    .balloon {
+      position: fixed;
+      bottom: -60px;
+      width: 25px;
+      height: 35px;
+      border-radius: 50% / 60%;
+      background: linear-gradient(135deg, #ff7eb9, #ff65a3);
+      box-shadow: inset -5px -5px 10px rgba(255,255,255,0.6);
+      animation-name: rise;
+      animation-timing-function: ease-out;
+      animation-iteration-count: infinite;
+      filter: drop-shadow(0 1px 2px #b7447d);
+      z-index: 0;
+    }
+    .balloon::after {
+      content: "";
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      width: 2px;
+      height: 15px;
+      background: #c34274;
+      transform: translateX(-50%);
+      border-radius: 1px;
+    }
+
+    /* Diferentes posições e tempos para balões */
+    .balloon:nth-child(1) { left: 20%; animation-duration: 12s; animation-delay: 0s; }
+    .balloon:nth-child(2) { left: 40%; animation-duration: 14s; animation-delay: 3s; }
+    .balloon:nth-child(3) { left: 60%; animation-duration: 13s; animation-delay: 6s; }
+    .balloon:nth-child(4) { left: 80%; animation-duration: 15s; animation-delay: 2s; }
+
+    @keyframes rise {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-120vh) scale(1.1);
+        opacity: 0;
+      }
     }
   </style>
 </head>
 <body>
   <h2>Confirmar Presença</h2>
 
-  <label for="familia">Escolha uma família:</label>
+  <label for="familia" style="font-weight:600; color:#6e3c7a;">Escolha uma família:</label>
   <select id="familia" onchange="mostrarMembros()">
     <option value="">-- Selecione --</option>
     <option value="sueli">Família Sueli Félix</option>
@@ -49,13 +143,17 @@
   <form id="formulario" onsubmit="enviarFormulario(event)">
     <div id="membros"></div>
 
-    <label for="responsavel">Responsável:</label>
+    <label for="responsavel" style="font-weight:600; color:#6e3c7a;">Responsável pelo preenchimento:</label>
     <input type="text" id="responsavel" name="responsavel" required>
-
-    <div class="contador" id="contador"></div>
 
     <button type="submit">Enviar</button>
   </form>
+
+  <!-- Balões -->
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
 
   <script>
     const familias = {
@@ -74,23 +172,12 @@
           container.className = "pessoa";
           container.innerHTML = `
             <label>${nome}:</label>
-            <input type="radio" name="${nome}" value="Sim" onclick="atualizarContagem()"> Sim
-            <input type="radio" name="${nome}" value="Não" onclick="atualizarContagem()"> Não
+            <input type="radio" name="${nome}" value="Sim" required> Sim
+            <input type="radio" name="${nome}" value="Não" required> Não
           `;
           membrosDiv.appendChild(container);
         });
       }
-    }
-
-    function atualizarContagem() {
-      let sim = 0;
-      let nao = 0;
-      document.querySelectorAll("#membros .pessoa").forEach(div => {
-        const inputs = div.querySelectorAll("input[type=radio]");
-        if (inputs[0].checked) sim++;
-        if (inputs[1].checked) nao++;
-      });
-      document.getElementById("contador").innerText = `Total: ${sim} vão, ${nao} não vão.`;
     }
 
     function enviarFormulario(event) {
@@ -110,21 +197,22 @@
         dados.confirmacoes[nome] = resposta ? resposta.value : "";
       });
 
-      // Envio ao Google Sheets
-    fetch("https://script.google.com/macros/s/AKfycbxbzXHPGcF1xcdEjID1fRNuV4ZKAQgn6dAZP19qbHD9LL22iUpqEMbQmzKKT0si5QcEfg/exec", {
-
+      fetch("https://script.google.com/macros/s/AKfycbxbzXHPGcF1xcdEjID1fRNuV4ZKAQgn6dAZP19qbHD9LL22iUpqEMbQmzKKT0si5QcEfg/exec", {
         method: "POST",
-    
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(dados)
+      })
+      .then(response => response.text())
+      .then(() => {
+        alert("Confirmação enviada com sucesso!");
+        document.getElementById("formulario").reset();
+        document.getElementById("membros").innerHTML = "";
+      })
+      .catch(err => {
+        alert("Erro ao enviar confirmação: " + err.message);
       });
-
-      alert("Confirmação enviada com sucesso!");
-      document.getElementById("formulario").reset();
-      document.getElementById("membros").innerHTML = "";
-      document.getElementById("contador").innerText = "";
     }
   </script>
 </body>
