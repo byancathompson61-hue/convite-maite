@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Confirmação de Presença</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #fffafc;
+      color: #333;
+    }
+
+    h2 {
+      color: #a3478f;
+    }
+
+    select, input[type="text"], button {
+      margin: 10px 0;
+      padding: 8px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .pessoa {
+      margin-bottom: 10px;
+    }
+
+    .contador {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .oculto {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>Confirmar Presença</h2>
+
+  <label for="familia">Escolha uma família:</label>
+  <select id="familia" onchange="mostrarMembros()">
+    <option value="">-- Selecione --</option>
+    <option value="sueli">Família Sueli Félix</option>
+    <option value="silvana">Família Silvana</option>
+  </select>
+
+  <form id="formulario" onsubmit="enviarFormulario(event)">
+    <div id="membros"></div>
+
+    <label for="responsavel">Responsável:</label>
+    <input type="text" id="responsavel" name="responsavel" required>
+
+    <div class="contador" id="contador"></div>
+
+    <button type="submit">Enviar</button>
+  </form>
+
+  <script>
+    const familias = {
+      sueli: ["Sueli", "Byanca", "Adilson", "Eduardo", "Jonathan"],
+      silvana: ["Cicero", "Tatiane", "Daiane", "Silvana"]
+    };
+
+    function mostrarMembros() {
+      const familiaSelecionada = document.getElementById("familia").value;
+      const membrosDiv = document.getElementById("membros");
+      membrosDiv.innerHTML = "";
+
+      if (familiaSelecionada && familias[familiaSelecionada]) {
+        familias[familiaSelecionada].forEach(nome => {
+          const container = document.createElement("div");
+          container.className = "pessoa";
+          container.innerHTML = `
+            <label>${nome}:</label>
+            <input type="radio" name="${nome}" value="Sim" onclick="atualizarContagem()"> Sim
+            <input type="radio" name="${nome}" value="Não" onclick="atualizarContagem()"> Não
+          `;
+          membrosDiv.appendChild(container);
+        });
+      }
+    }
+
+    function atualizarContagem() {
+      let sim = 0;
+      let nao = 0;
+      document.querySelectorAll("#membros .pessoa").forEach(div => {
+        const inputs = div.querySelectorAll("input[type=radio]");
+        if (inputs[0].checked) sim++;
+        if (inputs[1].checked) nao++;
+      });
+      document.getElementById("contador").innerText = `Total: ${sim} vão, ${nao} não vão.`;
+    }
+
+    function enviarFormulario(event) {
+      event.preventDefault();
+      const familia = document.getElementById("familia").value;
+      const responsavel = document.getElementById("responsavel").value;
+
+      const dados = {
+        familia: familia,
+        responsavel: responsavel,
+        confirmacoes: {}
+      };
+
+      document.querySelectorAll("#membros .pessoa").forEach(div => {
+        const nome = div.querySelector("label").innerText.replace(":", "");
+        const resposta = div.querySelector("input[type=radio]:checked");
+        dados.confirmacoes[nome] = resposta ? resposta.value : "";
+      });
+
+      // Envio ao Google Sheets
+      fetch("https://script.google.com/macros/s/AKfycbwastNOfVwjb9CVuNvP4xl528OMtBHHnluT_xEPImVj2y1o-IrdUysMFFSdwLNp7Fog4g/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dados)
+      });
+
+      alert("Confirmação enviada com sucesso!");
+      document.getElementById("formulario").reset();
+      document.getElementById("membros").innerHTML = "";
+      document.getElementById("contador").innerText = "";
+    }
+  </script>
+</body>
+</html>
