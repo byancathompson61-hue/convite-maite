@@ -67,7 +67,7 @@
   }
   .btn:hover { background-color: var(--rosa-escuro); }
 
-  /* Botão Login */
+  /* Botão Login (fixo, só na home) */
   #loginBtn {
     position: fixed;
     top: 16px;
@@ -148,9 +148,23 @@
     cursor: pointer;
   }
   .admin-btn.add { background: var(--rosa); color: #fff; }
-  .admin-btn.add:hover { background: var(--rosa-escuro); }
   .admin-btn.mass { background: var(--verde); color: #fff; }
   .admin-btn.mass:hover { filter: brightness(0.9); }
+
+  /* Botão voltar (novo) */
+  #voltarBtn {
+    background: var(--rosa);
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: var(--radius-btn);
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 24px;
+  }
+  #voltarBtn:hover {
+    background: var(--rosa-escuro);
+  }
 
   /* Lista de famílias */
   #familiasContainer {
@@ -239,22 +253,25 @@
   @media (max-width:480px) {
     .card { padding: 24px 20px; }
     h1 { font-size: 1.6rem; }
-    .btn { width: 100%; }
+    .btn, #voltarBtn { width: 100%; }
   }
 </style>
 </head>
 <body>
 
-<!-- Botão Login (global) -->
+<!-- Botão Login (fixo, só na home) -->
 <button id="loginBtn" type="button">LOGIN</button>
 
 <!-- TELA HOME -->
-<div id="homeView" class="center-wrap" hidden>
+<div id="homeView" class="center-wrap" >
   <div class="card">
     <h1>Festa da Maitê 🎉</h1>
     <p>Estamos muito felizes em celebrar o 1º aninho da nossa princesa Maitê! 💜</p>
-    <p>Você recebeu este link especial para acompanhar as novidades e, se fizer parte de uma família convidada, receberá um link personalizado para confirmar presença.</p>
-    <p>Nos vemos em breve!</p>
+    <p>
+      Mamãe ou papai, estamos muito felizes em ajudar vocês com a festa da Maitê!<br>
+      Este espaço foi personalizado para facilitar o envio dos convites, acompanhar as confirmações de presença e tornar esse momento ainda mais especial.
+    </p>
+    <button id="acessoBtn" class="btn" type="button">Acesso</button>
   </div>
 </div>
 
@@ -273,7 +290,7 @@
 </div>
 
 <!-- ADMIN -->
-<div id="adminArea">
+<div id="adminArea" hidden>
   <button class="closeBtn" type="button" aria-label="Fechar Admin">&times;</button>
   <div class="admin-inner">
     <h2>Cadastro de Famílias</h2>
@@ -296,6 +313,9 @@
     </div>
 
     <div id="familiasContainer"></div>
+
+    <!-- Botão voltar para a tela inicial -->
+    <button id="voltarBtn" type="button">Voltar à tela inicial</button>
   </div>
 </div>
 
@@ -315,9 +335,7 @@
 </div>
 
 <script>
-/* ===========================
-   UTILIDADES
-=========================== */
+/* UTILIDADES */
 function $(id) { return document.getElementById(id); }
 
 function getQueryParams() {
@@ -337,14 +355,11 @@ function buildInviteLink(familiaName, membrosList) {
 /* Valida telefone: só números + tamanho mínimo */
 function sanitizePhone(raw) {
   const digits = raw.replace(/\D+/g,'');
-  // Brasil: DDD+Número geralmente >=10 dígitos (ex: 11 + 999999999)
   if (digits.length < 10) return null;
   return digits;
 }
 
-/* ===========================
-   STATE / STORAGE
-=========================== */
+/* STATE / STORAGE */
 let familias = []; // {id, responsavel, membros, telefone}
 
 const STORAGE_KEY = 'conviteMaite_familias_v1';
@@ -368,9 +383,7 @@ function saveToStorage() {
   }
 }
 
-/* ===========================
-   RENDERIZAÇÃO DA LISTA
-=========================== */
+/* RENDERIZAÇÃO DA LISTA */
 function renderFamilias() {
   const container = $('familiasContainer');
   container.innerHTML = '';
@@ -425,9 +438,7 @@ function renderFamilias() {
   });
 }
 
-/* ===========================
-   ADICIONAR FAMÍLIA
-=========================== */
+/* ADICIONAR FAMÍLIA */
 function adicionarFamilia() {
   const responsavel = $('responsavel').value.trim();
   const membros = $('membros').value.trim();
@@ -449,9 +460,7 @@ function adicionarFamilia() {
   $('telefone').value = '';
 }
 
-/* ===========================
-   EDITAR FAMÍLIA
-=========================== */
+/* EDITAR FAMÍLIA */
 let editId = null;
 
 function openEditModal(id) {
@@ -493,9 +502,7 @@ function saveEditFamilia() {
   closeEditModal();
 }
 
-/* ===========================
-   EXCLUIR FAMÍLIA
-=========================== */
+/* EXCLUIR FAMÍLIA */
 function deleteFamilia(id) {
   const fam = familias.find(f => f.id === id);
   if (!fam) return;
@@ -506,9 +513,7 @@ function deleteFamilia(id) {
   renderFamilias();
 }
 
-/* ===========================
-   ENVIAR WHATSAPP
-=========================== */
+/* ENVIAR WHATSAPP */
 function enviarLinkWhatsApp(fam) {
   const link = buildInviteLink(fam.responsavel, fam.membros);
   const msg = `Oi! Você está convidado(a) para o aniversário da Maitê! Clique aqui para confirmar sua presença: ${link}`;
@@ -546,9 +551,7 @@ function enviarTodosWhatsApp() {
   next();
 }
 
-/* ===========================
-   EXPORT CSV
-=========================== */
+/* EXPORT CSV */
 function exportCSV() {
   if (!familias.length) {
     alert('Nada para exportar.');
@@ -557,7 +560,6 @@ function exportCSV() {
   const header = ['Responsavel','Membros','Telefone','Link'];
   const rows = familias.map(f => {
     const link = buildInviteLink(f.responsavel, f.membros);
-    // CSV simples com aspas duplas
     return [
       `"${f.responsavel.replace(/"/g,'""')}"`,
       `"${f.membros.replace(/"/g,'""')}"`,
@@ -577,21 +579,16 @@ function exportCSV() {
   setTimeout(()=>URL.revokeObjectURL(url), 1000);
 }
 
-/* ===========================
-   CONFIRMAÇÃO DE PRESENÇA
-=========================== */
-/* Aqui você pode integrar com Google Sheets/Forms depois */
+/* CONFIRMAÇÃO DE PRESENÇA */
 function confirmarPresenca(familia, membros) {
-  // TODO: integrar com backend/planilha
   alert(`Obrigado! Presença confirmada para: ${familia} (${membros}). Em breve essa confirmação será registrada.`);
 }
 
-/* ===========================
-   TROCA DE TELAS
-=========================== */
+/* TROCA DE TELAS */
 function showHome() {
   $('homeView').hidden = false;
   $('confirmView').hidden = true;
+  $('adminArea').style.display = 'none';
 }
 
 function showConfirm(familia, membros) {
@@ -602,15 +599,11 @@ function showConfirm(familia, membros) {
     : `Olá! Você está convidado(a)!`;
 }
 
-/* ===========================
-   EVENTOS GERAIS
-=========================== */
+/* EVENTOS GERAIS */
 window.addEventListener('DOMContentLoaded', () => {
-  // Carrega dados salvos
   loadFromStorage();
   renderFamilias();
 
-  // Decide qual tela mostrar com base nos parâmetros
   const { familia, membros } = getQueryParams();
   if (familia) {
     showConfirm(familia, membros);
@@ -618,10 +611,16 @@ window.addEventListener('DOMContentLoaded', () => {
     showHome();
   }
 
-  // Login abre admin
+  // Botão login abre admin
   $('loginBtn').addEventListener('click', () => {
     $('adminArea').style.display = 'block';
   });
+
+  // Botão voltar para tela inicial
+  $('voltarBtn').addEventListener('click', () => {
+    showHome();
+  });
+
   // Fechar admin
   document.querySelector('#adminArea .closeBtn').addEventListener('click', () => {
     $('adminArea').style.display = 'none';
@@ -636,7 +635,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // Export CSV
   $('exportBtn').addEventListener('click', exportCSV);
 
-  // Confirmar presença (se link personalizado)
+  // Confirmar presença
   $('confirmarBtn').addEventListener('click', () => {
     const { familia, membros } = getQueryParams();
     confirmarPresenca(familia, membros);
@@ -652,6 +651,3 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
-
-
-
