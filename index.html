@@ -42,6 +42,7 @@
     box-shadow: 0 8px 24px rgba(0,0,0,0.1);
     max-width: 500px;
     margin: 16px;
+    position: relative;
   }
 
   h1, h2, h3 {
@@ -67,79 +68,30 @@
   }
   .btn:hover { background-color: var(--rosa-escuro); }
 
-  /* Botão Login (fixo, só na home) */
-  #loginBtn {
-    position: fixed;
+  /* Botão voltar (topo esquerdo da tela de acesso) */
+  #voltarBtn {
+    position: absolute;
     top: 16px;
     left: 16px;
-    background: rgba(255,255,255,0.7);
-    color: var(--rosa);
-    font-weight: bold;
-    border: 2px solid var(--rosa);
-    border-radius: 30px;
-    padding: 6px 18px;
-    cursor: pointer;
-    z-index: 1000;
-    font-size: 14px;
-  }
-  #loginBtn:hover {
-    background: rgba(255,255,255,0.9);
-  }
-
-  /* Admin overlay */
-  #adminArea {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: #fff8fc;
-    z-index: 999;
-    padding: 40px 16px 80px;
-    overflow-y: auto;
-  }
-
-  .admin-inner {
-    max-width: 700px;
-    margin: 0 auto;
-  }
-
-  .closeBtn {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    background: transparent;
-    font-size: 32px;
-    line-height: 1;
+    background: var(--rosa);
+    color: #fff;
     border: none;
-    color: var(--rosa);
+    border-radius: var(--radius-btn);
+    padding: 8px 16px;
+    font-weight: bold;
     cursor: pointer;
   }
-
-  label {
-    display: block;
-    font-size: 0.95rem;
-    font-weight: 600;
-    margin: 16px 0 4px;
-    color: var(--rosa-escuro);
+  #voltarBtn:hover {
+    background-color: var(--rosa-escuro);
   }
 
-  input, textarea {
-    width: 100%;
-    font-size: 1rem;
-    padding: 10px 12px;
-    margin-bottom: 8px;
-    border: 1px solid var(--cinza-borda);
-    border-radius: var(--radius-btn);
-    box-sizing: border-box;
-  }
-  textarea { min-height: 60px; resize: vertical; }
-
+  /* Lista e ações na tela de acesso */
   .admin-actions {
     margin-top: 16px;
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
   }
-
   .admin-btn {
     padding: 8px 14px;
     font-size: 14px;
@@ -148,23 +100,9 @@
     cursor: pointer;
   }
   .admin-btn.add { background: var(--rosa); color: #fff; }
+  .admin-btn.add:hover { background: var(--rosa-escuro); }
   .admin-btn.mass { background: var(--verde); color: #fff; }
   .admin-btn.mass:hover { filter: brightness(0.9); }
-
-  /* Botão voltar (novo) */
-  #voltarBtn {
-    background: var(--rosa);
-    color: #fff;
-    padding: 12px 20px;
-    border: none;
-    border-radius: var(--radius-btn);
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 24px;
-  }
-  #voltarBtn:hover {
-    background: var(--rosa-escuro);
-  }
 
   /* Lista de famílias */
   #familiasContainer {
@@ -253,46 +191,32 @@
   @media (max-width:480px) {
     .card { padding: 24px 20px; }
     h1 { font-size: 1.6rem; }
-    .btn, #voltarBtn { width: 100%; }
+    .btn { width: 100%; }
+    #voltarBtn {
+      top: 10px;
+      left: 10px;
+      padding: 6px 12px;
+      font-size: 14px;
+    }
   }
 </style>
 </head>
 <body>
 
-<!-- Botão Login (fixo, só na home) -->
-<button id="loginBtn" type="button">LOGIN</button>
-
-<!-- TELA HOME -->
-<div id="homeView" class="center-wrap" >
+<!-- TELA INICIAL -->
+<div id="homeView" class="center-wrap">
   <div class="card">
     <h1>Festa da Maitê 🎉</h1>
-    <p>Estamos muito felizes em celebrar o 1º aninho da nossa princesa Maitê! 💜</p>
-    <p>
-      Mamãe ou papai, estamos muito felizes em ajudar vocês com a festa da Maitê!<br>
-      Este espaço foi personalizado para facilitar o envio dos convites, acompanhar as confirmações de presença e tornar esse momento ainda mais especial.
-    </p>
-    <button id="acessoBtn" class="btn" type="button">Acesso</button>
+    <p>Estamos muito felizes em celebrar o 1º aninho da princesa Maitê! 💜</p>
+    <p><strong>Mamãe ou papai</strong>, estamos muito felizes em ajudar vocês com a festa da Maitê! Este espaço foi personalizado para facilitar o envio dos convites, acompanhar as confirmações de presença e tornar esse momento ainda mais especial.</p>
+    <button id="loginBtn" class="btn" type="button">Acesso</button>
   </div>
 </div>
 
-<!-- TELA CONFIRMAÇÃO (quando vem com ?familia=... ) -->
-<div id="confirmView" class="center-wrap" hidden>
-  <div class="card" id="confirmCard">
-    <h1>Maitê faz 1 aninho! 👧🎉</h1>
-    <p id="familiaSaudacao"></p>
-    <p>
-      🗓️ <strong>Data:</strong> 20 de Setembro<br>
-      🕒 <strong>Horário:</strong> das 19:30 às 23:30<br>
-      📍 <strong>Local:</strong> Avenida São Miguel, 8001 - SP
-    </p>
-    <button id="confirmarBtn" class="btn" type="button">Confirmar Presença</button>
-  </div>
-</div>
-
-<!-- ADMIN -->
-<div id="adminArea" hidden>
-  <button class="closeBtn" type="button" aria-label="Fechar Admin">&times;</button>
-  <div class="admin-inner">
+<!-- TELA DE ACESSO / ADMIN -->
+<div id="adminArea" class="center-wrap" style="display:none; position:relative;">
+  <button id="voltarBtn" type="button">Voltar à tela inicial</button>
+  <div class="card" style="padding-top: 56px; max-width: 600px;">
     <h2>Cadastro de Famílias</h2>
 
     <div class="admin-form">
@@ -313,341 +237,23 @@
     </div>
 
     <div id="familiasContainer"></div>
+  </div>
+</div>
 
-    <!-- Botão voltar para a tela inicial -->
-    <button id="voltarBtn" type="button">Voltar à tela inicial</button>
+<!-- TELA DE CONFIRMAÇÃO (quando ?familia=...) -->
+<div id="confirmView" class="center-wrap" hidden>
+  <div class="card" id="confirmCard">
+    <h1>Maitê faz 1 aninho! 👧🎉</h1>
+    <p id="familiaSaudacao"></p>
+    <p>
+      🗓️ <strong>Data:</strong> 20 de Setembro<br>
+      🕒 <strong>Horário:</strong> das 19:30 às 23:30<br>
+      📍 <strong>Local:</strong> Avenida São Miguel, 8001 - SP
+    </p>
+    <button id="confirmarBtn" class="btn" type="button">Confirmar Presença</button>
   </div>
 </div>
 
 <!-- MODAL EDIÇÃO -->
-<div id="editModal">
-  <div class="edit-content">
-    <button class="edit-close" type="button" aria-label="Fechar edição">&times;</button>
-    <h3>Editar Família</h3>
-    <label for="editResponsavel">Responsável</label>
-    <input id="editResponsavel" />
-    <label for="editMembros">Membros</label>
-    <textarea id="editMembros"></textarea>
-    <label for="editTelefone">Telefone</label>
-    <input id="editTelefone" />
-    <button class="edit-save" type="button" id="editSaveBtn">Salvar Alterações</button>
-  </div>
-</div>
+<div
 
-<script>
-/* UTILIDADES */
-function $(id) { return document.getElementById(id); }
-
-function getQueryParams() {
-  const params = new URLSearchParams(window.location.search);
-  return {
-    familia: params.get('familia'),
-    membros: params.get('membros')
-  };
-}
-
-/* Cria link individual de confirmação */
-function buildInviteLink(familiaName, membrosList) {
-  const base = window.location.origin + window.location.pathname;
-  return `${base}?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}`;
-}
-
-/* Valida telefone: só números + tamanho mínimo */
-function sanitizePhone(raw) {
-  const digits = raw.replace(/\D+/g,'');
-  if (digits.length < 10) return null;
-  return digits;
-}
-
-/* STATE / STORAGE */
-let familias = []; // {id, responsavel, membros, telefone}
-
-const STORAGE_KEY = 'conviteMaite_familias_v1';
-
-function loadFromStorage() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
-    const data = JSON.parse(raw);
-    if (Array.isArray(data)) familias = data;
-  } catch(e) {
-    console.error('Erro ao carregar storage', e);
-  }
-}
-
-function saveToStorage() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(familias));
-  } catch(e) {
-    console.error('Erro ao salvar storage', e);
-  }
-}
-
-/* RENDERIZAÇÃO DA LISTA */
-function renderFamilias() {
-  const container = $('familiasContainer');
-  container.innerHTML = '';
-
-  if (!familias.length) {
-    container.innerHTML = '<p>Nenhuma família cadastrada ainda.</p>';
-    return;
-  }
-
-  familias.forEach((fam) => {
-    const div = document.createElement('div');
-    div.className = 'familyBox';
-
-    const link = buildInviteLink(fam.responsavel, fam.membros);
-
-    div.innerHTML = `
-      <strong>${fam.responsavel}</strong>
-      <p>Membros: ${fam.membros}</p>
-      <p>Tel: ${fam.telefone}</p>
-      <p style="font-size:12px;word-break:break-all;">Link: ${link}</p>
-      <div class="fam-actions">
-        <button class="fam-btn fam-send" type="button" data-id="${fam.id}">Encaminhar</button>
-        <button class="fam-btn fam-edit" type="button" data-id="${fam.id}">Editar</button>
-        <button class="fam-btn fam-delete" type="button" data-id="${fam.id}">Excluir</button>
-      </div>
-    `;
-
-    container.appendChild(div);
-  });
-
-  // Delegação de eventos
-  container.querySelectorAll('.fam-send').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.getAttribute('data-id');
-      const fam = familias.find(f => f.id === id);
-      if (fam) enviarLinkWhatsApp(fam);
-    });
-  });
-
-  container.querySelectorAll('.fam-edit').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.getAttribute('data-id');
-      openEditModal(id);
-    });
-  });
-
-  container.querySelectorAll('.fam-delete').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.getAttribute('data-id');
-      deleteFamilia(id);
-    });
-  });
-}
-
-/* ADICIONAR FAMÍLIA */
-function adicionarFamilia() {
-  const responsavel = $('responsavel').value.trim();
-  const membros = $('membros').value.trim();
-  const telefoneRaw = $('telefone').value.trim();
-  const telefone = sanitizePhone(telefoneRaw);
-
-  if (!responsavel || !membros || !telefone) {
-    alert('Preencha todos os campos corretamente. Lembre de colocar um telefone válido.');
-    return;
-  }
-
-  const id = crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random());
-  familias.push({ id, responsavel, membros, telefone });
-  saveToStorage();
-  renderFamilias();
-
-  $('responsavel').value = '';
-  $('membros').value = '';
-  $('telefone').value = '';
-}
-
-/* EDITAR FAMÍLIA */
-let editId = null;
-
-function openEditModal(id) {
-  const fam = familias.find(f => f.id === id);
-  if (!fam) return;
-  editId = id;
-  $('editResponsavel').value = fam.responsavel;
-  $('editMembros').value = fam.membros;
-  $('editTelefone').value = fam.telefone;
-  $('editModal').style.display = 'flex';
-}
-
-function closeEditModal() {
-  editId = null;
-  $('editModal').style.display = 'none';
-}
-
-function saveEditFamilia() {
-  if (!editId) return;
-  const fam = familias.find(f => f.id === editId);
-  if (!fam) return;
-
-  const responsavel = $('editResponsavel').value.trim();
-  const membros = $('editMembros').value.trim();
-  const telefoneRaw = $('editTelefone').value.trim();
-  const telefone = sanitizePhone(telefoneRaw);
-
-  if (!responsavel || !membros || !telefone) {
-    alert('Preencha todos os campos corretamente (telefone com DDD, só números).');
-    return;
-  }
-
-  fam.responsavel = responsavel;
-  fam.membros = membros;
-  fam.telefone = telefone;
-
-  saveToStorage();
-  renderFamilias();
-  closeEditModal();
-}
-
-/* EXCLUIR FAMÍLIA */
-function deleteFamilia(id) {
-  const fam = familias.find(f => f.id === id);
-  if (!fam) return;
-  const ok = confirm(`Tem certeza que deseja excluir a família de ${fam.responsavel}?`);
-  if (!ok) return;
-  familias = familias.filter(f => f.id !== id);
-  saveToStorage();
-  renderFamilias();
-}
-
-/* ENVIAR WHATSAPP */
-function enviarLinkWhatsApp(fam) {
-  const link = buildInviteLink(fam.responsavel, fam.membros);
-  const msg = `Oi! Você está convidado(a) para o aniversário da Maitê! Clique aqui para confirmar sua presença: ${link}`;
-
-  const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)}`;
-
-  // Tentativa de abertura
-  const win = window.open(zap, '_blank');
-  if (!win || win.closed || typeof win.closed === 'undefined') {
-    alert('Não consegui abrir o WhatsApp. Verifique se o navegador bloqueou pop-ups ou se o número está correto.');
-  }
-}
-
-/* Encaminhar todos (abre de 1 em 1 com tempo) */
-function enviarTodosWhatsApp() {
-  if (!familias.length) {
-    alert('Não há famílias cadastradas.');
-    return;
-  }
-  const ok = confirm(`Encaminhar link para TODAS as ${familias.length} famílias? Isso pode abrir várias abas do WhatsApp.`);
-  if (!ok) return;
-
-  let idx = 0;
-  const delay = 600; // ms entre cada abertura (ajuda a reduzir bloqueio)
-
-  function next() {
-    if (idx >= familias.length) {
-      alert('Envio concluído (ou iniciado) — confira as abas do navegador / WhatsApp.');
-      return;
-    }
-    enviarLinkWhatsApp(familias[idx]);
-    idx++;
-    setTimeout(next, delay);
-  }
-  next();
-}
-
-/* EXPORT CSV */
-function exportCSV() {
-  if (!familias.length) {
-    alert('Nada para exportar.');
-    return;
-  }
-  const header = ['Responsavel','Membros','Telefone','Link'];
-  const rows = familias.map(f => {
-    const link = buildInviteLink(f.responsavel, f.membros);
-    return [
-      `"${f.responsavel.replace(/"/g,'""')}"`,
-      `"${f.membros.replace(/"/g,'""')}"`,
-      `"${f.telefone}"`,
-      `"${link}"`
-    ].join(',');
-  });
-  const csv = [header.join(','), ...rows].join('\r\n');
-  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'familias_convite_maite.csv';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(()=>URL.revokeObjectURL(url), 1000);
-}
-
-/* CONFIRMAÇÃO DE PRESENÇA */
-function confirmarPresenca(familia, membros) {
-  alert(`Obrigado! Presença confirmada para: ${familia} (${membros}). Em breve essa confirmação será registrada.`);
-}
-
-/* TROCA DE TELAS */
-function showHome() {
-  $('homeView').hidden = false;
-  $('confirmView').hidden = true;
-  $('adminArea').style.display = 'none';
-}
-
-function showConfirm(familia, membros) {
-  $('homeView').hidden = true;
-  $('confirmView').hidden = false;
-  $('familiaSaudacao').innerHTML = familia
-    ? `Olá, <strong>${familia}</strong>!<br>Família convidada: ${membros || '—'}.`
-    : `Olá! Você está convidado(a)!`;
-}
-
-/* EVENTOS GERAIS */
-window.addEventListener('DOMContentLoaded', () => {
-  loadFromStorage();
-  renderFamilias();
-
-  const { familia, membros } = getQueryParams();
-  if (familia) {
-    showConfirm(familia, membros);
-  } else {
-    showHome();
-  }
-
-  // Botão login abre admin
-  $('loginBtn').addEventListener('click', () => {
-    $('adminArea').style.display = 'block';
-  });
-
-  // Botão voltar para tela inicial
-  $('voltarBtn').addEventListener('click', () => {
-    showHome();
-  });
-
-  // Fechar admin
-  document.querySelector('#adminArea .closeBtn').addEventListener('click', () => {
-    $('adminArea').style.display = 'none';
-  });
-
-  // Adicionar família
-  $('addFamiliaBtn').addEventListener('click', adicionarFamilia);
-
-  // Enviar todos
-  $('sendAllBtn').addEventListener('click', enviarTodosWhatsApp);
-
-  // Export CSV
-  $('exportBtn').addEventListener('click', exportCSV);
-
-  // Confirmar presença
-  $('confirmarBtn').addEventListener('click', () => {
-    const { familia, membros } = getQueryParams();
-    confirmarPresenca(familia, membros);
-  });
-
-  // Edit modal botões
-  $('editSaveBtn').addEventListener('click', saveEditFamilia);
-  document.querySelector('#editModal .edit-close').addEventListener('click', closeEditModal);
-  $('editModal').addEventListener('click', (e) => {
-    if (e.target === $('editModal')) closeEditModal();
-  });
-});
-</script>
-</body>
-</html>
