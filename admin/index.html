@@ -324,7 +324,6 @@
     <button class="edit-save" type="button" id="editSaveBtn">Salvar Alterações</button>
   </div>
 </div>
-
 <script>
 /* UTILIDADES */
 function $(id) { return document.getElementById(id); }
@@ -353,7 +352,6 @@ function sanitizePhone(raw) {
 
 /* STATE / STORAGE */
 let familias = []; // {id, responsavel, membros, telefone, presente}
-
 const STORAGE_KEY = 'conviteMaite_familias_v1';
 
 function loadFromStorage() {
@@ -407,7 +405,6 @@ function renderFamilias() {
     container.appendChild(div);
   });
 
-  // Delegação de eventos
   container.querySelectorAll('.fam-send').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.getAttribute('data-id');
@@ -515,10 +512,7 @@ function deleteFamilia(id) {
 function enviarLinkWhatsApp(fam) {
   const link = buildInviteLink(fam.responsavel, fam.membros, fam.presente);
   const msg = `Oi! Você está convidado(a) para o aniversário da Maitê! Clique aqui para confirmar sua presença: ${link}`;
-
   const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)}`;
-
-  // Tentativa de abertura
   const win = window.open(zap, '_blank');
   if (!win || win.closed || typeof win.closed === 'undefined') {
     alert('Não consegui abrir o WhatsApp. Verifique se o navegador bloqueou pop-ups ou se o número está correto.');
@@ -586,40 +580,31 @@ window.addEventListener('DOMContentLoaded', () => {
     showHome();
   }
 
-  // Botão login abre admin
+  // ✅ Redireciona para formulário.html
   $('loginBtn').addEventListener('click', () => {
-    $('adminArea').style.display = 'block';
+    window.location.href = 'https://byancathompson61-hue.github.io/convite-maite/formulario.html';
   });
 
-  // Botão voltar para tela inicial
-  $('voltarBtn').addEventListener('click', () => {
-    showHome();
-  });
+  // Voltar
+  $('voltarBtn')?.addEventListener('click', showHome);
 
   // Fechar admin
-  document.querySelector('#adminArea .closeBtn').addEventListener('click', () => {
+  document.querySelector('#adminArea .closeBtn')?.addEventListener('click', () => {
     $('adminArea').style.display = 'none';
   });
 
-  // Adicionar família
-  $('addFamiliaBtn').addEventListener('click', adicionarFamilia);
-
-  // Export CSV
-  $('exportBtn').addEventListener('click', exportCSV);
-
-  // Confirmar presença
-  $('confirmarBtn').addEventListener('click', () => {
+  $('addFamiliaBtn')?.addEventListener('click', adicionarFamilia);
+  $('exportBtn')?.addEventListener('click', exportCSV);
+  $('confirmarBtn')?.addEventListener('click', () => {
     const { familia, membros } = getQueryParams();
     confirmarPresenca(familia, membros);
   });
 
-  // Edit modal botões
-  $('editSaveBtn').addEventListener('click', saveEditFamilia);
-  document.querySelector('#editModal .edit-close').addEventListener('click', closeEditModal);
-  $('editModal').addEventListener('click', (e) => {
+  $('editSaveBtn')?.addEventListener('click', saveEditFamilia);
+  document.querySelector('#editModal .edit-close')?.addEventListener('click', closeEditModal);
+  $('editModal')?.addEventListener('click', (e) => {
     if (e.target === $('editModal')) closeEditModal();
   });
 });
 </script>
-</body>
-</html>
+
