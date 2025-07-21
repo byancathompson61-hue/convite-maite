@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Confirmação de Presença - Maitê</title>
+  <meta charset="UTF-8" />
+  <title>Convite da Maitê 🎉</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -15,72 +15,110 @@
       color: #a3478f;
     }
 
-    textarea {
-      width: 100%;
-      height: 100px;
-      margin-top: 10px;
-      padding: 10px;
+    .hidden {
+      display: none;
+    }
+
+    #login {
+      text-align: right;
+    }
+
+    #adminArea {
       border: 1px solid #ccc;
-      resize: none;
+      padding: 20px;
+      margin-top: 30px;
+      background-color: #fdf2f8;
+      border-radius: 10px;
+    }
+
+    input, button, textarea {
+      margin: 5px 0;
+      padding: 10px;
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
 
     button {
       background-color: #a3478f;
       color: white;
-      padding: 10px 20px;
-      border: none;
-      margin-top: 10px;
       cursor: pointer;
-      border-radius: 5px;
+      font-weight: bold;
     }
 
     button:hover {
-      background-color: #872b70;
+      background-color: #822d6c;
     }
 
-    .hidden {
-      display: none;
+    #generatedLink {
+      word-wrap: break-word;
+      background: #fff;
+      padding: 10px;
+      border: 1px dashed #a3478f;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <h2>Confirmação de Presença 💜</h2>
 
-  <p>Por favor, confirme os nomes de quem irá participar:</p>
-  
-  <textarea id="confirmacao" placeholder="Digite aqui os nomes..."></textarea><br>
-  <button onclick="enviarConfirmacao()">Confirmar Presença</button>
+  <h2>Convite de Aniversário da Maitê 💜</h2>
+  <p>Você foi convidado para uma festa muito especial!</p>
+
+  <!-- Botão escondido (tipo login) -->
+  <div id="login">
+    <button onclick="document.getElementById('adminArea').classList.toggle('hidden')">🔐 Acesso Restrito</button>
+  </div>
+
+  <!-- Área de administrador (geração de links por família) -->
+  <div id="adminArea" class="hidden">
+    <h3>🎯 Gerar Link Personalizado para Família</h3>
+
+    <label for="responsavel">Nome do responsável:</label>
+    <input type="text" id="responsavel" placeholder="Ex: Sueli">
+
+    <label for="nomesMembros">Nomes dos membros (separados por vírgula):</label>
+    <textarea id="nomesMembros" rows="3" placeholder="Ex: Sueli, Adilson, Eduardo, Byanca, Jonathan"></textarea>
+
+    <button onclick="gerarLink()">🔗 Gerar Link</button>
+
+    <div id="generatedLink" class="hidden"></div>
+
+    <button id="btnWhatsapp" class="hidden" onclick="enviarWhatsapp()">📤 Enviar por WhatsApp</button>
+  </div>
 
   <script>
-    // Lista dos responsáveis e seus convidados
-    const responsaveis = {
-      elias: ['Maria', 'Larissa', 'Yarlley', 'Lucas'],
-      sueli: ['Sueli', 'Adilson', 'Eduardo', 'Byanca', 'Jonathan'],
-      joao: ['João', 'Camila'],
-      // Adicione outros responsáveis aqui
-    };
+    function gerarLink() {
+      const responsavel = document.getElementById("responsavel").value.trim().toLowerCase().replace(/\s+/g, '-');
+      const membros = document.getElementById("nomesMembros").value.trim();
 
-    // Pega o parâmetro 'from' da URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const responsavel = urlParams.get('from');
+      if (!responsavel || !membros) {
+        alert("Preencha todos os campos!");
+        return;
+      }
 
-    // Preenche os nomes automaticamente no campo de confirmação
-    if (responsavel && responsaveis[responsavel.toLowerCase()]) {
-      const nomes = responsaveis[responsavel.toLowerCase()];
-      document.getElementById("confirmacao").value = nomes.join('\n');
+      const baseURL = "https://byancathompson61-hue.github.io/convite-maite/";
+      const linkCompleto = `${baseURL}?familia=${encodeURIComponent(responsavel)}&membros=${encodeURIComponent(membros)}`;
+
+      const divLink = document.getElementById("generatedLink");
+      divLink.innerHTML = `<strong>Link Gerado:</strong> <br><a href="${linkCompleto}" target="_blank">${linkCompleto}</a>`;
+      divLink.classList.remove("hidden");
+
+      document.getElementById("btnWhatsapp").classList.remove("hidden");
+
+      // Salva o link na variável para uso posterior
+      window.linkParaWhatsapp = linkCompleto;
     }
 
-    function enviarConfirmacao() {
-      const nomes = document.getElementById("confirmacao").value.trim();
-      if (nomes) {
-        const mensagem = `Confirmamos presença de:\n${nomes}`;
-        alert(mensagem);
-        // Aqui você pode adicionar lógica de envio (Ex: Google Sheets, WhatsApp, etc)
-      } else {
-        alert("Por favor, preencha os nomes antes de confirmar.");
-      }
+    function enviarWhatsapp() {
+      const link = window.linkParaWhatsapp;
+      const mensagem = `Oi! 🎉 Você está convidado(a) para o aniversário da Maitê! 💜✨\nClique no link abaixo para ver os detalhes do convite da sua família:\n👉 ${link}`;
+
+      const encodedMsg = encodeURIComponent(mensagem);
+      const whatsappURL = `https://wa.me/?text=${encodedMsg}`;
+      window.open(whatsappURL, "_blank");
     }
   </script>
+
 </body>
 </html>
 
