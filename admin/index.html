@@ -331,10 +331,9 @@ function getQueryParams() {
 
 /* Cria link individual de confirmação */
 function buildInviteLink(familiaName, membrosList) {
-  const base = window.location.origin + "/convite-maite/";
-  return ${base}?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)};
+  const base = window.location.origin + window.location.pathname;
+  return `${base}?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}`;
 }
-
 
 /* Valida telefone: só números + tamanho mínimo */
 function sanitizePhone(raw) {
@@ -383,7 +382,7 @@ function renderFamilias() {
 
     const link = buildInviteLink(fam.responsavel, fam.membros);
 
-    div.innerHTML = 
+    div.innerHTML = `
       <strong>${fam.responsavel}</strong>
       <p>Membros: ${fam.membros}</p>
       <p>Tel: ${fam.telefone}</p>
@@ -393,7 +392,7 @@ function renderFamilias() {
         <button class="fam-btn fam-edit" type="button" data-id="${fam.id}">Editar</button>
         <button class="fam-btn fam-delete" type="button" data-id="${fam.id}">Excluir</button>
       </div>
-    ;
+    `;
 
     container.appendChild(div);
   });
@@ -490,7 +489,7 @@ function saveEditFamilia() {
 function deleteFamilia(id) {
   const fam = familias.find(f => f.id === id);
   if (!fam) return;
-  const ok = confirm(Tem certeza que deseja excluir a família de ${fam.responsavel}?);
+  const ok = confirm(`Tem certeza que deseja excluir a família de ${fam.responsavel}?`);
   if (!ok) return;
   familias = familias.filter(f => f.id !== id);
   saveToStorage();
@@ -500,9 +499,9 @@ function deleteFamilia(id) {
 /* ENVIAR WHATSAPP */
 function enviarLinkWhatsApp(fam) {
   const link = buildInviteLink(fam.responsavel, fam.membros);
-  const msg = Oi! Você está convidado(a) para o aniversário da Maitê! Clique aqui para confirmar sua presença: ${link};
+  const msg = `Oi! Você está convidado(a) para o aniversário da Maitê! Clique aqui para confirmar sua presença: ${link}`;
 
-  const zap = https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)};
+  const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)}`;
 
   // Tentativa de abertura
   const win = window.open(zap, '_blank');
@@ -517,7 +516,7 @@ function enviarTodosWhatsApp() {
     alert('Não há famílias cadastradas.');
     return;
   }
-  const ok = confirm(Encaminhar link para TODAS as ${familias.length} famílias? Isso pode abrir várias abas do WhatsApp.);
+  const ok = confirm(`Encaminhar link para TODAS as ${familias.length} famílias? Isso pode abrir várias abas do WhatsApp.`);
   if (!ok) return;
 
   let idx = 0;
@@ -545,10 +544,10 @@ function exportCSV() {
   const rows = familias.map(f => {
     const link = buildInviteLink(f.responsavel, f.membros);
     return [
-      "${f.responsavel.replace(/"/g,'""')}",
-      "${f.membros.replace(/"/g,'""')}",
-      "${f.telefone}",
-      "${link}"
+      `"${f.responsavel.replace(/"/g,'""')}"`,
+      `"${f.membros.replace(/"/g,'""')}"`,
+      `"${f.telefone}"`,
+      `"${link}"`
     ].join(',');
   });
   const csv = [header.join(','), ...rows].join('\r\n');
@@ -565,7 +564,7 @@ function exportCSV() {
 
 /* CONFIRMAÇÃO DE PRESENÇA */
 function confirmarPresenca(familia, membros) {
-  alert(Obrigado! Presença confirmada para: ${familia} (${membros}). Em breve essa confirmação será registrada.);
+  alert(`Obrigado! Presença confirmada para: ${familia} (${membros}). Em breve essa confirmação será registrada.`);
 }
 
 /* TROCA DE TELAS */
@@ -579,8 +578,8 @@ function showConfirm(familia, membros) {
   $('homeView').hidden = true;
   $('confirmView').hidden = false;
   $('familiaSaudacao').innerHTML = familia
-    ? Olá, <strong>${familia}</strong>!<br>Família convidada: ${membros || '—'}.
-    : Olá! Você está convidado(a)!;
+    ? `Olá, <strong>${familia}</strong>!<br>Família convidada: ${membros || '—'}.`
+    : `Olá! Você está convidado(a)!`;
 }
 
 /* EVENTOS GERAIS */
@@ -635,3 +634,4 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
