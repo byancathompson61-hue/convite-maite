@@ -198,10 +198,8 @@
   <div id="presenteCard">
     <div class="cartao">
       <h3>🎁 Sugestão de Presente</h3>
-      <ul>
-        <li>👗 Roupa tamanho <strong>1</strong></li>
-        <li>👟 Sapato nº <strong>17/18</strong></li>
-        <li>🧸 Gosta de <strong>brinquedos coloridos</strong></li>
+      <ul id="presenteLista">
+        <!-- Será preenchido pelo JavaScript -->
       </ul>
       <p>(Essas são apenas sugestões! Sua presença é o melhor presente. 💖)</p>
     </div>
@@ -223,7 +221,8 @@
       const urlParams = new URLSearchParams(window.location.search);
       return {
         familia: urlParams.get('familia'),
-        membros: urlParams.get('membros')
+        membros: urlParams.get('membros'),
+        presente: urlParams.get('presente')
       };
     }
 
@@ -253,6 +252,15 @@
         `;
         membrosDiv.appendChild(container);
       });
+
+      // Carrega sugestão de presente se existir
+      if (params.presente) {
+        const presenteLista = document.getElementById("presenteLista");
+        presenteLista.innerHTML = params.presente.split('\n')
+          .filter(line => line.trim())
+          .map(line => `<li>${line}</li>`)
+          .join('');
+      }
     }
 
     function mostrarStatus(mensagem, isSuccess) {
