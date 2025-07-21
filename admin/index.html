@@ -290,10 +290,16 @@
 
       <label for="telefone">Telefone com DDD (somente números)</label>
       <input id="telefone" placeholder="Ex: 11999999999" />
+      
+      <label for="presente">Sugestão de Presente</label>
+      <textarea id="presente" placeholder="Sugestão de presente para a família">🎁 Sugestão de Presente
+👗 Roupa tamanho 1
+👟 Sapato nº 17/18
+🧸 Gosta de brinquedos coloridos
+(Essas são apenas sugestões! Sua presença é o melhor presente. 💖)</textarea>
 
       <div class="admin-actions">
         <button class="admin-btn add" type="button" id="addFamiliaBtn">Adicionar Família</button>
-        <button class="admin-btn mass" type="button" id="sendAllBtn">Encaminhar Todos</button>
         <button class="admin-btn mass" type="button" id="exportBtn" title="Exportar em CSV">Exportar CSV</button>
       </div>
     </div>
@@ -313,6 +319,8 @@
     <textarea id="editMembros"></textarea>
     <label for="editTelefone">Telefone</label>
     <input id="editTelefone" />
+    <label for="editPresente">Sugestão de Presente</label>
+    <textarea id="editPresente"></textarea>
     <button class="edit-save" type="button" id="editSaveBtn">Salvar Alterações</button>
   </div>
 </div>
@@ -325,14 +333,15 @@ function getQueryParams() {
   const params = new URLSearchParams(window.location.search);
   return {
     familia: params.get('familia'),
-    membros: params.get('membros')
+    membros: params.get('membros'),
+    presente: params.get('presente')
   };
 }
 
 /* Cria link individual de confirmação */
-function buildInviteLink(familiaName, membrosList) {
-  const base = window.location.origin + window.location.pathname;
-  return `${base}?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}`;
+function buildInviteLink(familiaName, membrosList, presente) {
+  const base = "https://byancathompson61-hue.github.io/convite-maite/";
+  return `${base}?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}&presente=${encodeURIComponent(presente)}`;
 }
 
 /* Valida telefone: só números + tamanho mínimo */
@@ -343,7 +352,7 @@ function sanitizePhone(raw) {
 }
 
 /* STATE / STORAGE */
-let familias = []; // {id, responsavel, membros, telefone}
+let familias = []; // {id, responsavel, membros, telefone, presente}
 
 const STORAGE_KEY = 'conviteMaite_familias_v1';
 
@@ -380,12 +389,13 @@ function renderFamilias() {
     const div = document.createElement('div');
     div.className = 'familyBox';
 
-    const link = buildInviteLink(fam.responsavel, fam.membros);
+    const link = buildInviteLink(fam.responsavel, fam.membros, fam.presente);
 
     div.innerHTML = `
       <strong>${fam.responsavel}</strong>
       <p>Membros: ${fam.membros}</p>
       <p>Tel: ${fam.telefone}</p>
+      <p>Sugestão: ${fam.presente.split('\n').join('<br>')}</p>
       <p style="font-size:12px;word-break:break-all;">Link: ${link}</p>
       <div class="fam-actions">
         <button class="fam-btn fam-send" type="button" data-id="${fam.id}">Encaminhar</button>
@@ -427,20 +437,22 @@ function adicionarFamilia() {
   const membros = $('membros').value.trim();
   const telefoneRaw = $('telefone').value.trim();
   const telefone = sanitizePhone(telefoneRaw);
+  const presente = $('presente').value.trim();
 
-  if (!responsavel || !membros || !telefone) {
+  if (!responsavel || !membros || !telefone || !presente) {
     alert('Preencha todos os campos corretamente. Lembre de colocar um telefone válido.');
     return;
   }
 
   const id = crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random());
-  familias.push({ id, responsavel, membros, telefone });
+  familias.push({ id, responsavel, membros, telefone, presente });
   saveToStorage();
   renderFamilias();
 
   $('responsavel').value = '';
   $('membros').value = '';
   $('telefone').value = '';
+  $('presente').value = '🎁 Sugestão de Presente\n👗 Roupa tamanho 1\n👟 Sapato nº 17/18\n🧸 Gosta de brinquedos coloridos\n(Essas são apenas sugestões! Sua presença é o melhor presente. 💖)';
 }
 
 /* EDITAR FAMÍLIA */
@@ -453,6 +465,7 @@ function openEditModal(id) {
   $('editResponsavel').value = fam.responsavel;
   $('editMembros').value = fam.membros;
   $('editTelefone').value = fam.telefone;
+  $('editPresente').value = fam.presente;
   $('editModal').style.display = 'flex';
 }
 
@@ -470,8 +483,9 @@ function saveEditFamilia() {
   const membros = $('editMembros').value.trim();
   const telefoneRaw = $('editTelefone').value.trim();
   const telefone = sanitizePhone(telefoneRaw);
+  const presente = $('editPresente').value.trim();
 
-  if (!responsavel || !membros || !telefone) {
+  if (!responsavel || !membros || !telefone || !presente) {
     alert('Preencha todos os campos corretamente (telefone com DDD, só números).');
     return;
   }
@@ -479,6 +493,7 @@ function saveEditFamilia() {
   fam.responsavel = responsavel;
   fam.membros = membros;
   fam.telefone = telefone;
+  fam.presente = presente;
 
   saveToStorage();
   renderFamilias();
@@ -498,7 +513,7 @@ function deleteFamilia(id) {
 
 /* ENVIAR WHATSAPP */
 function enviarLinkWhatsApp(fam) {
-  const link = buildInviteLink(fam.responsavel, fam.membros);
+  const link = buildInviteLink(fam.responsavel, fam.membros, fam.presente);
   const msg = `Oi! Você está convidado(a) para o aniversário da Maitê! Clique aqui para confirmar sua presença: ${link}`;
 
   const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)}`;
@@ -510,43 +525,20 @@ function enviarLinkWhatsApp(fam) {
   }
 }
 
-/* Encaminhar todos (abre de 1 em 1 com tempo) */
-function enviarTodosWhatsApp() {
-  if (!familias.length) {
-    alert('Não há famílias cadastradas.');
-    return;
-  }
-  const ok = confirm(`Encaminhar link para TODAS as ${familias.length} famílias? Isso pode abrir várias abas do WhatsApp.`);
-  if (!ok) return;
-
-  let idx = 0;
-  const delay = 600; // ms entre cada abertura (ajuda a reduzir bloqueio)
-
-  function next() {
-    if (idx >= familias.length) {
-      alert('Envio concluído (ou iniciado) — confira as abas do navegador / WhatsApp.');
-      return;
-    }
-    enviarLinkWhatsApp(familias[idx]);
-    idx++;
-    setTimeout(next, delay);
-  }
-  next();
-}
-
 /* EXPORT CSV */
 function exportCSV() {
   if (!familias.length) {
     alert('Nada para exportar.');
     return;
   }
-  const header = ['Responsavel','Membros','Telefone','Link'];
+  const header = ['Responsavel','Membros','Telefone','Presente','Link'];
   const rows = familias.map(f => {
-    const link = buildInviteLink(f.responsavel, f.membros);
+    const link = buildInviteLink(f.responsavel, f.membros, f.presente);
     return [
       `"${f.responsavel.replace(/"/g,'""')}"`,
       `"${f.membros.replace(/"/g,'""')}"`,
       `"${f.telefone}"`,
+      `"${f.presente.replace(/"/g,'""')}"`,
       `"${link}"`
     ].join(',');
   });
@@ -612,9 +604,6 @@ window.addEventListener('DOMContentLoaded', () => {
   // Adicionar família
   $('addFamiliaBtn').addEventListener('click', adicionarFamilia);
 
-  // Enviar todos
-  $('sendAllBtn').addEventListener('click', enviarTodosWhatsApp);
-
   // Export CSV
   $('exportBtn').addEventListener('click', exportCSV);
 
@@ -634,4 +623,3 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
-
