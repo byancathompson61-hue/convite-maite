@@ -331,7 +331,7 @@ function getQueryParams() {
 
 /* Cria link individual de confirmação */
 function buildInviteLink(familiaName, membrosList) {
-  const base = window.location.origin + festamaite.html;
+  const base = window.location.origin + index.html;
   return `${base}?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}`;
 }
 
