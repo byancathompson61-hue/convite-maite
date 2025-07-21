@@ -2,123 +2,192 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Convite da Maitê 🎉</title>
+  <title>Convite da Maitê</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #fffafc;
-      color: #333;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #ffe0f0, #ffc4e1);
+      min-height: 100vh;
     }
 
-    h2 {
-      color: #a3478f;
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
     }
 
-    .hidden {
-      display: none;
+    .card {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      max-width: 450px;
+      margin: 20px;
     }
 
-    #login {
-      text-align: right;
+    h1 {
+      color: #d63384;
+      font-size: 28px;
+    }
+
+    .btn {
+      background-color: #d63384;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .btn:hover {
+      background-color: #ad2a6b;
+    }
+
+    #loginBtn {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: rgba(255, 255, 255, 0.5);
+      color: #d63384;
+      font-weight: bold;
+      border: 2px solid #d63384;
+      border-radius: 30px;
+      padding: 6px 16px;
+      cursor: pointer;
     }
 
     #adminArea {
-      border: 1px solid #ccc;
-      padding: 20px;
-      margin-top: 30px;
-      background-color: #fdf2f8;
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #fff8fc;
+      z-index: 999;
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    #adminArea h2 {
+      color: #d63384;
+    }
+
+    label, input, textarea {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    .closeBtn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      background: transparent;
+      font-size: 24px;
+      border: none;
+      color: #d63384;
+      cursor: pointer;
+    }
+
+    .familyBox {
+      border: 1px dashed #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
       border-radius: 10px;
     }
 
-    input, button, textarea {
-      margin: 5px 0;
-      padding: 10px;
-      width: 100%;
+    .sendBtn {
+      background: #28a745;
+      color: #fff;
+      padding: 6px 12px;
+      border: none;
       border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    button {
-      background-color: #a3478f;
-      color: white;
       cursor: pointer;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background-color: #822d6c;
-    }
-
-    #generatedLink {
-      word-wrap: break-word;
-      background: #fff;
-      padding: 10px;
-      border: 1px dashed #a3478f;
-      margin-top: 10px;
     }
   </style>
 </head>
 <body>
+  <button id="loginBtn" onclick="document.getElementById('adminArea').style.display='block'">LOGIN</button>
 
-  <h2>Convite de Aniversário da Maitê 💜</h2>
-  <p>Você foi convidado para uma festa muito especial!</p>
-
-  <!-- Botão escondido (tipo login) -->
-  <div id="login">
-    <button onclick="document.getElementById('adminArea').classList.toggle('hidden')">🔐 Acesso Restrito</button>
+  <div class="container">
+    <div class="card">
+      <h1>Maitê faz 1 aninho! 👧🎉</h1>
+      <p>Venham comemorar esse momento mágico com a gente!<br>A festa será encantadora e ainda mais especial com a sua presença.</p>
+      <p>🗓️ <strong>Data:</strong> 20 de Setembro<br>
+         🕒 <strong>Horário:</strong> das 19:30 às 23:30<br>
+         📍 <strong>Local:</strong> Avenida São Miguel, 8001 - SP
+      </p>
+      <button class="btn">Confirmar Presença</button>
+    </div>
   </div>
 
-  <!-- Área de administrador (geração de links por família) -->
-  <div id="adminArea" class="hidden">
-    <h3>🎯 Gerar Link Personalizado para Família</h3>
+  <div id="adminArea">
+    <button class="closeBtn" onclick="document.getElementById('adminArea').style.display='none'">&times;</button>
+    <h2>Cadastro de Famílias</h2>
 
-    <label for="responsavel">Nome do responsável:</label>
-    <input type="text" id="responsavel" placeholder="Ex: Sueli">
+    <div id="familiasContainer">
+      <!-- Famílias serão listadas aqui -->
+    </div>
 
-    <label for="nomesMembros">Nomes dos membros (separados por vírgula):</label>
-    <textarea id="nomesMembros" rows="3" placeholder="Ex: Sueli, Adilson, Eduardo, Byanca, Jonathan"></textarea>
-
-    <button onclick="gerarLink()">🔗 Gerar Link</button>
-
-    <div id="generatedLink" class="hidden"></div>
-
-    <button id="btnWhatsapp" class="hidden" onclick="enviarWhatsapp()">📤 Enviar por WhatsApp</button>
+    <h3>Nova Família</h3>
+    <input id="responsavel" placeholder="Responsável (Ex: Sueli)">
+    <textarea id="membros" placeholder="Membros (Ex: Sueli, Adilson, Eduardo)"></textarea>
+    <input id="telefone" placeholder="Telefone com DDD (somente números)">
+    <button onclick="adicionarFamilia()">Adicionar Família</button>
   </div>
 
   <script>
-    function gerarLink() {
-      const responsavel = document.getElementById("responsavel").value.trim().toLowerCase().replace(/\s+/g, '-');
-      const membros = document.getElementById("nomesMembros").value.trim();
+    const familias = [];
 
-      if (!responsavel || !membros) {
-        alert("Preencha todos os campos!");
+    function adicionarFamilia() {
+      const responsavel = document.getElementById('responsavel').value.trim();
+      const membros = document.getElementById('membros').value.trim();
+      const telefone = document.getElementById('telefone').value.trim();
+
+      if (!responsavel || !membros || !telefone) {
+        alert('Preencha todos os campos.');
         return;
       }
 
-      const baseURL = "https://byancathompson61-hue.github.io/convite-maite/";
-      const linkCompleto = `${baseURL}?familia=${encodeURIComponent(responsavel)}&membros=${encodeURIComponent(membros)}`;
-
-      const divLink = document.getElementById("generatedLink");
-      divLink.innerHTML = `<strong>Link Gerado:</strong> <br><a href="${linkCompleto}" target="_blank">${linkCompleto}</a>`;
-      divLink.classList.remove("hidden");
-
-      document.getElementById("btnWhatsapp").classList.remove("hidden");
-
-      // Salva o link na variável para uso posterior
-      window.linkParaWhatsapp = linkCompleto;
+      const familia = { responsavel, membros, telefone };
+      familias.push(familia);
+      renderFamilias();
+      document.getElementById('responsavel').value = '';
+      document.getElementById('membros').value = '';
+      document.getElementById('telefone').value = '';
     }
 
-    function enviarWhatsapp() {
-      const link = window.linkParaWhatsapp;
-      const mensagem = `Oi! 🎉 Você está convidado(a) para o aniversário da Maitê! 💜✨\nClique no link abaixo para ver os detalhes do convite da sua família:\n👉 ${link}`;
+    function renderFamilias() {
+      const container = document.getElementById('familiasContainer');
+      container.innerHTML = '';
 
-      const encodedMsg = encodeURIComponent(mensagem);
-      const whatsappURL = `https://wa.me/?text=${encodedMsg}`;
-      window.open(whatsappURL, "_blank");
+      familias.forEach((fam, i) => {
+        const div = document.createElement('div');
+        div.className = 'familyBox';
+        div.innerHTML = `
+          <strong>${fam.responsavel}</strong><br>
+          Membros: ${fam.membros}<br>
+          <button class="sendBtn" onclick="enviarLink('${fam.responsavel}', '${fam.membros}', '${fam.telefone}')">Encaminhar agora</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function enviarLink(responsavel, membros, telefone) {
+      const base = 'https://byancathompson61-hue.github.io/convite-maite';
+      const link = `${base}?familia=${encodeURIComponent(responsavel)}&membros=${encodeURIComponent(membros)}`;
+      const msg = `Oi! Você está convidado(a) para o aniversário da Maitê! Clique aqui para confirmar sua presença: ${link}`;
+      const zap = `https://wa.me/55${telefone}?text=${encodeURIComponent(msg)}`;
+      window.open(zap, '_blank');
     }
   </script>
-
 </body>
 </html>
 
