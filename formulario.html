@@ -9,16 +9,15 @@
       padding: 20px;
       background: #fffafc;
       color: #333;
-      /* Centralizar tudo */
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      height: auto;
       margin: 0;
       text-align: center;
       flex-direction: column;
       position: relative;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
     h2 {
@@ -81,7 +80,6 @@
       background-color: #7a2f68;
     }
 
-    /* Balões animados */
     .balloon {
       position: fixed;
       bottom: -60px;
@@ -96,6 +94,7 @@
       filter: drop-shadow(0 1px 2px #b7447d);
       z-index: 0;
     }
+
     .balloon::after {
       content: "";
       position: absolute;
@@ -108,55 +107,82 @@
       border-radius: 1px;
     }
 
-    /* Diferentes posições e tempos para balões */
     .balloon:nth-child(1) { left: 20%; animation-duration: 12s; animation-delay: 0s; }
     .balloon:nth-child(2) { left: 40%; animation-duration: 14s; animation-delay: 3s; }
     .balloon:nth-child(3) { left: 60%; animation-duration: 13s; animation-delay: 6s; }
     .balloon:nth-child(4) { left: 80%; animation-duration: 15s; animation-delay: 2s; }
 
     @keyframes rise {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-120vh) scale(1.1);
-        opacity: 0;
-      }
+      0% { transform: translateY(0) scale(1); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(-120vh) scale(1.1); opacity: 0; }
     }
-    
-    /* Adicionado para feedback */
+
     #status {
       margin-top: 15px;
       padding: 10px;
       border-radius: 5px;
       display: none;
     }
+
     .success {
       background-color: #d4edda;
       color: #155724;
     }
+
     .error {
       background-color: #f8d7da;
       color: #721c24;
     }
 
-    /* Estilo para o campo responsável pelo preenchimento */
     .responsavel-section {
       margin-top: 20px;
       padding-top: 15px;
       border-top: 1px solid #ddd;
     }
+
+    /* Cartão de presente */
+    #presenteCard {
+      display: none;
+      opacity: 0;
+      transition: opacity 1s ease;
+      margin-top: 40px;
+      max-width: 460px;
+    }
+
+    #presenteCard .cartao {
+      padding: 20px 30px;
+      background: #fff0f7;
+      border: 2px dashed #d94ba2;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(217,75,162,0.2);
+      text-align: left;
+      font-family: 'Segoe UI', sans-serif;
+      color: #5a3a71;
+    }
+
+    #presenteCard h3 {
+      margin-top: 0;
+      color: #a3478f;
+    }
+
+    #presenteCard ul {
+      padding-left: 20px;
+      margin-bottom: 0;
+    }
+
+    #presenteCard p {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: #94699b;
+    }
+
   </style>
 </head>
 <body>
   <h2>Confirmar Presença</h2>
 
   <form id="formulario" onsubmit="enviarFormulario(event)">
-    <!-- Membros da família (serão carregados via JavaScript baseado na URL) -->
     <div id="membros"></div>
 
     <div class="responsavel-section">
@@ -165,9 +191,21 @@
     </div>
 
     <button type="submit">Enviar</button>
-    
     <div id="status"></div>
   </form>
+
+  <!-- Cartão de sugestão de presente -->
+  <div id="presenteCard">
+    <div class="cartao">
+      <h3>🎁 Sugestão de Presente</h3>
+      <ul>
+        <li>👗 Roupa tamanho <strong>1</strong></li>
+        <li>👟 Sapato nº <strong>17/18</strong></li>
+        <li>🧸 Gosta de <strong>brinquedos coloridos</strong></li>
+      </ul>
+      <p>(Essas são apenas sugestões! Sua presença é o melhor presente. 💖)</p>
+    </div>
+  </div>
 
   <!-- Balões -->
   <div class="balloon"></div>
@@ -176,13 +214,11 @@
   <div class="balloon"></div>
 
   <script>
-    // Dados das famílias - pode ser expandido conforme necessário
     const familias = {
       sueli: ["Sueli", "Byanca", "Adilson", "Eduardo", "Jonathan"],
       silvana: ["Cicero", "Tatiane", "Daiane", "Silvana"]
     };
 
-    // Função para obter parâmetros da URL
     function getURLParams() {
       const urlParams = new URLSearchParams(window.location.search);
       return {
@@ -191,30 +227,22 @@
       };
     }
 
-    // Função para carregar membros automaticamente baseado na URL
     function carregarMembros() {
       const params = getURLParams();
       const membrosDiv = document.getElementById("membros");
-      
+
       let membros = [];
-      
-      // Se há parâmetros na URL, usar eles
+
       if (params.familia && params.membros) {
         membros = params.membros.split(',').map(nome => nome.trim());
-      } 
-      // Caso contrário, usar dados padrão se família for especificada
-      else if (params.familia && familias[params.familia]) {
+      } else if (params.familia && familias[params.familia]) {
         membros = familias[params.familia];
-      }
-      // Se não há parâmetros, usar família padrão (Sueli) como exemplo
-      else {
+      } else {
         membros = familias.sueli;
       }
 
-      // Limpar conteúdo anterior
       membrosDiv.innerHTML = "";
 
-      // Criar checkboxes para cada membro
       membros.forEach(nome => {
         const container = document.createElement("div");
         container.className = "pessoa";
@@ -226,13 +254,13 @@
         membrosDiv.appendChild(container);
       });
     }
-    
+
     function mostrarStatus(mensagem, isSuccess) {
       const statusDiv = document.getElementById("status");
       statusDiv.textContent = mensagem;
       statusDiv.className = isSuccess ? "success" : "error";
       statusDiv.style.display = "block";
-      
+
       setTimeout(() => {
         statusDiv.style.display = "none";
       }, 5000);
@@ -243,7 +271,6 @@
       const params = getURLParams();
       const responsavel = document.getElementById("responsavel").value;
 
-      // Validar se todos os membros foram respondidos
       const radios = document.querySelectorAll("#membros input[type=radio]:checked");
       if (radios.length !== document.querySelectorAll("#membros .pessoa").length) {
         mostrarStatus("Por favor, responda por todos os membros da família.", false);
@@ -251,7 +278,7 @@
       }
 
       const dados = {
-        familia: params.familia || 'sueli', // família padrão se não especificada
+        familia: params.familia || 'sueli',
         responsavel: responsavel,
         confirmacoes: {}
       };
@@ -264,16 +291,13 @@
 
       mostrarStatus("Enviando dados...", true);
 
-      // SOLUÇÃO DEFINITIVA PARA CORS - usando Google Forms como intermediário
       const formData = new FormData();
       formData.append("familia", dados.familia);
       formData.append("responsavel", responsavel);
       formData.append("confirmacoes", JSON.stringify(dados.confirmacoes));
-      
-      // URL do Google Apps Script - SUBSTITUA pela sua URL real
+
       const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKt_3nG0rXoF1alrY2YNjQ2gqmf2_Nd0uDc0E3HUbv8t-waVwUNLhvJdXC86rKl8M0/exec";
-      
-      // Enviar via método que funciona com CORS
+
       fetch(SCRIPT_URL, {
         method: "POST",
         body: formData,
@@ -286,8 +310,15 @@
       .then(() => {
         mostrarStatus("Confirmação enviada com sucesso!", true);
         document.getElementById("formulario").reset();
-        // Recarregar os membros após reset
         carregarMembros();
+
+        // Mostrar cartão de presente com animação
+        const card = document.getElementById("presenteCard");
+        card.style.display = "block";
+        setTimeout(() => {
+          card.style.opacity = 1;
+          card.scrollIntoView({ behavior: 'smooth' });
+        }, 300);
       })
       .catch(err => {
         console.error("Erro:", err);
@@ -295,9 +326,7 @@
       });
     }
 
-    // Carregar membros quando a página carregar
     window.addEventListener('DOMContentLoaded', carregarMembros);
   </script>
 </body>
 </html>
-
