@@ -143,23 +143,26 @@
       background-color: #f8d7da;
       color: #721c24;
     }
+
+    /* Estilo para o campo responsável pelo preenchimento */
+    .responsavel-section {
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid #ddd;
+    }
   </style>
 </head>
 <body>
   <h2>Confirmar Presença</h2>
 
-  <label for="familia" style="font-weight:600; color:#6e3c7a;">Escolha uma família:</label>
-  <select id="familia" onchange="mostrarMembros()" required>
-    <option value="">-- Selecione --</option>
-    <option value="sueli">Família Sueli Félix</option>
-    <option value="silvana">Família Silvana</option>
-  </select>
-
   <form id="formulario" onsubmit="enviarFormulario(event)">
+    <!-- Membros da família (serão carregados via JavaScript baseado na URL) -->
     <div id="membros"></div>
 
-    <label for="responsavel" style="font-weight:600; color:#6e3c7a;">Responsável pelo preenchimento:</label>
-    <input type="text" id="responsavel" name="responsavel" required>
+    <div class="responsavel-section">
+      <label for="responsavel" style="font-weight:600; color:#6e3c7a;">Responsável pelo preenchimento:</label>
+      <input type="text" id="responsavel" name="responsavel" required>
+    </div>
 
     <button type="submit">Enviar</button>
     
@@ -173,28 +176,55 @@
   <div class="balloon"></div>
 
   <script>
+    // Dados das famílias - pode ser expandido conforme necessário
     const familias = {
       sueli: ["Sueli", "Byanca", "Adilson", "Eduardo", "Jonathan"],
       silvana: ["Cicero", "Tatiane", "Daiane", "Silvana"]
     };
 
-    function mostrarMembros() {
-      const familiaSelecionada = document.getElementById("familia").value;
+    // Função para obter parâmetros da URL
+    function getURLParams() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return {
+        familia: urlParams.get('familia'),
+        membros: urlParams.get('membros')
+      };
+    }
+
+    // Função para carregar membros automaticamente baseado na URL
+    function carregarMembros() {
+      const params = getURLParams();
       const membrosDiv = document.getElementById("membros");
+      
+      let membros = [];
+      
+      // Se há parâmetros na URL, usar eles
+      if (params.familia && params.membros) {
+        membros = params.membros.split(',').map(nome => nome.trim());
+      } 
+      // Caso contrário, usar dados padrão se família for especificada
+      else if (params.familia && familias[params.familia]) {
+        membros = familias[params.familia];
+      }
+      // Se não há parâmetros, usar família padrão (Sueli) como exemplo
+      else {
+        membros = familias.sueli;
+      }
+
+      // Limpar conteúdo anterior
       membrosDiv.innerHTML = "";
 
-      if (familiaSelecionada && familias[familiaSelecionada]) {
-        familias[familiaSelecionada].forEach(nome => {
-          const container = document.createElement("div");
-          container.className = "pessoa";
-          container.innerHTML = `
-            <label>${nome}:</label>
-            <input type="radio" name="${nome}" value="Sim" required> Sim
-            <input type="radio" name="${nome}" value="Não" required> Não
-          `;
-          membrosDiv.appendChild(container);
-        });
-      }
+      // Criar checkboxes para cada membro
+      membros.forEach(nome => {
+        const container = document.createElement("div");
+        container.className = "pessoa";
+        container.innerHTML = `
+          <label>${nome}:</label>
+          <input type="radio" name="${nome}" value="Sim" required> Sim
+          <input type="radio" name="${nome}" value="Não" required> Não
+        `;
+        membrosDiv.appendChild(container);
+      });
     }
     
     function mostrarStatus(mensagem, isSuccess) {
@@ -210,7 +240,7 @@
 
     function enviarFormulario(event) {
       event.preventDefault();
-      const familia = document.getElementById("familia").value;
+      const params = getURLParams();
       const responsavel = document.getElementById("responsavel").value;
 
       // Validar se todos os membros foram respondidos
@@ -221,7 +251,7 @@
       }
 
       const dados = {
-        familia: familia,
+        familia: params.familia || 'sueli', // família padrão se não especificada
         responsavel: responsavel,
         confirmacoes: {}
       };
@@ -236,7 +266,7 @@
 
       // SOLUÇÃO DEFINITIVA PARA CORS - usando Google Forms como intermediário
       const formData = new FormData();
-      formData.append("familia", familia);
+      formData.append("familia", dados.familia);
       formData.append("responsavel", responsavel);
       formData.append("confirmacoes", JSON.stringify(dados.confirmacoes));
       
@@ -256,13 +286,19 @@
       .then(() => {
         mostrarStatus("Confirmação enviada com sucesso!", true);
         document.getElementById("formulario").reset();
-        document.getElementById("membros").innerHTML = "";
+        // Recarregar os membros após reset
+        carregarMembros();
       })
       .catch(err => {
         console.error("Erro:", err);
         mostrarStatus("Erro ao enviar confirmação. Tente novamente.", false);
       });
     }
+
+    // Carregar membros quando a página carregar
+    window.addEventListener('DOMContentLoaded', carregarMembros);
   </script>
 </body>
 </html>
+
+
