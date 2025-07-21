@@ -331,9 +331,10 @@ function getQueryParams() {
 
 /* Cria link individual de confirmação */
 function buildInviteLink(familiaName, membrosList) {
-  const base = window.location.origin + window.location.pathname;
+  const base = window.location.origin + "/convite/";
   return `${base}?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}`;
 }
+
 
 /* Valida telefone: só números + tamanho mínimo */
 function sanitizePhone(raw) {
