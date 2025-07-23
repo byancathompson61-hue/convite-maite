@@ -1,716 +1,723 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <title>Festa da Maitê</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --rosa: #d63384;
-            --rosa-escuro: #ad2a6b;
-            --verde: #28a745;
-            --cinza-borda: #dcdcdc;
-            --bg-grad: linear-gradient(135deg, #ffe0f0, #ffc4e1);
-            --card-bg: #fff;
-            --radius-card: 18px;
-            --radius-btn: 8px;
-            --poppins: 'Poppins', sans-serif;
-        }
-        body {
-            margin: 0;
-            font-family: var(--poppins);
-            background: var(--bg-grad);
-            min-height: 100vh;
-            color: #333;
-        }
-        .center-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 16px;
-            text-align: center;
-        }
-        .card {
-            background: var(--card-bg);
-            padding: 32px 28px;
-            border-radius: var(--radius-card);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-            max-width: 500px;
-            margin: 16px;
-            text-align: left;
-        }
-        h1, h2, h3 {
-            margin-top: 0;
-            font-weight: 600;
-        }
-        h1 { color: var(--rosa); font-size: 1.9rem; text-align: center; }
-        h2 { color: var(--rosa); font-size: 1.4rem; text-align: center; }
-        h3 { color: var(--rosa); font-size: 1.1rem; margin-bottom: 8px; }
-        p { line-height: 1.4; margin: 0 0 1em; }
-        .btn {
-            background-color: var(--rosa);
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: var(--radius-btn);
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 16px;
-            width: 100%;
-        }
-        .btn:hover { background-color: var(--rosa-escuro); }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--cinza-borda);
-            border-radius: var(--radius-btn);
-            box-sizing: border-box;
-        }
-        #sugestaoPresente {
-            width: 100%;
-            min-height: 120px;
-            padding: 0.75rem;
-            border: 1px solid var(--cinza-borda);
-            border-radius: var(--radius-btn);
-            box-sizing: border-box;
-            background: #f8f9fa;
-            line-height: 1.4;
-            text-align: left;
-            cursor: text;
-        }
-        .text-center {
-            text-align: center;
-        }
-        /* Admin specific styles */
-        #adminArea {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: #fff8fc;
-            z-index: 999;
-            padding: 40px 16px 80px;
-            overflow-y: auto;
-        }
-        .admin-inner {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        .closeBtn {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            background: transparent;
-            font-size: 32px;
-            line-height: 1;
-            border: none;
-            color: var(--rosa);
-            cursor: pointer;
-        }
-        .admin-actions {
-            margin-top: 16px;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .admin-btn {
-            padding: 8px 14px;
-            font-size: 14px;
-            border-radius: var(--radius-btn);
-            border: none;
-            cursor: pointer;
-        }
-        .admin-btn.add { background: var(--rosa); color: #fff; }
-        .admin-btn.mass { background: var(--verde); color: #fff; }
-        .admin-btn.mass:hover { filter: brightness(0.9); }
-        #voltarBtn {
-            position: fixed;
-            top: 16px;
-            left: 16px;
-            background: rgba(255,255,255,0.7);
-            color: var(--rosa);
-            font-weight: bold;
-            border: 2px solid var(--rosa);
-            border-radius: 30px;
-            padding: 6px 18px;
-            cursor: pointer;
-            z-index: 1000;
-            font-size: 14px;
-        }
-        #voltarBtn:hover {
-            background: rgba(255,255,255,0.9);
-        }
-        #familiasContainer {
-            margin-top: 24px;
-        }
-        .familyBox {
-            border: 1px dashed var(--cinza-borda);
-            padding: 16px;
-            margin-bottom: 12px;
-            border-radius: var(--radius-card);
-            background: #ffffff;
-            position: relative;
-        }
-        .familyBox strong {
-            font-size: 1.1rem;
-            color: var(--rosa-escuro);
-        }
-        .familyBox p {
-            margin: 4px 0;
-            font-size: 0.95rem;
-        }
-        .fam-actions {
-            margin-top: 8px;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .fam-btn {
-            padding: 6px 12px;
-            font-size: 13px;
-            border: none;
-            border-radius: var(--radius-btn);
-            cursor: pointer;
-        }
-        .fam-send { background: var(--verde); color: #fff; }
-        .fam-edit { background: #ffc107; color: #000; }
-        .fam-delete { background: #dc3545; color: #fff; }
-        .fam-btn:hover { filter: brightness(0.9); }
-        .data-info {
-            margin-top: 12px;
-            padding: 10px;
-            background: rgba(40, 167, 69, 0.1);
-            border-left: 4px solid #28a745;
-            border-radius: 4px;
-            font-size: 0.9rem;
-        }
-        .data-info.vencido {
-            background: rgba(220, 53, 69, 0.1);
-            border-left-color: #dc3545;
-        }
-        .data-info p {
-            margin: 4px 0;
-            color: #495057;
-        }
-        .data-info.vencido p {
-            color: #721c24;
-        }
-        #editModal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.45);
-            z-index: 1001;
-            justify-content: center;
-            align-items: center;
-            padding: 16px;
-        }
-        .edit-content {
-            background: #fff;
-            max-width: 420px;
-            width: 100%;
-            padding: 24px;
-            border-radius: var(--radius-card);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-            position: relative;
-        }
-        .edit-close {
-            position: absolute;
-            top: 8px;
-            right: 12px;
-            background: transparent;
-            border: none;
-            font-size: 24px;
-            color: var(--rosa);
-            cursor: pointer;
-        }
-        .edit-save {
-            margin-top: 16px;
-            width: 100%;
-            background: var(--rosa);
-            color: #fff;
-            padding: 10px;
-            font-size: 16px;
-            border: none;
-            border-radius: var(--radius-btn);
-            cursor: pointer;
-        }
-        .edit-save:hover { background: var(--rosa-escuro); }
-        .login-card {
-            text-align: center;
-        }
-        .error-message {
-            color: #dc3545;
-            margin-top: 10px;
-            font-size: 0.9rem;
-            text-align: center;
-        }
-        @media (max-width:480px) {
-            .card { padding: 24px 20px; }
-            h1 { font-size: 1.6rem; }
-            .btn { width: 100%; }
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <title>Festa da Maitê</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rosa: #d63384;
+            --rosa-escuro: #ad2a6b;
+            --verde: #28a745;
+            --cinza-borda: #dcdcdc;
+            --bg-grad: linear-gradient(135deg, #ffe0f0, #ffc4e1);
+            --card-bg: #fff;
+            --radius-card: 18px;
+            --radius-btn: 8px;
+            --poppins: 'Poppins', sans-serif;
+        }
+        body {
+            margin: 0;
+            font-family: var(--poppins);
+            background: var(--bg-grad);
+            min-height: 100vh;
+            color: #333;
+        }
+        .center-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 16px;
+            text-align: center;
+        }
+        .card {
+            background: var(--card-bg);
+            padding: 32px 28px;
+            border-radius: var(--radius-card);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: 16px;
+            text-align: left;
+        }
+        h1, h2, h3 {
+            margin-top: 0;
+            font-weight: 600;
+        }
+        h1 { color: var(--rosa); font-size: 1.9rem; text-align: center; }
+        h2 { color: var(--rosa); font-size: 1.4rem; text-align: center; }
+        h3 { color: var(--rosa); font-size: 1.1rem; margin-bottom: 8px; }
+        p { line-height: 1.4; margin: 0 0 1em; }
+        .btn {
+            background-color: var(--rosa);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--radius-btn);
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 16px;
+            width: 100%;
+        }
+        .btn:hover { background-color: var(--rosa-escuro); }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--cinza-borda);
+            border-radius: var(--radius-btn);
+            box-sizing: border-box;
+        }
+        #sugestaoPresente {
+            width: 100%;
+            min-height: 120px;
+            padding: 0.75rem;
+            border: 1px solid var(--cinza-borda);
+            border-radius: var(--radius-btn);
+            box-sizing: border-box;
+            background: #f8f9fa;
+            line-height: 1.4;
+            text-align: left;
+            cursor: text;
+        }
+        .text-center {
+            text-align: center;
+        }
+        /* Admin specific styles */
+        #adminArea {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #fff8fc;
+            z-index: 999;
+            padding: 40px 16px 80px;
+            overflow-y: auto;
+        }
+        .admin-inner {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .closeBtn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            background: transparent;
+            font-size: 32px;
+            line-height: 1;
+            border: none;
+            color: var(--rosa);
+            cursor: pointer;
+        }
+        .admin-actions {
+            margin-top: 16px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .admin-btn {
+            padding: 8px 14px;
+            font-size: 14px;
+            border-radius: var(--radius-btn);
+            border: none;
+            cursor: pointer;
+        }
+        .admin-btn.add { background: var(--rosa); color: #fff; }
+        .admin-btn.mass { background: var(--verde); color: #fff; }
+        .admin-btn.mass:hover { filter: brightness(0.9); }
+        #voltarBtn {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            background: rgba(255,255,255,0.7);
+            color: var(--rosa);
+            font-weight: bold;
+            border: 2px solid var(--rosa);
+            border-radius: 30px;
+            padding: 6px 18px;
+            cursor: pointer;
+            z-index: 1000;
+            font-size: 14px;
+        }
+        #voltarBtn:hover {
+            background: rgba(255,255,255,0.9);
+        }
+        #familiasContainer {
+            margin-top: 24px;
+        }
+        .familyBox {
+            border: 1px dashed var(--cinza-borda);
+            padding: 16px;
+            margin-bottom: 12px;
+            border-radius: var(--radius-card);
+            background: #ffffff;
+            position: relative;
+        }
+        .familyBox strong {
+            font-size: 1.1rem;
+            color: var(--rosa-escuro);
+        }
+        .familyBox p {
+            margin: 4px 0;
+            font-size: 0.95rem;
+        }
+        .fam-actions {
+            margin-top: 8px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .fam-btn {
+            padding: 6px 12px;
+            font-size: 13px;
+            border: none;
+            border-radius: var(--radius-btn);
+            cursor: pointer;
+        }
+        .fam-send { background: var(--verde); color: #fff; }
+        .fam-edit { background: #ffc107; color: #000; }
+        .fam-delete { background: #dc3545; color: #fff; }
+        .fam-btn:hover { filter: brightness(0.9); }
+        .data-info {
+            margin-top: 12px;
+            padding: 10px;
+            background: rgba(40, 167, 69, 0.1);
+            border-left: 4px solid #28a745;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        .data-info.vencido {
+            background: rgba(220, 53, 69, 0.1);
+            border-left-color: #dc3545;
+        }
+        .data-info p {
+            margin: 4px 0;
+            color: #495057;
+        }
+        .data-info.vencido p {
+            color: #721c24;
+        }
+        #editModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+        .edit-content {
+            background: #fff;
+            max-width: 420px;
+            width: 100%;
+            padding: 24px;
+            border-radius: var(--radius-card);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .edit-close {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            background: transparent;
+            border: none;
+            font-size: 24px;
+            color: var(--rosa);
+            cursor: pointer;
+        }
+        .edit-save {
+            margin-top: 16px;
+            width: 100%;
+            background: var(--rosa);
+            color: #fff;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: var(--radius-btn);
+            cursor: pointer;
+        }
+        .edit-save:hover { background: var(--rosa-escuro); }
+        .login-card {
+            text-align: center;
+        }
+        .error-message {
+            color: #dc3545;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        @media (max-width:480px) {
+            .card { padding: 24px 20px; }
+            h1 { font-size: 1.6rem; }
+            .btn { width: 100%; }
+        }
+    </style>
 </head>
 <body>
 
 <div id="homeView" class="center-wrap">
-    <div class="card text-center">
-        <h1>Festa da Maitê 🎉</h1>
-        <p>Estamos muito felizes em celebrar o 1º aninho da nossa princesa Maitê! 💜</p>
-        <p>
-            Mamãe ou papai, estamos muito felizes em ajudar vocês com a festa da Maitê!<br>
-            Este espaço foi personalizado para facilitar o envio dos convites, acompanhar as confirmações de presença e tornar esse momento ainda mais especial.
-        </p>
-        <button id="adminLoginBtn" class="btn" type="button">Área de Admin</button>
-    </div>
+    <div class="card text-center">
+        <h1>Festa da Maitê 🎉</h1>
+        <p>Estamos muito felizes em celebrar o 1º aninho da nossa princesa Maitê! 💜</p>
+        <p>
+            Mamãe ou papai, estamos muito felizes em ajudar vocês com a festa da Maitê!<br>
+            Este espaço foi personalizado para facilitar o envio dos convites, acompanhar as confirmações de presença e tornar esse momento ainda mais especial.
+        </p>
+        <button id="adminLoginBtn" class="btn" type="button">Área de Admin</button>
+    </div>
 </div>
 
 <div id="confirmView" class="center-wrap" hidden>
-    <div class="card" id="confirmCard">
-        <h1>Maitê faz 1 aninho! 👧🎉</h1>
-        <p id="familiaSaudacao"></p>
-        <p>
-            🗓️ <strong>Data:</strong> 20 de Setembro<br>
-            🕒 <strong>Horário:</strong> das 19:30 às 23:30<br>
-            📍 <strong>Local:</strong> Avenida São Miguel, 8001 - SP
-        </p>
-        <div class="text-center">
-            <button id="confirmarBtn" class="btn" type="button">Confirmar Presença</button>
-        </div>
-    </div>
+    <div class="card" id="confirmCard">
+        <h1>Maitê faz 1 aninho! 👧🎉</h1>
+        <p id="familiaSaudacao"></p>
+        <p>
+            🗓️ <strong>Data:</strong> 20 de Setembro<br>
+            🕒 <strong>Horário:</strong> das 19:30 às 23:30<br>
+            📍 <strong>Local:</strong> Avenida São Miguel, 8001 - SP
+        </p>
+        <div class="text-center">
+            <button id="confirmarBtn" class="btn" type="button">Confirmar Presença</button>
+        </div>
+    </div>
 </div>
 
 <div id="loginView" class="center-wrap" hidden>
-    <div class="card login-card">
-        <h1>Acesso Administrativo</h1>
-        <p>Por favor, insira a senha para acessar a área de gerenciamento.</p>
-        <div class="form-group">
-            <label for="adminPassword">Senha:</label>
-            <input type="password" id="adminPassword" placeholder="Digite a senha">
-        </div>
-        <button id="loginSubmitBtn" class="btn" type="button">Entrar</button>
-        <p id="loginErrorMessage" class="error-message" hidden>Senha incorreta. Tente novamente.</p>
-    </div>
+    <div class="card login-card">
+        <h1>Acesso Administrativo</h1>
+        <p>Por favor, insira a senha para acessar a área de gerenciamento.</p>
+        <div class="form-group">
+            <label for="adminPassword">Senha:</label>
+            <input type="password" id="adminPassword" placeholder="Digite a senha">
+        </div>
+        <button id="loginSubmitBtn" class="btn" type="button">Entrar</button>
+        <p id="loginErrorMessage" class="error-message" hidden>Senha incorreta. Tente novamente.</p>
+    </div>
 </div>
 
 <div id="adminArea" hidden>
-    <button id="voltarBtn" type="button">Voltar</button>
-    <button class="closeBtn" type="button" aria-label="Fechar Admin">&times;</button>
-    <div class="admin-inner">
-        <h2>Cadastro de Famílias</h2>
-        <div class="admin-form">
-            <div class="form-group">
-                <label for="responsavel">Responsável (Ex: Sueli)</label>
-                <input id="responsavel" placeholder="Responsável" required />
-            </div>
-            <div class="form-group">
-                <label for="membros">Membros (Ex: Sueli, Adilson, Eduardo)</label>
-                <input id="membros" placeholder="Membros separados por vírgula" required />
-            </div>
-            <div class="form-group">
-                <label for="telefone">Telefone com DDD (somente números)</label>
-                <input id="telefone" type="tel" placeholder="Ex: 11999999999" required />
-            </div>
-            <div class="form-group">
-                <label for="sugestaoPresente">Sugestão de Presente</label>
-                <div id="sugestaoPresente" contenteditable="true" spellcheck="false" placeholder="Digite a sugestão de presente..."></div>
-            </div>
-            <div class="admin-actions">
-                <button class="admin-btn add" type="button" id="addFamiliaBtn">Adicionar Família</button>
-                <button class="admin-btn mass" type="button" id="enviarTodosBtn">Enviar Todos</button>
-                <button class="admin-btn mass" type="button" id="exportBtn" title="Exportar em CSV">Exportar CSV</button>
-            </div>
-        </div>
-        <div id="familiasContainer"></div>
-    </div>
+    <button id="voltarBtn" type="button">Voltar</button>
+    <button class="closeBtn" type="button" aria-label="Fechar Admin">&times;</button>
+    <div class="admin-inner">
+        <h2>Cadastro de Famílias</h2>
+        <div class="admin-form">
+            <div class="form-group">
+                <label for="responsavel">Responsável (Ex: Sueli)</label>
+                <input id="responsavel" placeholder="Responsável" required />
+            </div>
+            <div class="form-group">
+                <label for="membros">Membros (Ex: Sueli, Adilson, Eduardo)</label>
+                <input id="membros" placeholder="Membros separados por vírgula" required />
+            </div>
+            <div class="form-group">
+                <label for="telefone">Telefone com DDD (somente números)</label>
+                <input id="telefone" type="tel" placeholder="Ex: 11999999999" required />
+            </div>
+            <div class="form-group">
+                <label for="sugestaoPresente">Sugestão de Presente</label>
+                <div id="sugestaoPresente" contenteditable="true" spellcheck="false" placeholder="Digite a sugestão de presente..."></div>
+            </div>
+            <div class="admin-actions">
+                <button class="admin-btn add" type="button" id="addFamiliaBtn">Adicionar Família</button>
+                <button class="admin-btn mass" type="button" id="enviarTodosBtn">Enviar Todos</button>
+                <button class="admin-btn mass" type="button" id="exportBtn" title="Exportar em CSV">Exportar CSV</button>
+            </div>
+        </div>
+        <div id="familiasContainer"></div>
+    </div>
 </div>
 
 <div id="editModal">
-    <div class="edit-content">
-        <button class="edit-close" type="button" aria-label="Fechar edição">&times;</button>
-        <h3>Editar Família</h3>
-        <div class="form-group">
-            <label for="editResponsavel">Responsável</label>
-            <input id="editResponsavel" />
-        </div>
-        <div class="form-group">
-            <label for="editMembros">Membros</label>
-            <input id="editMembros" />
-        </div>
-        <div class="form-group">
-            <label for="editTelefone">Telefone</label>
-            <input id="editTelefone" />
-        </div>
-        <button class="edit-save" type="button" id="editSaveBtn">Salvar Alterações</button>
-    </div>
+    <div class="edit-content">
+        <button class="edit-close" type="button" aria-label="Fechar edição">&times;</button>
+        <h3>Editar Família</h3>
+        <div class="form-group">
+            <label for="editResponsavel">Responsável</label>
+            <input id="editResponsavel" />
+        </div>
+        <div class="form-group">
+            <label for="editMembros">Membros</label>
+            <input id="editMembros" />
+        </div>
+        <div class="form-group">
+            <label for="editTelefone">Telefone</label>
+            <input id="editTelefone" />
+        </div>
+        <button class="edit-save" type="button" id="editSaveBtn">Salvar Alterações</button>
+    </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // #region UTILITIES & STATE
-    const $ = (id) => document.getElementById(id);
-    const STORAGE_KEY = 'conviteMaite_familias_v1';
-    const SUGESTAO_KEY = 'conviteMaite_sugestao_v1';
-    const ADMIN_PASSWORD = 'maite'; // TROQUE ESTA SENHA!
+    // #region UTILITIES & STATE
+    const $ = (id) => document.getElementById(id);
+    const STORAGE_KEY = 'conviteMaite_familias_v1';
+    const SUGESTAO_KEY = 'conviteMaite_sugestao_v1';
+    const ADMIN_PASSWORD = 'maite'; // TROQUE ESTA SENHA!
 
-    let familias = [];
-    let sugestaoPresente = `
-        🎁 *Sugestão de Presente* 🎁
-        <br><br>
-        👗 Roupa tamanho 1
-        <br>
-        👟 Sapato nº 17/18
-        <br>
-        🧸 Gosta de brinquedos coloridos
-        <br><br>
-        _ (Essas são apenas sugestões! Sua presença é o melhor presente. 💖)_
-    `.trim().replace(/\n/g, '');
+    let familias = [];
+    let sugestaoPresente = `
+        🎁 *Sugestão de Presente* 🎁
+        <br><br>
+        👗 Roupa tamanho 1
+        <br>
+        👟 Sapato nº 17/18
+        <br>
+        🧸 Gosta de brinquedos coloridos
+        <br><br>
+        _ (Essas são apenas sugestões! Sua presença é o melhor presente. 💖)_
+    `.trim().replace(/\n/g, '');
 
-    function getQueryParams() {
-        const params = new URLSearchParams(window.location.search);
-        return {
-            familia: params.get('familia'),
-            membros: params.get('membros')
-        };
-    }
-    
-    function buildInviteLink(familiaName, membrosList) {
-        const baseUrl = window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
-        return `${baseUrl}index.html?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}`;
-    }
-    
-    function sanitizePhone(raw) {
-        const digits = raw.replace(/\D+/g, '');
-        return digits.length >= 10 ? digits : null;
-    }
+    function getQueryParams() {
+        const params = new URLSearchParams(window.location.search);
+        return {
+            familia: params.get('familia'),
+            membros: params.get('membros')
+        };
+    }
+    
+    function buildInviteLink(familiaName, membrosList) {
+        const baseUrl = window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
+        return `${baseUrl}index.html?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}`;
+    }
+    
+    function sanitizePhone(raw) {
+        const digits = raw.replace(/\D+/g, '');
+        return digits.length >= 10 ? digits : null;
+    }
 
-    function adicionarDiasUteis(data, diasUteis) {
-        const resultado = new Date(data);
-        let diasAdicionados = 0;
-        while (diasAdicionados < diasUteis) {
-            resultado.setDate(resultado.getDate() + 1);
-            if (resultado.getDay() !== 0 && resultado.getDay() !== 6) {
-                diasAdicionados++;
-            }
-        }
-        return resultado;
-    }
-    
-    function formatarData(data) {
-        return data.toLocaleDateString('pt-BR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        });
-    }
+    function adicionarDiasUteis(data, diasUteis) {
+        const resultado = new Date(data);
+        let diasAdicionados = 0;
+        while (diasAdicionados < diasUteis) {
+            resultado.setDate(resultado.getDate() + 1);
+            if (resultado.getDay() !== 0 && resultado.getDay() !== 6) {
+                diasAdicionados++;
+            }
+        }
+        return resultado;
+    }
+    
+    function formatarData(data) {
+        return data.toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+    }
 
-    // #endregion
+    // #endregion
 
-    // #region STORAGE MANAGEMENT
-    function loadFromStorage() {
-        try {
-            const raw = localStorage.getItem(STORAGE_KEY);
-            if (raw) familias = JSON.parse(raw);
-            const sugestaoRaw = localStorage.getItem(SUGESTAO_KEY);
-            if (sugestaoRaw) sugestaoPresente = sugestaoRaw;
-            $('sugestaoPresente').innerHTML = sugestaoPresente;
-        } catch (e) {
-            console.error('Erro ao carregar storage', e);
-        }
-    }
+    // #region STORAGE MANAGEMENT
+    function loadFromStorage() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) familias = JSON.parse(raw);
+            const sugestaoRaw = localStorage.getItem(SUGESTAO_KEY);
+            if (sugestaoRaw) sugestaoPresente = sugestaoRaw;
+            $('sugestaoPresente').innerHTML = sugestaoPresente;
+        } catch (e) {
+            console.error('Erro ao carregar storage', e);
+        }
+    }
 
-    function saveToStorage() {
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(familias));
-        } catch (e) {
-            console.error('Erro ao salvar storage', e);
-        }
-    }
-    function saveSugestaoPresente() {
-        try {
-            sugestaoPresente = $('sugestaoPresente').innerHTML;
-            localStorage.setItem(SUGESTAO_KEY, sugestaoPresente);
-        } catch(e) {
-            console.error('Erro ao salvar sugestão', e);
-        }
-    }
-    // #endregion
+    function saveToStorage() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(familias));
+        } catch (e) {
+            console.error('Erro ao salvar storage', e);
+        }
+    }
+    function saveSugestaoPresente() {
+        try {
+            sugestaoPresente = $('sugestaoPresente').innerHTML;
+            localStorage.setItem(SUGESTAO_KEY, sugestaoPresente);
+        } catch(e) {
+            console.error('Erro ao salvar sugestão', e);
+        }
+    }
+    // #endregion
 
-    // #region UI RENDERING
-    function renderFamilias() {
-        const container = $('familiasContainer');
-        container.innerHTML = '';
-        if (!familias.length) {
-            container.innerHTML = '<p>Nenhuma família cadastrada ainda.</p>';
-            return;
-        }
-        familias.forEach(fam => {
-            const div = document.createElement('div');
-            div.className = 'familyBox';
-            const link = buildInviteLink(fam.responsavel, fam.membros);
-            
-            let dataInfo = '';
-            if (fam.dataEnvio && fam.dataVencimento) {
-                const hoje = new Date();
-                const vencimento = new Date(fam.dataVencimento);
-                const vencido = hoje > vencimento;
-                dataInfo = `
-                    <div class="data-info ${vencido ? 'vencido' : ''}">
-                        <p><strong>📅 Enviado em:</strong> ${formatarData(new Date(fam.dataEnvio))}</p>
-                        <p><strong>⏰ Vence em:</strong> ${formatarData(vencimento)} ${vencido ? '(VENCIDO)' : ''}</p>
-                    </div>
-                `;
-            }
-            div.innerHTML = `
-                <strong>${fam.responsavel}</strong>
-                <p>Membros: ${fam.membros}</p>
-                <p>Tel: ${fam.telefone}</p>
-                <p style="font-size:12px;word-break:break-all;">Link: <a href="${link}" target="_blank">${link}</a></p>
-                ${dataInfo}
-                <div class="fam-actions">
-                    <button class="fam-btn fam-send" type="button" data-id="${fam.id}">Encaminhar</button>
-                    <button class="fam-btn fam-edit" type="button" data-id="${fam.id}">Editar</button>
-                    <button class="fam-btn fam-delete" type="button" data-id="${fam.id}">Excluir</button>
-                </div>
-            `;
-            container.appendChild(div);
-        });
-    }
+    // #region UI RENDERING
+    function renderFamilias() {
+        const container = $('familiasContainer');
+        container.innerHTML = '';
+        if (!familias.length) {
+            container.innerHTML = '<p>Nenhuma família cadastrada ainda.</p>';
+            return;
+        }
+        familias.forEach(fam => {
+            const div = document.createElement('div');
+            div.className = 'familyBox';
+            const link = buildInviteLink(fam.responsavel, fam.membros);
+            
+            let dataInfo = '';
+            if (fam.dataEnvio && fam.dataVencimento) {
+                const hoje = new Date();
+                const vencimento = new Date(fam.dataVencimento);
+                const vencido = hoje > vencimento;
+                dataInfo = `
+                    <div class="data-info ${vencido ? 'vencido' : ''}">
+                        <p><strong>📅 Enviado em:</strong> ${formatarData(new Date(fam.dataEnvio))}</p>
+                        <p><strong>⏰ Vence em:</strong> ${formatarData(vencimento)} ${vencido ? '(VENCIDO)' : ''}</p>
+                    </div>
+                `;
+            }
+            div.innerHTML = `
+                <strong>${fam.responsavel}</strong>
+                <p>Membros: ${fam.membros}</p>
+                <p>Tel: ${fam.telefone}</p>
+                <p style="font-size:12px;word-break:break-all;">Link: <a href="${link}" target="_blank">${link}</a></p>
+                ${dataInfo}
+                <div class="fam-actions">
+                    <button class="fam-btn fam-send" type="button" data-id="${fam.id}">Encaminhar</button>
+                    <button class="fam-btn fam-edit" type="button" data-id="${fam.id}">Editar</button>
+                    <button class="fam-btn fam-delete" type="button" data-id="${fam.id}">Excluir</button>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
 
-    // #endregion
+    // #endregion
 
-    // #region PAGE & MODAL MANAGEMENT
-    function showView(viewName) {
-        const views = {
-            home: $('homeView'),
-            confirm: $('confirmView'),
-            login: $('loginView'),
-            admin: $('adminArea')
-        };
-        for (const view in views) {
-            views[view].hidden = true;
-            if (views[view].style) views[view].style.display = 'none';
-        }
-        if (views[viewName]) {
-            views[viewName].hidden = false;
-            if (views[viewName].style) views[viewName].style.display = 'flex';
-        }
-        if (viewName === 'admin') {
-            views[viewName].style.display = 'block';
-        }
-    }
-    
-    let editId = null;
-    function openEditModal(id) {
-        const fam = familias.find(f => f.id === id);
-        if (!fam) return;
-        editId = id;
-        $('editResponsavel').value = fam.responsavel;
-        $('editMembros').value = fam.membros;
-        $('editTelefone').value = fam.telefone;
-        $('editModal').style.display = 'flex';
-    }
+    // #region PAGE & MODAL MANAGEMENT
+    function showView(viewName) {
+        const views = {
+            home: $('homeView'),
+            confirm: $('confirmView'),
+            login: $('loginView'),
+            admin: $('adminArea')
+        };
+        for (const view in views) {
+            views[view].hidden = true;
+            if (views[view].style) views[view].style.display = 'none';
+        }
+        if (views[viewName]) {
+            views[viewName].hidden = false;
+            if (views[viewName].style) views[viewName].style.display = 'flex';
+        }
+        if (viewName === 'admin') {
+            views[viewName].style.display = 'block';
+        }
+    }
+    
+    let editId = null;
+    function openEditModal(id) {
+        const fam = familias.find(f => f.id === id);
+        if (!fam) return;
+        editId = id;
+        $('editResponsavel').value = fam.responsavel;
+        $('editMembros').value = fam.membros;
+        $('editTelefone').value = fam.telefone;
+        $('editModal').style.display = 'flex';
+    }
 
-    function closeEditModal() {
-        editId = null;
-        $('editModal').style.display = 'none';
-    }
-    // #endregion
+    function closeEditModal() {
+        editId = null;
+        $('editModal').style.display = 'none';
+    }
+    // #endregion
 
-    // #region EVENT HANDLERS
-    function handleLogin() {
-        const password = $('adminPassword').value;
-        if (password === ADMIN_PASSWORD) {
-            showView('admin');
-            $('loginErrorMessage').hidden = true;
-            $('adminPassword').value = '';
-        } else {
-            $('loginErrorMessage').hidden = false;
-        }
-    }
+    // #region EVENT HANDLERS
+    function handleLogin() {
+        const password = $('adminPassword').value;
+        if (password === ADMIN_PASSWORD) {
+            showView('admin');
+            $('loginErrorMessage').hidden = true;
+            $('adminPassword').value = '';
+        } else {
+            $('loginErrorMessage').hidden = false;
+        }
+    }
 
-    function handleAddFamilia() {
-        const responsavel = $('responsavel').value.trim();
-        const membros = $('membros').value.trim();
-        const telefone = sanitizePhone($('telefone').value.trim());
+    function handleAddFamilia() {
+        const responsavel = $('responsavel').value.trim();
+        const membros = $('membros').value.trim();
+        const telefone = sanitizePhone($('telefone').value.trim());
 
-        if (!responsavel || !membros || !telefone) {
-            alert('Preencha todos os campos corretamente (telefone com DDD, só números).');
-            return;
-        }
+        if (!responsavel || !membros || !telefone) {
+            alert('Preencha todos os campos corretamente (telefone com DDD, só números).');
+            return;
+        }
 
-        const id = crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random());
-        familias.push({ id, responsavel, membros, telefone });
-        saveToStorage();
-        renderFamilias();
+        const id = crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random());
+        familias.push({ id, responsavel, membros, telefone });
+        saveToStorage();
+        renderFamilias();
 
-        $('responsavel').value = '';
-        $('membros').value = '';
-        $('telefone').value = '';
-    }
+        $('responsavel').value = '';
+        $('membros').value = '';
+        $('telefone').value = '';
+    }
 
-    function handleSaveEditFamilia() {
-        if (!editId) return;
-        const fam = familias.find(f => f.id === editId);
-        if (!fam) return;
+    function handleSaveEditFamilia() {
+        if (!editId) return;
+        const fam = familias.find(f => f.id === editId);
+        if (!fam) return;
 
-        const responsavel = $('editResponsavel').value.trim();
-        const membros = $('editMembros').value.trim();
-        const telefone = sanitizePhone($('editTelefone').value.trim());
+        const responsavel = $('editResponsavel').value.trim();
+        const membros = $('editMembros').value.trim();
+        const telefone = sanitizePhone($('editTelefone').value.trim());
 
-        if (!responsavel || !membros || !telefone) {
-            alert('Preencha todos os campos corretamente (telefone com DDD, só números).');
-            return;
-        }
+        if (!responsavel || !membros || !telefone) {
+            alert('Preencha todos os campos corretamente (telefone com DDD, só números).');
+            return;
+        }
 
-        fam.responsavel = responsavel;
-        fam.membros = membros;
-        fam.telefone = telefone;
+        fam.responsavel = responsavel;
+        fam.membros = membros;
+        fam.telefone = telefone;
 
-        saveToStorage();
-        renderFamilias();
-        closeEditModal();
-    }
+        saveToStorage();
+        renderFamilias();
+        closeEditModal();
+    }
 
-    function handleDeleteFamilia(id) {
-        const fam = familias.find(f => f.id === id);
-        if (!fam) return;
-        if (!confirm(`Tem certeza que deseja excluir a família de ${fam.responsavel}?`)) return;
-        familias = familias.filter(f => f.id !== id);
-        saveToStorage();
-        renderFamilias();
-    }
+    function handleDeleteFamilia(id) {
+        const fam = familias.find(f => f.id === id);
+        if (!fam) return;
+        if (!confirm(`Tem certeza que deseja excluir a família de ${fam.responsavel}?`)) return;
+        familias = familias.filter(f => f.id !== id);
+        saveToStorage();
+        renderFamilias();
+    }
 
-    function enviarLinkWhatsApp(fam) {
-        // Construção do link de convite
-        const link = buildInviteLink(fam.responsavel, fam.membros);
+    function enviarLinkWhatsApp(fam) {
+        const link = buildInviteLink(fam.responsavel, fam.membros);
+        
+        // Mensagem com markdown para WhatsApp
+        const msg = `🌟✨ *Olá, meus amiguinhos e familiares encantados!* ✨🌟
 
-        // Mensagem do WhatsApp com emojis e formatação
-        const msg = `🌟✨ Olá, meus amiguinhos e familiares encantados! ✨🌟%0A%0A` +
-          `O meu aniversário está se aproximando, e eu estou radiante de alegria! 🥳🎂%0A%0A` +
-          `Quero muito que você faça parte dessa festinha dos sonhos, cheia de amor, magia e sorrisos! 🌈🧚‍♀️%0A` +
-          `A sua presença é um presentão para mim! Mas, se não puder vir, não tem problema… vamos entender com muito carinho. 💌%0A` +
-          `Como nossa lista de convidados é bem especial e limitada, é muito importante que cada pessoa confirme a presença individualmente. %0A%0A` +
-          `Assim conseguimos organizar tudo com muito amor e preparar um dia inesquecível! 🎉%0A` +
-          `🔔 Importante:%0A%0A` +
-          `A confirmação deve ser feita em até 5 dias úteis após o envio deste convite mágico.%0A%0A` +
-          `Se não recebermos sua resposta dentro do prazo, vamos entender como uma ausência — e abriremos espaço para outros convidados encantados. ✨%0A` +
-          `📜 Os nomes confirmados serão entregues aos magos da assessoria do Salão Kidáhora nesse prazo encantado!%0A` +
-          `💖 Para confirmar, basta clicar no link abaixo.%0A` +
-          `Com todo meu carinho de princesa,%0A` +
-          `Maitê 💕👑🎈%0A%0A` +
-          `👇 *Link abaixo para confirmar:*%0A${link}`;
+O meu aniversário está se aproximando, e eu estou radiante de alegria! 🥳🎂
 
-        // Criação do link do WhatsApp com a mensagem codificada
-        const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)}`;
+Quero muito que você faça parte dessa festinha dos sonhos, cheia de amor, magia e sorrisos! 🌈🧚‍♀️
+A sua presença é um presentão para mim! Mas, se não puder vir, não tem problema… vamos entender com muito carinho. 💌
 
-        // Abre o link em uma nova aba
-        window.open(zap, '_blank');
+Como nossa lista de convidados é bem especial e limitada, é muito importante que cada pessoa confirme a presença individualmente.
 
-        // Lógica para registrar data de envio e vencimento
-        const agora = new Date();
-        const vencimento = adicionarDiasUteis(agora, 5);
-        fam.dataEnvio = agora.toISOString();
-        fam.dataVencimento = vencimento.toISOString();
-        saveToStorage();
-        renderFamilias();
-        alert(`Convite enviado! Prazo para resposta: ${formatarData(vencimento)}`);
-    }
-    
-    function exportCSV() {
-        if (!familias.length) {
-            alert('Nada para exportar.');
-            return;
-        }
-        const header = ['Responsavel', 'Membros', 'Telefone', 'Link'];
-        const rows = familias.map(f => {
-            const link = buildInviteLink(f.responsavel, f.membros);
-            return [
-                `"${f.responsavel.replace(/"/g, '""')}"`,
-                `"${f.membros.replace(/"/g, '""')}"`,
-                `"${f.telefone}"`,
-                `"${link}"`
-            ].join(',');
-        });
-        const csv = [header.join(','), ...rows].join('\r\n');
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'familias_convite_maite.csv';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-    }
+Assim conseguimos organizar tudo com muito amor e preparar um dia inesquecível! 🎉
+🔔 *Importante:*
 
-    // #endregion
+A confirmação deve ser feita em até 5 dias úteis após o envio deste convite mágico.
 
-    // #region INITIALIZATION
-    loadFromStorage();
-    renderFamilias();
+Se não recebermos sua resposta dentro do prazo, vamos entender como uma ausência — e abriremos espaço para outros convidados encantados. ✨
+📜 _Os nomes confirmados serão entregues aos magos da assessoria do Salão Kidáhora nesse prazo encantado!_
+💖 Para confirmar, basta clicar no link abaixo.
+Com todo meu carinho de princesa,
+Maitê 💕👑🎈
 
-    const { familia, membros } = getQueryParams();
-    if (familia) {
-        $('familiaSaudacao').innerHTML = `Olá, <strong>${familia}</strong>!<br>Família convidada: ${membros || '—'}.`;
-        showView('confirm');
-    } else {
-        showView('home');
-    }
+👇 *Link de Confirmação:*
+${link}`;
+        
+        const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)}`;
+        const win = window.open(zap, '_blank');
+        
+        if (win && !win.closed) {
+            const agora = new Date();
+            const vencimento = adicionarDiasUteis(agora, 5);
+            fam.dataEnvio = agora.toISOString();
+            fam.dataVencimento = vencimento.toISOString();
+            saveToStorage();
+            renderFamilias();
+            alert(`Convite enviado! Prazo para resposta: ${formatarData(vencimento)}`);
+        } else {
+            alert('Não consegui abrir o WhatsApp. Verifique se o navegador bloqueou pop-ups ou se o número está correto.');
+        }
+    }
+    
+    function exportCSV() {
+        if (!familias.length) {
+            alert('Nada para exportar.');
+            return;
+        }
+        const header = ['Responsavel', 'Membros', 'Telefone', 'Link'];
+        const rows = familias.map(f => {
+            const link = buildInviteLink(f.responsavel, f.membros);
+            return [
+                `"${f.responsavel.replace(/"/g, '""')}"`,
+                `"${f.membros.replace(/"/g, '""')}"`,
+                `"${f.telefone}"`,
+                `"${link}"`
+            ].join(',');
+        });
+        const csv = [header.join(','), ...rows].join('\r\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'familias_convite_maite.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
 
-    // Event Listeners
-    $('adminLoginBtn').addEventListener('click', () => showView('login'));
-    $('loginSubmitBtn').addEventListener('click', handleLogin);
-    $('adminPassword').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleLogin();
-    });
-    $('voltarBtn').addEventListener('click', () => showView('home'));
-    document.querySelector('#adminArea .closeBtn').addEventListener('click', () => showView('home'));
-    $('addFamiliaBtn').addEventListener('click', handleAddFamilia);
-    $('exportBtn').addEventListener('click', exportCSV);
-    $('enviarTodosBtn').addEventListener('click', () => {
-        alert('Esta função não está implementada nesta versão reestruturada, pois pode ser bloqueada por navegadores. Sugerimos enviar um a um para melhor controle.');
-    });
-    $('sugestaoPresente').addEventListener('input', saveSugestaoPresente);
-    $('confirmarBtn').addEventListener('click', () => {
-        const { familia, membros } = getQueryParams();
-        alert(`Obrigado! Presença confirmada para: ${familia} (${membros}). Em breve essa confirmação será registrada.`);
-    });
-    
-    // Delegated event listener for family actions
-    $('familiasContainer').addEventListener('click', (e) => {
-        if (e.target.classList.contains('fam-send')) {
-            const id = e.target.getAttribute('data-id');
-            const fam = familias.find(f => f.id === id);
-            if (fam) enviarLinkWhatsApp(fam);
-        } else if (e.target.classList.contains('fam-edit')) {
-            const id = e.target.getAttribute('data-id');
-            openEditModal(id);
-        } else if (e.target.classList.contains('fam-delete')) {
-            const id = e.target.getAttribute('data-id');
-            handleDeleteFamilia(id);
-        }
-    });
+    // #endregion
 
-    $('editSaveBtn').addEventListener('click', handleSaveEditFamilia);
-    document.querySelector('#editModal .edit-close').addEventListener('click', closeEditModal);
-    $('editModal').addEventListener('click', (e) => {
-        if (e.target === $('editModal')) closeEditModal();
-    });
-    // #endregion
+    // #region INITIALIZATION
+    loadFromStorage();
+    renderFamilias();
+
+    const { familia, membros } = getQueryParams();
+    if (familia) {
+        $('familiaSaudacao').innerHTML = `Olá, <strong>${familia}</strong>!<br>Família convidada: ${membros || '—'}.`;
+        showView('confirm');
+    } else {
+        showView('home');
+    }
+
+    // Event Listeners
+    $('adminLoginBtn').addEventListener('click', () => showView('login'));
+    $('loginSubmitBtn').addEventListener('click', handleLogin);
+    $('adminPassword').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleLogin();
+    });
+    $('voltarBtn').addEventListener('click', () => showView('home'));
+    document.querySelector('#adminArea .closeBtn').addEventListener('click', () => showView('home'));
+    $('addFamiliaBtn').addEventListener('click', handleAddFamilia);
+    $('exportBtn').addEventListener('click', exportCSV);
+    $('enviarTodosBtn').addEventListener('click', () => {
+        alert('Esta função não está implementada nesta versão reestruturada, pois pode ser bloqueada por navegadores. Sugerimos enviar um a um para melhor controle.');
+    });
+    $('sugestaoPresente').addEventListener('input', saveSugestaoPresente);
+    $('confirmarBtn').addEventListener('click', () => {
+        const { familia, membros } = getQueryParams();
+        alert(`Obrigado! Presença confirmada para: ${familia} (${membros}). Em breve essa confirmação será registrada.`);
+    });
+    
+    // Delegated event listener for family actions
+    $('familiasContainer').addEventListener('click', (e) => {
+        if (e.target.classList.contains('fam-send')) {
+            const id = e.target.getAttribute('data-id');
+            const fam = familias.find(f => f.id === id);
+            if (fam) enviarLinkWhatsApp(fam);
+        } else if (e.target.classList.contains('fam-edit')) {
+            const id = e.target.getAttribute('data-id');
+            openEditModal(id);
+        } else if (e.target.classList.contains('fam-delete')) {
+            const id = e.target.getAttribute('data-id');
+            handleDeleteFamilia(id);
+        }
+    });
+
+    $('editSaveBtn').addEventListener('click', handleSaveEditFamilia);
+    document.querySelector('#editModal .edit-close').addEventListener('click', closeEditModal);
+    $('editModal').addEventListener('click', (e) => {
+        if (e.target === $('editModal')) closeEditModal();
+    });
+    // #endregion
 });
 </script>
 </body>
