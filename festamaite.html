@@ -595,34 +595,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function enviarLinkWhatsApp(fam) {
-        const link = buildInviteLink(fam.responsavel, fam.membros);
-        
-        // Mensagem com markdown para WhatsApp
-        const msg = `🌟✨ *Olá, meus amiguinhos e familiares encantados!* ✨🌟
+  const link = buildInviteLink(fam.responsavel, fam.membros);
 
-O meu aniversário está se aproximando, e eu estou radiante de alegria! 🥳🎂
+  const msg = `🌟✨ Olá, meus amiguinhos e familiares encantados! ✨🌟%0A%0A` +
+    `O meu aniversário está se aproximando, e eu estou radiante de alegria! 🥳🎂%0A%0A` +
+    `Quero muito que você faça parte dessa festinha dos sonhos, cheia de amor, magia e sorrisos! 🌈🧚‍♀️%0A` +
+    `A sua presença é um presentão para mim! Mas, se não puder vir, não tem problema… vamos entender com muito carinho. 💌%0A` +
+    `Como nossa lista de convidados é bem especial e limitada, é muito importante que cada pessoa confirme a presença individualmente. %0A%0A` +
+    `Assim conseguimos organizar tudo com muito amor e preparar um dia inesquecível! 🎉%0A` +
+    `🔔 Importante:%0A%0A` +
+    `A confirmação deve ser feita em até 5 dias úteis após o envio deste convite mágico.%0A%0A` +
+    `Se não recebermos sua resposta dentro do prazo, vamos entender como uma ausência — e abriremos espaço para outros convidados encantados. ✨%0A` +
+    `📜 Os nomes confirmados serão entregues aos magos da assessoria do Salão Kidáhora nesse prazo encantado!%0A` +
+    `💖 Para confirmar, basta clicar no link abaixo.%0A` +
+    `Com todo meu carinho de princesa,%0A` +
+    `Maitê 💕👑🎈%0A%0A` +
+    `👇 *Link abaixo para confirmar:*%0A${link}`;
 
-Quero muito que você faça parte dessa festinha dos sonhos, cheia de amor, magia e sorrisos! 🌈🧚‍♀️
-A sua presença é um presentão para mim! Mas, se não puder vir, não tem problema… vamos entender com muito carinho. 💌
-
-Como nossa lista de convidados é bem especial e limitada, é muito importante que cada pessoa confirme a presença individualmente.
-
-Assim conseguimos organizar tudo com muito amor e preparar um dia inesquecível! 🎉
-🔔 *Importante:*
-
-A confirmação deve ser feita em até 5 dias úteis após o envio deste convite mágico.
-
-Se não recebermos sua resposta dentro do prazo, vamos entender como uma ausência — e abriremos espaço para outros convidados encantados. ✨
-📜 _Os nomes confirmados serão entregues aos magos da assessoria do Salão Kidáhora nesse prazo encantado!_
-💖 Para confirmar, basta clicar no link abaixo.
-Com todo meu carinho de princesa,
-Maitê 💕👑🎈
-
-👇 *Link de Confirmação:*
-${link}`;
-        
-        const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)}`;
-        const win = window.open(zap, '_blank');
+  const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)}`;
+  window.open(zap, '_blank');
+}
         
         if (win && !win.closed) {
             const agora = new Date();
