@@ -50,9 +50,9 @@
       font-size: 1rem;
       line-height: 1.8;
       color: #666;
-      text-align: left; /* Alinha o texto à esquerda dentro da caixa */
+      text-align: left;
     }
-    .detalhes div { /* Cria um container flex para cada linha */
+    .detalhes div {
         display: flex;
         align-items: center;
         margin-bottom: 8px;
@@ -62,7 +62,7 @@
     }
     .detalhes strong {
       color: #ad2a6b;
-      min-width: 90px; /* Garante que os títulos (Data, Horário, Local) tenham a mesma largura */
+      min-width: 90px;
       display: inline-block;
     }
     button {
@@ -97,4 +97,135 @@
         width: 100%;
         box-sizing: border-box;
     }
-    
+    #sugestaoCard::before {
+        content: "✨";
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        font-size: 24px;
+        animation: sparkle 2s infinite;
+    }
+    #sugestaoCard::after {
+        content: "🎁";
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 24px;
+        animation: bounce 2s infinite;
+    }
+    .sugestao-title {
+        color: #d63384;
+        font-size: 1.4rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-shadow: 1px 1px 2px rgba(214, 51, 132, 0.3);
+    }
+    .sugestao-content {
+        color: #5a3a71;
+        font-size: 1rem;
+        line-height: 1.6;
+        background: rgba(255, 255, 255, 0.7);
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px dashed #ff69b4;
+        text-align: left;
+    }
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes sparkle {
+        0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+        50% { transform: scale(1.2) rotate(15deg); opacity: 1; }
+    }
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+    }
+    @media (max-width: 600px) {
+      body {
+        height: auto;
+        min-height: 100vh;
+        padding: 15px;
+      }
+      .card {
+        padding: 1.5rem;
+        margin-bottom: 20px;
+      }
+      h1 { font-size: 2rem; }
+      p { font-size: 1rem; }
+      .detalhes {
+        padding: 0.8rem;
+        margin: 1rem 0;
+        font-size: 0.9rem;
+      }
+      button {
+        padding: 12px 25px;
+        font-size: 1rem;
+      }
+      #sugestaoCard {
+        margin-top: 20px;
+        padding: 20px;
+      }
+      .sugestao-title { font-size: 1.2rem; }
+      .sugestao-content { font-size: 0.9rem; padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Maitê faz 1 aninho! 🧙‍♀️💖</h1>
+    <p>Venham comemorar esse momento mágico com a gente! 🌸✨  
+
+    A festa será encantadora e ainda mais especial com a sua presença.</p>
+    <div class="detalhes">
+      <div><strong>🗓️ Data:</strong> <span>20 de Setembro</span></div>
+      <div><strong>⏰ Horário:</strong> <span>das 19:30 às 23:30</span></div>
+      <div><strong>📍 Local:</strong> <span>Avenida São Miguel, 8001 - SP</span></div>
+    </div>
+    <button onclick="redirecionarParaFormulario()">Confirmar Presença</button>
+  </div>
+
+  <div id="sugestaoCard">
+      <div class="sugestao-title">Sugestão de Presente</div>
+      <div class="sugestao-content" id="sugestaoContent"></div>
+  </div>
+
+  <script>
+    const SUGESTAO_KEY = 'conviteMaite_sugestao_v1';
+
+    function carregarSugestaoPresente() {
+        try {
+            const sugestaoRaw = localStorage.getItem(SUGESTAO_KEY);
+            const sugestaoContentEl = document.getElementById('sugestaoContent');
+            const sugestaoCardEl = document.getElementById('sugestaoCard');
+
+            if (sugestaoRaw && sugestaoContentEl && sugestaoCardEl) {
+                sugestaoContentEl.innerHTML = sugestaoRaw;
+                sugestaoCardEl.style.display = 'block';
+            } else if (sugestaoCardEl) {
+                sugestaoCardEl.style.display = 'none';
+            }
+        } catch(e) {
+            console.error('Erro ao carregar sugestão de presente:', e);
+        }
+    }
+
+    function redirecionarParaFormulario() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const familia = urlParams.get('familia');
+      const membros = urlParams.get('membros');
+      
+      let formularioURL = 'formulario.html';
+      
+      if (familia && membros) {
+        formularioURL += `?familia=${encodeURIComponent(familia)}&membros=${encodeURIComponent(membros)}`;
+      }
+      
+      window.location.href = formularioURL;
+    }
+
+    window.addEventListener('DOMContentLoaded', carregarSugestaoPresente);
+  </script>
+</body>
+</html>
