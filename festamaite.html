@@ -133,6 +133,7 @@
             cursor: pointer;
         }
         .admin-btn.add { background: var(--rosa); color: #fff; }
+        .admin-btn.save { background: #007bff; color: #fff; } /* Novo estilo para o botão salvar */
         .admin-btn.mass { background: var(--verde); color: #fff; }
         .admin-btn.mass:hover {filter: brightness (0.9); }
         #voltarBtn {
@@ -300,6 +301,7 @@
             <div class="form-group">
                 <label for="sugestaoPresente">Sugestão de Presente</label>
                 <div id="sugestaoPresente" contenteditable="true" spellcheck="false" placeholder="Digite a sugestão de presente..."></div>
+                <button class="admin-btn save" type="button" id="saveSugestaoBtn">Salvar Sugestão</button>
             </div>
             <div class="admin-actions">
                 <button class="admin-btn add" type="button" id="addFamiliaBtn">Adicionar Família</button>
@@ -316,7 +318,7 @@
         <button class="edit-close" type="button" aria-label="Fechar edição">&times;</button>
         <h3>Editar Família</h3>
         <div class="form-group">
-            <label for="editResponsavel">Responsável</label>
+            <label for="editResponsavel">Responsavel</label>
             <input id="editResponsavel" />
         </div>
         <div class="form-group">
@@ -353,8 +355,18 @@
         `.trim().replace(/\n/g, '');
 
         function buildInviteLink(familiaName, membrosList) {
-            // Agora o link aponta para o index.html, que é a página de confirmação
-            const baseUrl = window.location.origin + window.location.pathname.replace(/festamaite.html$/, 'index.html');
+            // Garante que o link base seja sempre para index.html
+            const currentPath = window.location.pathname;
+            let baseUrl = window.location.origin;
+
+            if (currentPath.endsWith('festamaite.html')) {
+                baseUrl += currentPath.replace('festamaite.html', 'index.html');
+            } else if (currentPath.endsWith('/')) {
+                baseUrl += currentPath + 'index.html';
+            } else {
+                baseUrl += currentPath + '/index.html';
+            }
+
             return `${baseUrl}?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}`;
         }
 
@@ -670,7 +682,7 @@ Família da Maitê`;
         $('enviarTodosBtn').addEventListener('click', () => {
             alert('Esta função não está implementada nesta versão reestruturada, pois pode ser bloqueada por navegadores. Sugerimos enviar um a um para melhor controle.');
         });
-        $('sugestaoPresente').addEventListener('input', saveSugestaoPresente);
+        $('saveSugestaoBtn').addEventListener('click', saveSugestaoPresente); // Botão para salvar a sugestão
         // Delegated event listener for family actions
         $('familiasContainer').addEventListener('click', (e) => {
             const id = e.target.getAttribute('data-id');
