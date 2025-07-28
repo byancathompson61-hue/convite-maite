@@ -26,7 +26,6 @@
       max-width: 500px;
       position: relative;
       z-index: 10;
-      margin-bottom: 20px; /* Adicionado espaço abaixo do card principal */
     }
     h1 {
       color: #d94ba2;
@@ -39,127 +38,169 @@
       line-height: 1.6;
     }
     .detalhes {
-      margin-top: 1.5rem;
-      font-size: 1.1rem;
-      color: #666;
+      background-color: rgba(255, 255, 255, 0.7);
+      border: 1px solid #ffccdd;
+      border-radius: 10px;
+      padding: 1rem;
+      margin: 1.5rem 0;
+      font-size: 1rem;
       line-height: 1.8;
+      color: #666;
     }
-    .detalhes strong {
-      color: #d94ba2;
+    strong {
+      color: #ad2a6b;
     }
     button {
       background-color: #d63384;
       color: white;
+      padding: 15px 30px;
       border: none;
-      padding: 12px 25px;
       border-radius: 30px;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
       cursor: pointer;
       transition: background-color 0.3s ease, transform 0.2s ease;
-      margin-top: 2rem;
-      box-shadow: 0 4px 10px rgba(214, 51, 132, 0.3);
+      box-shadow: 0 4px 10px rgba(214, 51, 132, 0.4);
     }
     button:hover {
       background-color: #ad2a6b;
       transform: translateY(-2px);
     }
 
-    /* Estilos para os elementos animados */
+    /* Elementos decorativos */
     .butterfly, .balloon, .sparkle {
       position: absolute;
-      opacity: 0;
-      animation: floatUp 15s infinite ease-in-out forwards;
-      pointer-events: none;
+      opacity: 0; /* Começam invisíveis */
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+      z-index: 1;
     }
-
     .butterfly {
       width: 40px;
       height: 40px;
-      background: url('https://raw.githubusercontent.com/google/material-design-icons/master/png/social/psychology_alt/24dp/2x/baseline_psychology_alt_black_24dp.png') no-repeat center center / contain;
-      filter: hue-rotate(200deg) brightness(1.2); /* Para dar um toque rosa/lilás */
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23d94ba2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm-2 7h4v2h-4z"/></svg>'); /* Exemplo de SVG para borboleta, pode ser substituído por imagem real */
+      background-size: contain;
+      animation-name: fly;
     }
-    .butterfly:nth-child(1) { left: 10%; top: 80%; animation-delay: 0s; }
-    .butterfly:nth-child(2) { right: 15%; top: 70%; animation-delay: 5s; }
-    .butterfly:nth-child(3) { left: 25%; bottom: 10%; animation-delay: 10s; }
+    .butterfly:nth-child(1) { top: 10%; left: 5%; animation-duration: 15s; animation-delay: 0s; }
+    .butterfly:nth-child(2) { top: 30%; right: 10%; animation-duration: 12s; animation-delay: 5s; }
+    .butterfly:nth-child(3) { bottom: 20%; left: 20%; animation-duration: 18s; animation-delay: 10s; }
+
+    @keyframes fly {
+      0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+      10% { opacity: 1; }
+      50% { transform: translateY(-50px) translateX(20px) scale(1.1); }
+      100% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+    }
 
     .balloon {
-      width: 50px;
-      height: 70px;
-      background: url('https://www.flaticon.com/svg/vincode/balloon.svg') no-repeat center center / contain; /* Exemplo de balão, você pode usar uma imagem real */
-      filter: saturate(1.5) hue-rotate(300deg); /* Cores vibrantes */
+        width: 30px;
+        height: 40px;
+        border-radius: 50% / 60%;
+        background: linear-gradient(135deg, #ff99cc, #ff66b2);
+        box-shadow: inset -3px -3px 8px rgba(255,255,255,0.6);
+        animation-name: rise;
     }
-    .balloon:nth-child(1) { left: 5%; bottom: 0; animation-delay: 2s; }
-    .balloon:nth-child(2) { right: 8%; bottom: 0; animation-delay: 7s; }
-    .balloon:nth-child(3) { left: 30%; bottom: 0; animation-delay: 12s; }
-    .balloon:nth-child(4) { right: 20%; bottom: 0; animation-delay: 3s; }
+    .balloon::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        width: 2px;
+        height: 10px;
+        background: #cc3388;
+        transform: translateX(-50%);
+        border-radius: 1px;
+    }
+    .balloon:nth-child(4) { left: 15%; animation-duration: 10s; animation-delay: 0s; }
+    .balloon:nth-child(5) { right: 20%; animation-duration: 11s; animation-delay: 3s; }
+    .balloon:nth-child(6) { bottom: 10%; left: 30%; animation-duration: 9s; animation-delay: 6s; }
+    .balloon:nth-child(7) { top: 5%; right: 5%; animation-duration: 12s; animation-delay: 2s; }
+
+    @keyframes rise {
+      0% { transform: translateY(0) scale(1); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(-120vh) scale(1.1); opacity: 0; }
+    }
 
     .sparkle {
-      width: 15px;
-      height: 15px;
-      background-color: #ffd700;
+      width: 10px;
+      height: 10px;
+      background-color: gold;
       border-radius: 50%;
-      box-shadow: 0 0 10px #ffd700, 0 0 20px #ffea00;
-      animation: sparkleFade 3s infinite ease-out forwards;
+      box-shadow: 0 0 5px gold, 0 0 10px yellow;
+      animation-name: twinkle;
+      animation-duration: 2s;
     }
-    .sparkle:nth-child(1) { top: 5%; left: 50%; animation-delay: 0s; }
-    .sparkle:nth-child(2) { top: 15%; left: 30%; animation-delay: 1s; }
-    .sparkle:nth-child(3) { top: 10%; right: 20%; animation-delay: 2s; }
-    .sparkle:nth-child(4) { top: 20%; left: 70%; animation-delay: 0.5s; }
+    .sparkle:nth-child(8) { top: 25%; left: 25%; animation-delay: 0s; }
+    .sparkle:nth-child(9) { top: 40%; right: 30%; animation-delay: 0.5s; }
+    .sparkle:nth-child(10) { bottom: 15%; left: 50%; animation-delay: 1s; }
+    .sparkle:nth-child(11) { top: 10%; left: 60%; animation-delay: 1.5s; }
 
-
-    @keyframes floatUp {
-      0% { transform: translateY(0); opacity: 0; }
-      20% { opacity: 1; }
-      80% { opacity: 1; }
-      100% { transform: translateY(-150vh); opacity: 0; }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1.5); }
     }
-
-    @keyframes sparkleFade {
-      0% { transform: scale(0.5); opacity: 0; }
-      50% { transform: scale(1.5); opacity: 1; }
-      100% { transform: scale(0); opacity: 0; }
+    #sugestaoCard {
+        display: none; /* Hidden by default, shown by JS */
+        margin-top: 30px;
+        padding: 25px;
+        background: linear-gradient(135deg, #fff5f8, #ffe9f4);
+        border: 2px solid #ff69b4;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
+        animation: slideDown 0.8s ease-out;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        max-width: 500px; /* Para ficar alinhado com o card principal */
+        width: 100%; /* Para que ocupe a largura total dentro do max-width */
+        box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura */
     }
-
-    /* Estilos para a sugestão de presente - AGORA MAIS DISCRETO */
-    .sugestao-card {
-      padding: 1.5rem;
-      border-radius: 15px;
-      max-width: 450px;
-      margin-top: 20px;
-      text-align: left;
-      /* Removidos: background-color, box-shadow, border para ser menos "card-like" */
-      display: none; /* Escondido por padrão, será exibido via JS se houver conteúdo */
+    #sugestaoCard::before {
+        content: "✨";
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        font-size: 24px;
+        animation: sparkle 2s infinite;
     }
-    .sugestao-card h3 {
-      color: #a3478f;
-      margin-top: 0;
-      font-size: 1.4rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    #sugestaoCard::after {
+        content: "✨";
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 24px;
+        animation: bounce 2s infinite;
     }
-    .sugestao-card ul {
-      list-style: none;
-      padding: 0;
-      margin: 10px 0;
-      color: #555;
+    .sugestao-title {
+        color: #d63384;
+        font-size: 1.4rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-shadow: 1px 1px 2px rgba(214, 51, 132, 0.3);
     }
-    .sugestao-card ul li {
-      margin-bottom: 5px;
-      display: flex;
-      align-items: center;
+    .sugestao-content {
+        color: #5a3a71;
+        font-size: 1rem;
+        line-height: 1.6;
+        white-space: pre-line; /* Mantém quebras de linha do HTML ou texto */
+        background: rgba(255, 255, 255, 0.7);
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px dashed #ff69b4;
     }
-    .sugestao-card ul li::before {
-      content: '✨'; /* Ícone para os itens da lista */
-      margin-right: 8px;
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-30px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-    .sugestao-card .obs {
-      font-style: italic;
-      font-size: 0.95rem;
-      color: #777;
-      margin-top: 15px;
-      border-top: 1px solid #eee;
-      padding-top: 10px;
+    @keyframes sparkle {
+        0%, 100% { transform: scale(1) rotate(0deg); }
+        50% { transform: scale(1.2) rotate(180deg); }
+    }
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
     }
   </style>
 </head>
@@ -176,9 +217,10 @@
     <button onclick="redirecionarParaFormulario()">Confirmar Presença</button>
   </div>
 
-  <div class="sugestao-card" id="sugestaoCard">
-    <div id="sugestaoContent">
-        </div>
+  <div id="sugestaoCard">
+      <div class="sugestao-title">Sugestão de Presente</div>
+      <div class="sugestao-content" id="sugestaoContent">
+          </div>
   </div>
 
   <div class="butterfly"></div>
@@ -202,25 +244,12 @@
             const sugestaoContent = document.getElementById('sugestaoContent');
             const sugestaoCard = document.getElementById('sugestaoCard');
 
-            // Texto padrão formatado para a sugestão de presente
-            let contentToDisplay = `
-                <h3>🎁 Sugestão de Presente:</h3>
-                <ul>
-                    <li>Roupinhas tamanho 1</li>
-                    <li>Sapatinhos nº 17/18</li>
-                    <li>Adora brinquedos!</li>
-                </ul>
-                <p class="obs">Obs: São apenas sugestões! Sua presença é, sem dúvida, o melhor presente. 💕</p>
-            `;
-
             if (sugestaoRaw) {
-                // Se houver sugestão salva, usa ela
-                contentToDisplay = sugestaoRaw;
+                sugestaoContent.innerHTML = sugestaoRaw;
+                sugestaoCard.style.display = 'block'; // Mostra o card se houver sugestão
+            } else {
+                sugestaoCard.style.display = 'none'; // Esconde se não houver
             }
-            
-            sugestaoContent.innerHTML = contentToDisplay;
-            sugestaoCard.style.display = 'block'; // Mostra o card sempre que carregar a sugestão
-            
         } catch(e) {
             console.error('Erro ao carregar sugestão:', e);
         }
