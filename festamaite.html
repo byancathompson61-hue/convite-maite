@@ -1201,33 +1201,50 @@ ${link}`;
 
 
         function enviarLembreteWhatsApp(fam) {
-    const link = buildInviteLink(fam.responsavel, fam.membros); // É importante ter o link aqui, caso contrário a variável 'link' no corpo da mensagem estará indefinida.
-    const msg = `🩷✨ Olá, amiguinhos e familiares encantados! ✨🩷
 
-Estamos enviando esta mensagem com muito carinho porque o prazo de confirmação da presença na festinha mágica da nossa Maitê termina amanhã! 🎂🥳
+            const msg = `🩷 Oi, amiguinhos e familiares!
 
-Ainda não recebemos sua resposta... e como a nossa lista de convidados é limitada e especial, quem não confirmar até o prazo será considerado como ausência, e o espaço será aberto para outro convidado encantado que está aguardando por uma vaga. 🌟
 
-💫 Importante:
-A confirmação deve ser feita individualmente pelo link enviado abaixo.
-⛔ Não será permitido confirmar e enviar outra pessoa no lugar, nem levar acompanhantes extras. A entrada só será autorizada para os nomes confirmados antecipadamente na lista enviada à assessoria do buffet Kidahora.
 
-Se você não puder comparecer, tudo bem também! Só pedimos que nos avise dentro do prazo, assim conseguimos organizar tudo com muito cuidado e magia 💖
+Estamos encaminhando esta mensagem porque o prazo de confirmação da presença na festinha da Maitê está se aproximando — e ainda não recebemos a sua resposta 🎂🥳
 
-Com muito amor e brilhinhos de felicidade,
-Família da Maitê 👨‍👩‍👧‍👦✨
 
-🔗 Link para confirmação:
-${link}`;
 
-    const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)}`;
-    const win = window.open(zap, '_blank');
-    if (win && !win.closed) {
-        alert(`Lembrete enviado para ${fam.responsavel}!`);
-    } else {
-        alert('Não consegui abrir o WhatsApp para enviar o lembrete. Verifique se o navegador bloqueou pop-ups ou se o número está correto.');
-    }
-}
+Como a lista de convidados é bem curtinha, precisamos muito saber quem poderá vir para que tudo seja organizado com carinho e atenção
+
+
+
+Se puder confirmar o quanto antes, agradecemos demais!
+
+
+
+E, se não puder comparecer, não tem problema só pedimos que nos avise também
+
+
+
+Beijinhos,
+
+
+
+Família da Maitê 👨‍👩‍👧`;
+
+
+
+            const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)}`;
+
+            const win = window.open(zap, '_blank');
+
+            if (win && !win.closed) {
+
+                alert(`Lembrete enviado para ${fam.responsavel}!`);
+
+            } else {
+
+                alert('Não consegui abrir o WhatsApp para enviar o lembrete. Verifique se o navegador bloqueou pop-ups ou se o número está correto.');
+
+            }
+
+        }
 
 
 
