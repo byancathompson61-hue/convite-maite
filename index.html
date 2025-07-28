@@ -1,292 +1,235 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Aniversário da Maitê 🎉</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom, #ffe9f4, #f8b5f0);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-      overflow: hidden;
-      position: relative;
-    }
-    .card {
-      background-color: rgba(255, 255, 255, 0.9);
-      padding: 2rem;
-      border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      max-width: 500px;
-      position: relative;
-      z-index: 10;
-    }
-    h1 {
-      color: #d94ba2;
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-    p {
-      color: #444;
-      font-size: 1.2rem;
-      margin-bottom: 1.5rem;
-    }
-    .detalhes {
-      font-size: 1rem;
-      color: #7a4e7b;
-      margin-bottom: 2rem;
-    }
-    button {
-      background-color: #d94ba2;
-      color: white;
-      border: none;
-      padding: 1rem 2rem;
-      font-size: 1rem;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    button:hover {
-      background-color: #a43878;
-    }
-
-    /* ==== EFEITOS ANIMADOS ==== */
-    .butterfly {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      background: linear-gradient(45deg, #ffb6c1, #ff69b4);
-      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-      box-shadow: 
-        10px 0 0 #ffb6c1,
-        -10px 0 0 #ffb6c1;
-      animation-timing-function: ease-in-out;
-      animation-iteration-count: infinite;
-      animation-direction: alternate;
-      filter: drop-shadow(0 0 2px #d94ba2);
-    }
-    .butterfly::before, .butterfly::after {
-      content: "";
-      position: absolute;
-      width: 12px;
-      height: 20px;
-      background: linear-gradient(45deg, #ff69b4, #ff1493);
-      border-radius: 50%;
-      top: 5px;
-      left: 9px;
-      transform-origin: center center;
-      animation-name: wing-flap;
-      animation-duration: 2s;
-      animation-iteration-count: infinite;
-      animation-timing-function: ease-in-out;
-    }
-    .butterfly::after {
-      left: auto;
-      right: 9px;
-      animation-delay: 1s;
-    }
-    @keyframes wing-flap {
-      0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(20deg); }
-    }
-    .butterfly:nth-child(1) {
-      top: 20%;
-      left: -10%;
-      animation-name: fly1;
-      animation-duration: 15s;
-      animation-timing-function: linear;
-    }
-    .butterfly:nth-child(2) {
-      top: 50%;
-      left: -15%;
-      animation-name: fly2;
-      animation-duration: 18s;
-      animation-timing-function: linear;
-      animation-delay: 5s;
-    }
-    .butterfly:nth-child(3) {
-      top: 70%;
-      left: -8%;
-      animation-name: fly3;
-      animation-duration: 12s;
-      animation-timing-function: linear;
-      animation-delay: 8s;
-    }
-
-    @keyframes fly1 {
-      0% { transform: translate(0,0) rotate(0deg); opacity: 0; }
-      10% { opacity: 1; }
-      50% { transform: translate(120vw, -20vh) rotate(360deg); opacity: 1; }
-      90% { opacity: 1; }
-      100% { transform: translate(140vw, -30vh) rotate(720deg); opacity: 0; }
-    }
-    @keyframes fly2 {
-      0% { transform: translate(0,0) rotate(0deg); opacity: 0; }
-      10% { opacity: 1; }
-      50% { transform: translate(110vw, 10vh) rotate(-360deg); opacity: 1; }
-      90% { opacity: 1; }
-      100% { transform: translate(130vw, 20vh) rotate(-720deg); opacity: 0; }
-    }
-    @keyframes fly3 {
-      0% { transform: translate(0,0) rotate(0deg); opacity: 0; }
-      10% { opacity: 1; }
-      50% { transform: translate(100vw, 30vh) rotate(180deg); opacity: 1; }
-      90% { opacity: 1; }
-      100% { transform: translate(120vw, 40vh) rotate(360deg); opacity: 0; }
-    }
-    .balloon {
-      position: absolute;
-      bottom: -60px;
-      width: 25px;
-      height: 35px;
-      border-radius: 50% / 60%;
-      background: linear-gradient(135deg, #ff7eb9, #ff65a3);
-      box-shadow: inset -5px -5px 10px rgba(255,255,255,0.6);
-      animation-name: rise;
-      animation-timing-function: ease-out;
-      animation-iteration-count: infinite;
-      filter: drop-shadow(0 1px 2px #b7447d);
-    }
-    .balloon::after {
-      content: "";
-      position: absolute;
-      bottom: -15px;
-      left: 50%;
-      width: 2px;
-      height: 15px;
-      background: #c34274;
-      transform: translateX(-50%);
-      border-radius: 1px;
-    }
-    .balloon:nth-child(4) {
-      left: 20%;
-      animation-duration: 10s;
-      animation-delay: 0s;
-      background: linear-gradient(135deg, #fcd581, #f7c948);
-      box-shadow: inset -5px -5px 10px rgba(255,255,255,0.7);
-    }
-    .balloon:nth-child(5) {
-      left: 40%;
-      animation-duration: 12s;
-      animation-delay: 4s;
-      background: linear-gradient(135deg, #7cd1f9, #40a1f0);
-      box-shadow: inset -5px -5px 10px rgba(255,255,255,0.7);
-    }
-    .balloon:nth-child(6) {
-      left: 60%;
-      animation-duration: 11s;
-      animation-delay: 2s;
-      background: linear-gradient(135deg, #ff7eb9, #ff65a3);
-      box-shadow: inset -5px -5px 10px rgba(255,255,255,0.6);
-    }
-    .balloon:nth-child(7) {
-      left: 80%;
-      animation-duration: 13s;
-      animation-delay: 5s;
-      background: linear-gradient(135deg, #b1f7b4, #68d363);
-      box-shadow: inset -5px -5px 10px rgba(255,255,255,0.6);
-    }
-
-    @keyframes rise {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-120vh) scale(1.1);
-        opacity: 0;
-      }
-    }
-    .sparkle {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: radial-gradient(circle, #fff8, #d94ba2 60%);
-      border-radius: 50%;
-      opacity: 0.8;
-      animation-name: twinkle;
-      animation-duration: 2.5s;
-      animation-iteration-count: infinite;
-      filter: drop-shadow(0 0 3px #d94ba2);
-    }
-    .sparkle:nth-child(8) {
-      top: 15%;
-      left: 35%;
-      animation-delay: 0s;
-    }
-    .sparkle:nth-child(9) {
-      top: 40%;
-      left: 65%;
-      animation-delay: 1s;
-    }
-    .sparkle:nth-child(10) {
-      top: 70%;
-      left: 45%;
-      animation-delay: 1.8s;
-    }
-    .sparkle:nth-child(11) {
-      top: 25%;
-      left: 55%;
-      animation-delay: 2.3s;
-    }
-
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.8; transform: scale(1); }
-      50% { opacity: 0.3; transform: scale(1.5); }
-    }
-
-  </style>
+<meta charset="UTF-8"/>
+<title>Festa da Maitê</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+--rosa: #d63384;
+--rosa-escuro: #ad2a6b;
+--verde: #28a745;
+--cinza-borda: #dcdcdc;
+--bg-grad: linear-gradient(135deg, #ffe0f0, #ffc4e1);
+--card-bg: #fff;
+--radius-card: 18px;
+--radius-btn: 8px;
+--poppins: 'Poppins', sans-serif;
+}
+body {
+margin: 0;
+font-family: var(--poppins);
+background: var(--bg-grad);
+min-height: 100vh;
+color: #333;
+}
+.center-wrap {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+min-height: 100vh;
+padding: 16px;
+text-align: center;
+}
+.card {
+background: var(--card-bg);
+padding: 32px 28px;
+border-radius: var(--radius-card);
+box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+max-width: 500px;
+margin: 16px;
+text-align: left;
+}
+h1, h2, h3 {
+margin-top: 0;
+font-weight: 600;
+}
+h1 { color: var(--rosa); font-size: 1.9rem; text-align: center; }
+h2 { color: var(--rosa); font-size: 1.4rem; text-align: center; }
+h3 { color: var(--rosa); font-size: 1.1rem; margin-bottom: 8px; }
+p { line-height: 1.4; margin: 0 0 1em; }
+.btn {
+background-color: var(--rosa);
+color: white;
+padding: 12px 20px;
+border: none;
+border-radius: var(--radius-btn);
+font-size: 16px;
+cursor: pointer;
+margin-top: 16px;
+width: 100%;
+}
+.btn:hover { background-color: var(--rosa-escuro); }
+.form-group {
+margin-bottom: 1rem;
+}
+label {
+display: block;
+font-weight: 600;
+margin-bottom: 0.5rem;
+}
+input {
+width: 100%;
+padding: 0.75rem;
+border: 1px solid var(--cinza-borda);
+border-radius: var(--radius-btn);
+box-sizing: border-box;
+}
+/* Estilos para a sugestão de presente no index.html */
+#sugestaoCard {
+display: none; /* Inicialmente oculto */
+margin-top: 30px;
+padding: 25px;
+background: linear-gradient(135deg, #fff5f8, #ffe9f4);
+border: 2px solid #ff69b4;
+border-radius: 20px;
+box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
+animation: slideDown 0.8s ease-out;
+text-align: center;
+position: relative;
+overflow: hidden;
+}
+.sugestao-title {
+color: #d63384;
+font-size: 1.4rem;
+font-weight: bold;
+margin-bottom: 15px;
+text-shadow: 1px 1px 2px rgba(214, 51, 132, 0.3);
+}
+.sugestao-content {
+color: #5a3a71;
+font-size: 1rem;
+line-height: 1.6;
+white-space: pre-line;
+background: rgba(255, 255, 255, 0.7);
+padding: 15px;
+border-radius: 10px;
+border: 1px dashed #ff69b4;
+}
+@keyframes slideDown {
+from { opacity: 0; transform: translateY(-30px); }
+to { opacity: 1; transform: translateY(0); }
+}
+@media (max-width:480px) {
+.card { padding: 24px 20px; }
+h1 { font-size: 1.6rem; }
+.btn { width: 100%; }
+}
+</style>
 </head>
 <body>
-  <div class="card">
-    <h1>Maitê faz 1 aninho! 🧙‍♀️💖</h1>
-    <p>Venham comemorar esse momento mágico com a gente! 🌸✨<br>
-    A festa será encantadora e ainda mais especial com a sua presença.</p>
-    <div class="detalhes">
-      <strong>🗓️ Data:</strong> 20 de Setembro<br>
-      <strong>⏰ Horário:</strong> das 19:30 às 23:30<br>
-      <strong>📍 Local:</strong> Avenida São Miguel, 8001 - SP
-    </div>
-    <button onclick="redirecionarParaFormulario()">Confirmar Presença</button>
-  </div>
-  <div class="butterfly"></div>
-  <div class="butterfly"></div>
-  <div class="butterfly"></div>
-  <div class="balloon"></div>
-  <div class="balloon"></div>
-  <div class="balloon"></div>
-  <div class="balloon"></div>
-  <div class="sparkle"></div>
-  <div class="sparkle"></div>
-  <div class="sparkle"></div>
-  <div class="sparkle"></div>
 
-  <script>
-    function redirecionarParaFormulario() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const familia = urlParams.get('familia');
-      const membros = urlParams.get('membros');
-      
-      let formularioURL = 'formulario.html';
-      
-      if (familia || membros) {
-        const params = new URLSearchParams();
-        if (familia) params.append('familia', familia);
-        if (membros) params.append('membros', membros);
-        formularioURL += '?' + params.toString();
-      }
-      
-      window.location.href = formularioURL;
+<div id="homeView" class="center-wrap">
+<div class="card text-center">
+<h1>Maitê faz 1 aninho! </h1>
+<p>Venham comemorar esse momento mágico com a gente! <br>
+A festa será encantadora e ainda mais especial com a sua presença.</p>
+<div class="detalhes">
+<strong>Data:</strong> 20 de Setembro<br>
+<strong>Horário:</strong> das 19:30 às 23:30<br>
+<strong>Local:</strong> Avenida São Miguel, 8001 - SP
+</div>
+<button onclick="redirecionarParaFormulario()">Confirmar Presença</button>
+<button id="adminLoginBtn" class="btn" type="button">Área de Admin</button>
+</div>
+
+<div id="sugestaoCard">
+<div class="sugestao-title">
+Sugestão de Presente
+</div>
+<div class="sugestao-content" id="sugestaoContent">
+</div>
+</div>
+</div>
+
+<div id="loginView" class="center-wrap" hidden>
+<div class="card login-card">
+<h1>Acesso Administrativo</h1>
+<p>Por favor, insira a senha para acessar a área de gerenciamento.</p>
+<div class="form-group">
+<label for="adminPassword">Senha:</label>
+<input type="password" id="adminPassword" placeholder="Digite a senha">
+</div>
+<button id="loginSubmitBtn" class="btn" type="button">Entrar</button>
+<p id="loginErrorMessage" class="error-message" hidden>Senha incorreta. Tente novamente.</p>
+</div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const $ = (id) => document.getElementById(id);
+    const SUGESTAO_KEY = 'conviteMaite_sugestao_v1';
+    const ADMIN_PASSWORD = 'maite'; // TROQUE ESTA SENHA!
+
+    function loadAndDisplaySugestaoPresente() {
+        try {
+            const sugestaoRaw = localStorage.getItem(SUGESTAO_KEY);
+            const sugestaoContentDiv = $('sugestaoContent');
+            const sugestaoCardDiv = $('sugestaoCard');
+
+            if (sugestaoRaw) {
+                sugestaoContentDiv.innerHTML = sugestaoRaw;
+                sugestaoCardDiv.style.display = 'block'; // Exibe o card se houver sugestão
+            } else {
+                sugestaoCardDiv.style.display = 'none'; // Oculta se não houver
+            }
+        } catch(e) {
+            console.error('Erro ao carregar ou exibir sugestão:', e);
+            $('sugestaoCard').style.display = 'none'; // Garante que esteja oculto em caso de erro
+        }
     }
-  </script>
+
+    function redirecionarParaFormulario() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const familia = urlParams.get('familia');
+        const membros = urlParams.get('membros');
+
+        let formularioURL = 'formulario.html';
+
+        if (familia || membros) {
+            formularioURL += `?familia=${encodeURIComponent(familia)}&membros=${encodeURIComponent(membros)}`;
+        }
+        window.location.href = formularioURL;
+    }
+
+    function showView(viewName) {
+        const views = {
+            home: $('homeView'),
+            login: $('loginView')
+        };
+        for (const view in views) {
+            views[view].hidden = true;
+            if (views[view].style) views[view].style.display = 'none';
+        }
+        if (views[viewName]) {
+            views[viewName].hidden = false;
+            if (views[viewName].style) views[viewName].style.display = 'flex';
+        }
+    }
+
+    function handleLogin() {
+        const password = $('adminPassword').value;
+        if (password === ADMIN_PASSWORD) {
+            window.location.href = 'festamaite.html'; // Redireciona para festamaite.html após login
+        } else {
+            $('loginErrorMessage').hidden = false;
+        }
+    }
+
+    // Inicialização
+    loadAndDisplaySugestaoPresente();
+
+    // Event Listeners
+    $('adminLoginBtn').addEventListener('click', () => showView('login'));
+    $('loginSubmitBtn').addEventListener('click', handleLogin);
+    $('adminPassword').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleLogin();
+    });
+});
+</script>
 </body>
 </html>
