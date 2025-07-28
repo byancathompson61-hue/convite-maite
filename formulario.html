@@ -202,10 +202,9 @@
 
     <script>
         const SUGESTAO_KEY = 'conviteMaite_sugestao_v1';
-        const familiasDefault = { // Mantém a lista de famílias padrão para preenchimento, se necessário
-            sueli: ["Sueli", "Byanca", "Adilson", "Eduardo", "Jonathan"],
-            silvana: ["Cicero", "Tatiane", "Daiane", "Silvana"]
-        };
+        // Removi familiasDefault pois a prioridade é sempre o URL agora.
+        // Se você precisar de um fallback para acesso direto sem URL,
+        // pode reintroduzir e adaptar a lógica no carregarMembros().
 
         function carregarSugestaoPresente() {
             try {
@@ -245,30 +244,32 @@
             const membrosDiv = document.getElementById("membros");
             let membros = [];
 
-            if (params.familia && params.membros) {
-                membros = params.membros.split(',').map(nome => nome.trim());
-            } else if (params.familia && familiasDefault[params.familia.toLowerCase()]) { // Converte para minúsculas
-                membros = familiasDefault[params.familia.toLowerCase()];
+            // Prioriza SEMPRE os membros que vêm da URL
+            if (params.membros) {
+                membros = params.membros.split(',').map(nome => nome.trim()).filter(nome => nome !== '');
+            }
+
+            if (membros.length > 0) {
+                // Se encontrou membros na URL, gera os rádios para eles
+                gerarRadiosDinamicos(membros);
             } else {
-                // Se nenhum parâmetro for passado, exibe um input para o responsável digitar os nomes
+                // Se não encontrou membros na URL, exibe o campo para digitação manual
                 membrosDiv.innerHTML = `
-                    <p>Por favor, digite os nomes dos membros que irão confirmar presença, separados por vírgula:</p>
+                    <p>Nenhum membro especificado no convite. Por favor, digite os nomes que irão confirmar presença, separados por vírgula:</p>
                     <input type="text" id="membrosManual" placeholder="Ex: Nome1, Nome2, Nome3" required>
                 `;
                 document.getElementById('membrosManual').addEventListener('change', (e) => {
                     const nomesDigitados = e.target.value.split(',').map(nome => nome.trim()).filter(nome => nome !== '');
                     gerarRadiosDinamicos(nomesDigitados);
                 });
-                return; // Impede que o restante do código crie rádios vazios
             }
-            gerarRadiosDinamicos(membros);
         }
 
         function gerarRadiosDinamicos(nomes) {
             const membrosDiv = document.getElementById("membros");
-            membrosDiv.innerHTML = ''; // Limpa os inputs antigos
+            membrosDiv.innerHTML = ''; // Limpa os inputs antigos ou a mensagem manual
             if (nomes.length === 0) {
-                 membrosDiv.innerHTML = "<p>Por favor, adicione os membros ou acesse o link de convite.</p>";
+                 membrosDiv.innerHTML = "<p>Por favor, adicione os membros ou acesse o link de convite válido.</p>";
                  return;
             }
             nomes.forEach(nome => {
@@ -298,21 +299,21 @@
             const params = getURLParams();
             const responsavel = document.getElementById("responsavel").value;
             const radios = document.querySelectorAll("#membros input[type=radio]:checked");
-            const membrosDinamicosInputs = document.querySelectorAll("#membros .pessoa").length;
-
-
-            // Se houver o input manual, verifica se foi preenchido e quantos nomes foram gerados a partir dele
-            let membrosAConfirmar = 0;
+            
+            let membrosEsperados = 0;
             const membrosManualInput = document.getElementById('membrosManual');
+
             if (membrosManualInput) {
+                // Se o input manual está presente, conte os membros a partir dele
                 const nomesDigitados = membrosManualInput.value.split(',').map(nome => nome.trim()).filter(nome => nome !== '');
-                membrosAConfirmar = nomesDigitados.length;
+                membrosEsperados = nomesDigitados.length;
             } else {
-                membrosAConfirmar = membrosDinamicosInputs;
+                // Se não, conte os membros que foram gerados dinamicamente pelos parâmetros da URL
+                membrosEsperados = document.querySelectorAll("#membros .pessoa").length;
             }
 
-            if (radios.length !== membrosAConfirmar) {
-                mostrarStatus("Por favor, responda por todos os membros da família.", false);
+            if (radios.length !== membrosEsperados || membrosEsperados === 0) {
+                mostrarStatus("Por favor, responda por todos os membros da família e certifique-se de que há nomes para confirmar.", false);
                 return;
             }
 
