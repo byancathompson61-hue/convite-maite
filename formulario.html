@@ -202,9 +202,6 @@
 
     <script>
         const SUGESTAO_KEY = 'conviteMaite_sugestao_v1';
-        // Removi familiasDefault pois a prioridade é sempre o URL agora.
-        // Se você precisar de um fallback para acesso direto sem URL,
-        // pode reintroduzir e adaptar a lógica no carregarMembros().
 
         function carregarSugestaoPresente() {
             try {
@@ -214,9 +211,9 @@
 
                 if (sugestaoRaw) {
                     sugestaoContent.innerHTML = sugestaoRaw;
-                    sugestaoCard.style.display = 'block'; // Mostra o card se houver sugestão
+                    sugestaoCard.style.display = 'block';
                 } else {
-                    sugestaoCard.style.display = 'none'; // Esconde se não houver
+                    sugestaoCard.style.display = 'none';
                 }
             } catch(e) {
                 console.error('Erro ao carregar sugestão:', e);
