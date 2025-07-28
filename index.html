@@ -1,235 +1,227 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"/>
-<title>Festa da Maitê</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-:root {
---rosa: #d63384;
---rosa-escuro: #ad2a6b;
---verde: #28a745;
---cinza-borda: #dcdcdc;
---bg-grad: linear-gradient(135deg, #ffe0f0, #ffc4e1);
---card-bg: #fff;
---radius-card: 18px;
---radius-btn: 8px;
---poppins: 'Poppins', sans-serif;
-}
-body {
-margin: 0;
-font-family: var(--poppins);
-background: var(--bg-grad);
-min-height: 100vh;
-color: #333;
-}
-.center-wrap {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-min-height: 100vh;
-padding: 16px;
-text-align: center;
-}
-.card {
-background: var(--card-bg);
-padding: 32px 28px;
-border-radius: var(--radius-card);
-box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-max-width: 500px;
-margin: 16px;
-text-align: left;
-}
-h1, h2, h3 {
-margin-top: 0;
-font-weight: 600;
-}
-h1 { color: var(--rosa); font-size: 1.9rem; text-align: center; }
-h2 { color: var(--rosa); font-size: 1.4rem; text-align: center; }
-h3 { color: var(--rosa); font-size: 1.1rem; margin-bottom: 8px; }
-p { line-height: 1.4; margin: 0 0 1em; }
-.btn {
-background-color: var(--rosa);
-color: white;
-padding: 12px 20px;
-border: none;
-border-radius: var(--radius-btn);
-font-size: 16px;
-cursor: pointer;
-margin-top: 16px;
-width: 100%;
-}
-.btn:hover { background-color: var(--rosa-escuro); }
-.form-group {
-margin-bottom: 1rem;
-}
-label {
-display: block;
-font-weight: 600;
-margin-bottom: 0.5rem;
-}
-input {
-width: 100%;
-padding: 0.75rem;
-border: 1px solid var(--cinza-borda);
-border-radius: var(--radius-btn);
-box-sizing: border-box;
-}
-/* Estilos para a sugestão de presente no index.html */
-#sugestaoCard {
-display: none; /* Inicialmente oculto */
-margin-top: 30px;
-padding: 25px;
-background: linear-gradient(135deg, #fff5f8, #ffe9f4);
-border: 2px solid #ff69b4;
-border-radius: 20px;
-box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
-animation: slideDown 0.8s ease-out;
-text-align: center;
-position: relative;
-overflow: hidden;
-}
-.sugestao-title {
-color: #d63384;
-font-size: 1.4rem;
-font-weight: bold;
-margin-bottom: 15px;
-text-shadow: 1px 1px 2px rgba(214, 51, 132, 0.3);
-}
-.sugestao-content {
-color: #5a3a71;
-font-size: 1rem;
-line-height: 1.6;
-white-space: pre-line;
-background: rgba(255, 255, 255, 0.7);
-padding: 15px;
-border-radius: 10px;
-border: 1px dashed #ff69b4;
-}
-@keyframes slideDown {
-from { opacity: 0; transform: translateY(-30px); }
-to { opacity: 1; transform: translateY(0); }
-}
-@media (max-width:480px) {
-.card { padding: 24px 20px; }
-h1 { font-size: 1.6rem; }
-.btn { width: 100%; }
-}
-</style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Maitê faz 1 aninho! 🎉</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cor-rosa: #d63384;
+            --cor-rosa-claro: #ffe0f0;
+            --cor-rosa-escuro: #ad2a6b;
+            --cor-roxo: #5a3a71;
+            --cor-borda: #ff69b4;
+            --fonte-titulo: 'Pacifico', cursive;
+            --fonte-geral: 'Poppins', sans-serif;
+            --sombra-card: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        body {
+            margin: 0;
+            font-family: var(--fonte-geral);
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0); /* Fundo mais suave */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            color: #333;
+        }
+        .card-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px; /* Espaço entre os cards */
+            max-width: 600px;
+            width: 100%;
+        }
+        .card {
+            background: #fff;
+            padding: 35px 30px;
+            border-radius: 25px;
+            box-shadow: var(--sombra-card);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid var(--cor-borda);
+        }
+        h1 {
+            font-family: var(--fonte-titulo);
+            color: var(--cor-rosa);
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5em;
+            color: #555;
+        }
+        .detalhes {
+            text-align: left;
+            margin: 25px auto;
+            max-width: 300px;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            background: #fffafa;
+            padding: 15px 20px;
+            border-radius: 15px;
+            border: 1px dashed var(--cor-rosa-claro);
+        }
+        .detalhes strong {
+            color: var(--cor-rosa-escuro);
+        }
+        .btn {
+            background-color: var(--cor-rosa);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn:hover {
+            background-color: var(--cor-rosa-escuro);
+            transform: translateY(-2px);
+        }
+
+        /* Sugestão de Presente Styling */
+        #sugestaoCard {
+            background: linear-gradient(145deg, #fff5f8, #ffe9f4);
+            padding: 35px 30px;
+            border-radius: 25px;
+            box-shadow: var(--sombra-card);
+            text-align: center;
+            border: 2px solid var(--cor-borda);
+            position: relative;
+            overflow: hidden;
+        }
+        #sugestaoCard::before, #sugestaoCard::after {
+            content: '💖';
+            position: absolute;
+            font-size: 2.5rem;
+            opacity: 0.6;
+            animation: pulse 2s infinite alternate;
+        }
+        #sugestaoCard::before {
+            top: 15px;
+            left: 20px;
+        }
+        #sugestaoCard::after {
+            bottom: 15px;
+            right: 20px;
+        }
+        .sugestao-title {
+            font-family: var(--fonte-titulo);
+            color: var(--cor-roxo);
+            font-size: 2rem;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .sugestao-content {
+            color: var(--cor-roxo);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            white-space: pre-line; /* Mantém quebras de linha do admin */
+            background: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px dashed var(--cor-rosa);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2rem; }
+            .sugestao-title { font-size: 1.8rem; }
+            .card, #sugestaoCard { padding: 25px 20px; }
+            .btn { font-size: 1rem; padding: 12px 25px; }
+            p, .detalhes, .sugestao-content { font-size: 0.95rem; }
+        }
+    </style>
 </head>
 <body>
+    <div class="card-container">
+        <div class="card" id="mainInfoCard">
+            <h1 id="familiaSaudacao">Maitê faz 1 aninho! 🥳</h1>
+            <p>Venham comemorar esse momento mágico com a gente! 🌸✨<br>
+            A festa será encantadora e ainda mais especial com a sua presença.</p>
+            <div class="detalhes">
+                <strong>🗓️ Data:</strong> 20 de Setembro<br>
+                <strong>⏰ Horário:</strong> das 19:30 às 23:30<br>
+                <strong>📍 Local:</strong> Avenida São Miguel, 8001 - SP
+            </div>
+            <button class="btn" onclick="redirecionarParaFormulario()">Confirmar Presença</button>
+        </div>
 
-<div id="homeView" class="center-wrap">
-<div class="card text-center">
-<h1>Maitê faz 1 aninho! </h1>
-<p>Venham comemorar esse momento mágico com a gente! <br>
-A festa será encantadora e ainda mais especial com a sua presença.</p>
-<div class="detalhes">
-<strong>Data:</strong> 20 de Setembro<br>
-<strong>Horário:</strong> das 19:30 às 23:30<br>
-<strong>Local:</strong> Avenida São Miguel, 8001 - SP
-</div>
-<button onclick="redirecionarParaFormulario()">Confirmar Presença</button>
-<button id="adminLoginBtn" class="btn" type="button">Área de Admin</button>
-</div>
+        <div class="card" id="sugestaoCard" hidden>
+            <div class="sugestao-title">Sugestão de Presente</div>
+            <div class="sugestao-content" id="sugestaoContent">
+                </div>
+        </div>
+    </div>
 
-<div id="sugestaoCard">
-<div class="sugestao-title">
-Sugestão de Presente
-</div>
-<div class="sugestao-content" id="sugestaoContent">
-</div>
-</div>
-</div>
+    <script>
+        const SUGESTAO_KEY = 'conviteMaite_sugestao_v1';
 
-<div id="loginView" class="center-wrap" hidden>
-<div class="card login-card">
-<h1>Acesso Administrativo</h1>
-<p>Por favor, insira a senha para acessar a área de gerenciamento.</p>
-<div class="form-group">
-<label for="adminPassword">Senha:</label>
-<input type="password" id="adminPassword" placeholder="Digite a senha">
-</div>
-<button id="loginSubmitBtn" class="btn" type="button">Entrar</button>
-<p id="loginErrorMessage" class="error-message" hidden>Senha incorreta. Tente novamente.</p>
-</div>
-</div>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                familia: params.get('familia'),
+                membros: params.get('membros')
+            };
+        }
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const $ = (id) => document.getElementById(id);
-    const SUGESTAO_KEY = 'conviteMaite_sugestao_v1';
-    const ADMIN_PASSWORD = 'maite'; // TROQUE ESTA SENHA!
-
-    function loadAndDisplaySugestaoPresente() {
-        try {
+        function carregarSugestaoPresente() {
             const sugestaoRaw = localStorage.getItem(SUGESTAO_KEY);
-            const sugestaoContentDiv = $('sugestaoContent');
-            const sugestaoCardDiv = $('sugestaoCard');
+            const sugestaoCard = document.getElementById('sugestaoCard');
+            const sugestaoContent = document.getElementById('sugestaoContent');
 
             if (sugestaoRaw) {
-                sugestaoContentDiv.innerHTML = sugestaoRaw;
-                sugestaoCardDiv.style.display = 'block'; // Exibe o card se houver sugestão
+                sugestaoContent.innerHTML = sugestaoRaw;
+                sugestaoCard.hidden = false; // Mostra o card se houver sugestão
             } else {
-                sugestaoCardDiv.style.display = 'none'; // Oculta se não houver
+                sugestaoCard.hidden = true; // Esconde se não houver
             }
-        } catch(e) {
-            console.error('Erro ao carregar ou exibir sugestão:', e);
-            $('sugestaoCard').style.display = 'none'; // Garante que esteja oculto em caso de erro
         }
-    }
 
-    function redirecionarParaFormulario() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const familia = urlParams.get('familia');
-        const membros = urlParams.get('membros');
+        function redirecionarParaFormulario() {
+            const urlParams = getQueryParams();
+            let formularioURL = 'formulario.html';
 
-        let formularioURL = 'formulario.html';
-
-        if (familia || membros) {
-            formularioURL += `?familia=${encodeURIComponent(familia)}&membros=${encodeURIComponent(membros)}`;
+            // Passa os parâmetros de família e membros para o formulário
+            if (urlParams.familia || urlParams.membros) {
+                formularioURL += `?familia=${encodeURIComponent(urlParams.familia || '')}&membros=${encodeURIComponent(urlParams.membros || '')}`;
+            }
+            window.location.href = formularioURL;
         }
-        window.location.href = formularioURL;
-    }
 
-    function showView(viewName) {
-        const views = {
-            home: $('homeView'),
-            login: $('loginView')
-        };
-        for (const view in views) {
-            views[view].hidden = true;
-            if (views[view].style) views[view].style.display = 'none';
-        }
-        if (views[viewName]) {
-            views[viewName].hidden = false;
-            if (views[viewName].style) views[viewName].style.display = 'flex';
-        }
-    }
+        document.addEventListener('DOMContentLoaded', () => {
+            carregarSugestaoPresente();
 
-    function handleLogin() {
-        const password = $('adminPassword').value;
-        if (password === ADMIN_PASSWORD) {
-            window.location.href = 'festamaite.html'; // Redireciona para festamaite.html após login
-        } else {
-            $('loginErrorMessage').hidden = false;
-        }
-    }
+            const { familia, membros } = getQueryParams();
+            const familiaSaudacao = document.getElementById('familiaSaudacao');
 
-    // Inicialização
-    loadAndDisplaySugestaoPresente();
-
-    // Event Listeners
-    $('adminLoginBtn').addEventListener('click', () => showView('login'));
-    $('loginSubmitBtn').addEventListener('click', handleLogin);
-    $('adminPassword').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleLogin();
-    });
-});
-</script>
+            if (familia) {
+                familiaSaudacao.innerHTML = `Olá, <strong>${familia}</strong>! 👋`;
+                if (membros) {
+                    const membrosSpan = document.createElement('span');
+                    membrosSpan.innerHTML = `<br>Família convidada: ${membros}.`;
+                    familiaSaudacao.appendChild(membrosSpan);
+                }
+            }
+        });
+    </script>
 </body>
 </html>
