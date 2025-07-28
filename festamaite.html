@@ -335,7 +335,6 @@
 </div>
 
 <script>
-    // #region UTILITIES & STATE (movido para fora do DOMContentLoaded para ser acessível globalmente se necessário, mas as chamadas estão dentro)
     const $ = (id) => document.getElementById(id);
     const STORAGE_KEY = 'conviteMaite_familias_v1';
     const SUGESTAO_KEY = 'conviteMaite_sugestao_v1';
@@ -355,25 +354,33 @@
     `.trim().replace(/\n/g, '');
 
     function buildInviteLink(familiaName, membrosList) {
-        // Obter o caminho completo do arquivo festamaite.html
+        // Obter a base da URL (o domínio e a pasta do projeto, se houver)
+        // Ex: para 'https://byancathompson61-hue.github.io/convite-maite/festamaite.html'
+        // Queremos 'https://byancathompson61-hue.github.io/convite-maite/'
         const currentUrl = window.location.href;
-        let baseUrl = currentUrl;
+        const parts = currentUrl.split('/');
+        let baseUrl;
 
-        // Se a URL termina em festamaite.html, substitua por index.html
-        if (baseUrl.endsWith('festamaite.html')) {
-            baseUrl = baseUrl.replace('festamaite.html', 'index.html');
-        } 
-        // Se for um diretório, adicione index.html
-        else if (baseUrl.endsWith('/')) {
-            baseUrl += 'index.html';
+        // Tenta encontrar o "convite-maite" na URL para determinar a base
+        const projectIndex = parts.indexOf('convite-maite');
+        if (projectIndex > -1) {
+            // Reconstruir a base da URL até a pasta do projeto
+            baseUrl = parts.slice(0, projectIndex + 1).join('/') + '/';
         } else {
-            // Caso a URL seja algo como "file:///C:/pasta/festamaite" (sem .html),
-            // tentamos adicionar index.html no final.
-            // Para URLs de servidor, essa parte pode precisar de ajuste se for complexa.
-            baseUrl += '/index.html';
+            // Fallback para caso não encontre "convite-maite" (ex: executando localmente sem estrutura clara)
+            // Usa o diretório do festamaite.html como base, se for o caso, então sobe um nível.
+            // Isso pode ser menos robusto para todos os cenários.
+            const path = window.location.pathname;
+            const lastSlash = path.lastIndexOf('/');
+            if (lastSlash > -1) {
+                baseUrl = window.location.origin + path.substring(0, lastSlash) + '/';
+            } else {
+                baseUrl = window.location.origin + '/';
+            }
         }
-
-        return `${baseUrl}?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}`;
+        
+        // Constrói o link final para index.html
+        return `${baseUrl}index.html?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}`;
     }
 
     function sanitizePhone(raw) {
@@ -401,17 +408,13 @@
         });
     }
 
-    // #endregion
-
     document.addEventListener('DOMContentLoaded', () => {
-        // #region STORAGE MANAGEMENT
         function loadFromStorage() {
             try {
                 const raw = localStorage.getItem(STORAGE_KEY);
                 if (raw) familias = JSON.parse(raw);
                 const sugestaoRaw = localStorage.getItem(SUGESTAO_KEY);
                 if (sugestaoRaw) sugestaoPresente = sugestaoRaw;
-                // Update suggestion in Admin area
                 if ($('sugestaoPresente')) {
                     $('sugestaoPresente').innerHTML = sugestaoPresente;
                 }
@@ -437,12 +440,10 @@
                 console.error('Erro ao salvar sugestão', e);
             }
         }
-        // #endregion
 
-        // #region UI RENDERING
         function renderFamilias() {
             const container = $('familiasContainer');
-            if (!container) return; // Garante que o elemento existe antes de tentar manipulá-lo
+            if (!container) return;
 
             container.innerHTML = '';
             if (!familias.length) {
@@ -483,9 +484,6 @@
             });
         }
 
-        // #endregion
-
-        // #region PAGE & MODAL MANAGEMENT
         function showView(viewName) {
             const views = {
                 login: $('loginView'),
@@ -503,7 +501,6 @@
             }
         }
 
-
         let editId = null;
         function openEditModal(id) {
             const fam = familias.find(f => f.id === id);
@@ -520,9 +517,7 @@
             editId = null;
             $('editModal').style.display = 'none';
         }
-        // #endregion
 
-        // #region EVENT HANDLERS
         function handleLogin() {
             const passwordInput = $('adminPassword');
             const errorMessage = $('loginErrorMessage');
@@ -604,7 +599,6 @@
 
         function enviarLinkWhatsApp(fam) {
             const link = buildInviteLink(fam.responsavel, fam.membros);
-            // Mensagem com markdown para WhatsApp
             const msg = `*Olá, meus amiguinhos e familiares encantados!*
 
 O meu aniversário está se aproximando, e eu estou radiante de alegria!
@@ -690,14 +684,10 @@ Família da Maitê`;
             setTimeout(() => URL.revokeObjectURL(url), 1000);
         }
 
-        // #endregion
-
-        // #region INITIALIZATION
         loadFromStorage();
         renderFamilias();
-        showView('login'); // Always start on the login view for festamaite.html
+        showView('login');
 
-        // Event Listeners
         $('loginSubmitBtn').addEventListener('click', handleLogin);
         $('adminPassword').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') handleLogin();
@@ -708,7 +698,6 @@ Família da Maitê`;
             alert('Esta função não está implementada nesta versão reestruturada, pois pode ser bloqueada por navegadores. Sugerimos enviar um a um para melhor controle.');
         });
         $('saveSugestaoBtn').addEventListener('click', saveSugestaoPresente);
-        // Delegated event listener for family actions
         $('familiasContainer').addEventListener('click', (e) => {
             const id = e.target.getAttribute('data-id');
             const fam = familias.find(f => f.id === id);
@@ -729,7 +718,6 @@ Família da Maitê`;
         $('editModal').addEventListener('click', (e) => {
             if (e.target === $('editModal')) closeEditModal();
         });
-        // #endregion
     });
 </script>
 </body>
