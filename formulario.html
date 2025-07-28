@@ -2,594 +2,413 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confirmação de Presença</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --rosa-claro: #ffe9f4;
-            --rosa-medio: #f8b5f0;
-            --rosa-escuro: #a3478f;
-            --rosa-hover: #8b3a77;
-            --texto-principal: #333;
-            --texto-secundario: #666;
-            --borda-clara: #ccc;
-            --fundo-input: #f9f9f9;
-            --sombra-card: 0 6px 18px rgba(0, 0, 0, 0.1);
-            --transicao-padrao: all 0.3s ease;
-        }
-
         body {
-            font-family: 'Poppins', sans-serif;
-            padding: 15px; /* Reduzido o padding */
-            background: linear-gradient(to bottom, var(--rosa-claro), var(--rosa-medio));
-            color: var(--texto-principal);
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #fffafc;
+            color: #333;
             display: flex;
             justify-content: center;
-            align-items: center; /* Centraliza verticalmente o conteúdo */
-            min-height: 100vh; /* Garante que a página ocupe a altura total, mas o conteúdo não se estica */
+            align-items: center;
+            height: 100vh;
             margin: 0;
             text-align: center;
             flex-direction: column;
             position: relative;
-            overflow: hidden; /* Mantém para os balões e borboletas */
+            overflow: hidden;
         }
-
         h2 {
-            color: var(--rosa-escuro);
-            margin-bottom: 20px; /* Reduzido a margem */
+            color: #a3478f;
+            margin-bottom: 20px;
             z-index: 1;
-            font-size: 2rem; /* Ligeiramente menor */
-            font-weight: 700;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
         }
-
-        /* Container principal para centralizar form ou mensagem */
-        .main-container {
+        select, input[type="text"], button {
+            margin: 10px 0;
+            padding: 8px;
             width: 100%;
-            max-width: 400px; /* Mais compacto */
-            background: rgba(255, 255, 255, 0.95);
-            padding: 25px 20px 30px; /* Reduzido o padding */
-            border-radius: 15px; /* Ligeiramente menor */
-            box-shadow: var(--sombra-card);
-            position: relative;
-            z-index: 1;
-            box-sizing: border-box;
-            transition: var(--transicao-padrao);
-            margin-bottom: 20px; /* Espaço para a sugestão de presente */
-        }
-
-        input[type="text"], button {
-            margin: 10px 0; /* Reduzido a margem */
-            padding: 10px 12px; /* Reduzido o padding */
-            width: calc(100% - 24px); /* Ajuste para padding */
-            border-radius: 8px;
-            border: 1px solid var(--borda-clara);
-            font-size: 0.95rem; /* Ligeiramente menor */
+            max-width: 400px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
             box-sizing: border-box;
             z-index: 1;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-        input[type="text"]:focus {
-            outline: none;
-            border-color: var(--rosa-escuro);
-            box-shadow: 0 0 0 3px rgba(163, 71, 143, 0.2);
+        form#formulario {
+            margin-top: 10px;
+            width: 100%;
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 1;
         }
-
-        .form-group {
-            margin-bottom: 15px; /* Reduzido a margem */
+        .input-group {
+            margin-bottom: 15px;
             text-align: left;
         }
-
-        label {
+        .input-group label {
             display: block;
-            margin-bottom: 5px; /* Reduzido a margem */
-            font-weight: 600;
-            color: var(--texto-secundario);
-            font-size: 0.9rem; /* Ligeiramente menor */
-        }
-
-        .membro-confirmacao {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            background-color: var(--fundo-input);
-            padding: 12px 15px; /* Reduzido o padding */
-            border-radius: 10px;
-            margin-bottom: 10px; /* Reduzido a margem */
-            border: 1px solid #eee;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .membro-confirmacao:last-child {
-            margin-bottom: 0;
-        }
-
-        .membro-confirmacao label {
-            margin-bottom: 8px; /* Reduzido a margem */
-            font-weight: 600;
-            color: var(--texto-principal);
-            font-size: 1rem;
-        }
-
-        .membro-confirmacao .radio-group {
-            display: flex;
-            gap: 20px; /* Reduzido o espaço */
-            width: 100%;
-            justify-content: center;
-        }
-        .radio-group input[type="radio"] {
-            display: none;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
         }
         .radio-group label {
             display: inline-block;
-            padding: 8px 18px; /* Reduzido o padding */
-            border: 2px solid var(--rosa-escuro);
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem; /* Ligeiramente menor */
-            color: var(--rosa-escuro);
-            transition: var(--transicao-padrao);
-            margin-bottom: 0;
+            margin-right: 15px;
+            font-weight: normal;
         }
-        .radio-group input[type="radio"]:checked + label {
-            background-color: var(--rosa-escuro);
-            color: white;
-            box-shadow: 0 3px 8px rgba(163, 71, 143, 0.3);
-        }
-        .radio-group label:hover {
-            background-color: var(--rosa-claro);
-            color: var(--rosa-escuro);
-        }
-        .radio-group input[type="radio"]:checked + label:hover {
-             background-color: var(--rosa-hover);
-        }
-
-        button[type="submit"] {
-            background-color: var(--rosa-escuro);
-            color: white;
-            padding: 12px 25px; /* Reduzido o padding */
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.1rem; /* Ligeiramente menor */
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            transition: var(--transicao-padrao);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px; /* Reduzido o espaço */
+        .radio-group input[type="radio"] {
+            margin-right: 5px;
             width: auto;
-            margin-left: auto;
-            margin-right: auto;
-            margin-top: 20px; /* Adicionado um pouco de margem acima do botão */
         }
-        button[type="submit"]:hover:not(:disabled) {
-            background-color: var(--rosa-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(163, 71, 143, 0.3);
-        }
-        button[type="submit"]:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-
-        /* Loading Spinner */
-        .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.3); /* Ligeiramente menor */
-            border-top: 3px solid #fff;
-            border-radius: 50%;
-            width: 18px; /* Ligeiramente menor */
-            height: 18px;
-            animation: spin 1s linear infinite;
-            display: none;
-        }
-        button[type="submit"].loading .spinner {
-            display: block;
-        }
-        button[type="submit"].loading span {
-            margin-right: 8px; /* Ajuste o espaçamento */
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .status-message {
-            margin-top: 0; /* Removido margem superior para o container */
-            padding: 20px 25px; /* Reduzido o padding */
-            border-radius: 15px;
-            font-weight: 600;
-            font-size: 1.2rem; /* Ligeiramente menor */
-            display: none;
-            background-color: #e0ffe0;
-            color: #007000;
-            border: 2px solid #a0ffa0;
-            max-width: 400px;
-            width: 100%;
-            box-sizing: border-box;
-            z-index: 1;
-            box-shadow: 0 4px 15px rgba(0, 112, 0, 0.2);
-            line-height: 1.4;
-        }
-        .status-message.error {
-            background-color: #ffe0e0;
-            color: #cc0000;
-            border: 2px solid #ffa0a0;
-            box-shadow: 0 4px 15px rgba(204, 0, 0, 0.2);
-        }
-        .status-message.success-permanent {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            height: auto;
-            min-height: 180px; /* Ligeiramente menor */
-            animation: fadeIn 0.8s ease-out forwards;
-        }
-        .status-message.success-permanent .icon {
-            font-size: 2.8rem; /* Ligeiramente menor */
-            margin-bottom: 12px; /* Reduzido a margem */
-            color: #28a745;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Floating elements */
-        .sparkle, .balloon, .butterfly {
-            position: absolute;
-            opacity: 0.7;
-            animation: float 10s ease-in-out infinite;
-            z-index: 0;
-        }
-        /* Your existing floating element styles */
-        .sparkle { width: 15px; height: 15px; background-color: gold; border-radius: 50%; box-shadow: 0 0 10px gold, 0 0 20px orange; animation: twinkle 1.5s infinite ease-in-out alternate; }
-        .sparkle:nth-child(1) { top: 10%; left: 5%; animation-delay: 0.5s; }
-        .sparkle:nth-child(2) { top: 30%; right: 10%; animation-delay: 1s; }
-        .sparkle:nth-child(3) { bottom: 20%; left: 15%; animation-delay: 1.5s; }
-        .sparkle:nth-child(4) { top: 50%; left: 40%; animation-delay: 0.2s; }
-        .balloon { width: 40px; height: 50px; background-color: #ff99cc; border-radius: 50%; position: relative; top: 0; left: 0; margin: 0 10px; box-shadow: inset -5px -5px 10px rgba(0,0,0,0.2); }
-        .balloon::before { content: ''; position: absolute; width: 15px; height: 15px; background-color: inherit; border-radius: 50%; top: -5px; left: 50%; transform: translateX(-50%); box-shadow: inset -2px -2px 5px rgba(0,0,0,0.2); }
-        .balloon::after { content: ''; position: absolute; width: 2px; height: 20px; background-color: #888; top: 50px; left: 50%; transform: translateX(-50%); z-index: -1; }
-        .balloon:nth-child(1) { top: 20%; left: 80%; background-color: #a0e6ff; animation-delay: 0s; }
-        .balloon:nth-child(2) { top: 5%; left: 20%; background-color: #ffb380; animation-delay: 1.2s; }
-        .balloon:nth-child(3) { bottom: 10%; left: 70%; background-color: #c0ff80; animation-delay: 2.4s; }
-        .balloon:nth-child(4) { top: 40%; left: 5%; background-color: #ff80df; animation-delay: 3.6s; }
-        .butterfly { width: 30px; height: 20px; background-color: #ffccff; border-radius: 50%; position: relative; transform-origin: center; animation: fly 2s ease-in-out infinite alternate; }
-        .butterfly::before, .butterfly::after { content: ''; position: absolute; width: 25px; height: 25px; background-color: inherit; border-radius: 50%; top: -10px; }
-        .butterfly::before { left: -10px; transform: rotate(-30deg); }
-        .butterfly::after { right: -10px; transform: rotate(30deg); }
-        .butterfly:nth-child(1) { top: 15%; left: 15%; animation-delay: 0.5s; background-color: #e0a0ff; }
-        .butterfly:nth-child(2) { top: 70%; left: 85%; animation-delay: 1.5s; background-color: #ffa0a0; }
-        .butterfly:nth-child(3) { bottom: 5%; left: 40%; animation-delay: 2.5s; background-color: #a0ffc0; }
-
-        @keyframes float { 0% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } 100% { transform: translateY(0px) rotate(0deg); } }
-        @keyframes twinkle { 0%, 100% { opacity: 0.7; transform: scale(1); } 50% { opacity: 1; transform: scale(1.5); } }
-        @keyframes fly { 0% { transform: translateY(0px) translateX(0px) rotate(0deg); } 25% { transform: translateY(-10px) translateX(10px) rotate(5deg); } 50% { transform: translateY(0px) translateX(0px) rotate(0deg); } 75% { transform: translateY(10px) translateX(-10px) rotate(-5deg); } 100% { transform: translateY(0px) translateX(0px) rotate(0deg); } }
-
-        /* Sugestão de Presente */
-        #sugestaoCard {
-            display: none;
-            margin-top: 25px; /* Reduzido a margem superior */
-            padding: 20px; /* Reduzido o padding */
-            background: linear-gradient(135deg, #fff5f8, #ffe9f4);
-            border: 2px solid #ff69b4;
-            border-radius: 15px;
-            box-shadow: 0 6px 18px rgba(255, 105, 180, 0.25);
-            animation: slideDown 0.8s ease-out;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            max-width: 380px; /* Mais compacto */
-            box-sizing: border-box;
-        }
-
-        #sugestaoCard::before {
-            content: "✨";
-            position: absolute;
-            top: 10px;
-            left: 15px; /* Ajustado a posição */
-            font-size: 20px; /* Ligeiramente menor */
-            animation: sparkle 2s infinite;
-        }
-
-        #sugestaoCard::after {
-            content: "🎁";
-            position: absolute;
-            top: 10px;
-            right: 15px; /* Ajustado a posição */
-            font-size: 20px; /* Ligeiramente menor */
-            animation: bounce 2s infinite;
-        }
-
-        .sugestao-title {
-            color: #d63384;
-            font-size: 1.3rem; /* Ligeiramente menor */
-            font-weight: bold;
-            margin-bottom: 12px; /* Reduzido a margem */
-            text-shadow: 1px 1px 2px rgba(214, 51, 132, 0.3);
-        }
-
-        .sugestao-content {
-            color: #5a3a71;
-            font-size: 0.95rem; /* Ligeiramente menor */
-            line-height: 1.5;
-            white-space: pre-line;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 12px; /* Reduzido o padding */
+        #membros {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px dashed #a3478f;
             border-radius: 8px;
-            border: 1px dashed #ff69b4;
+            max-height: 250px;
+            overflow-y: auto;
+            background-color: #fff;
+        }
+        .pessoa {
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        .pessoa:last-child {
+            border-bottom: none;
+        }
+        #statusMessage {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none; /* Escondido por padrão */
+        }
+        #statusMessage.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        #statusMessage.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Estilos para a sugestão de presente */
+        .sugestao-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 450px;
+            margin-top: 20px;
+            text-align: left;
+            border: 1px dashed #d94ba2;
+            display: none; /* Escondido por padrão, será exibido via JS se houver conteúdo */
+            z-index: 1;
+        }
+        .sugestao-card h3 {
+            color: #a3478f;
+            margin-top: 0;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sugestao-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+            color: #555;
+        }
+        .sugestao-card ul li {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .sugestao-card ul li::before {
+            content: '✨'; /* Ícone para os itens da lista */
+            margin-right: 8px;
+        }
+        .sugestao-card .obs {
+            font-style: italic;
+            font-size: 0.95rem;
+            color: #777;
+            margin-top: 15px;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+
+        /* Animações de fundo */
+        .balloon, .sparkle {
+            position: absolute;
+            opacity: 0;
+            animation: floatUp 15s infinite ease-in-out forwards;
+            pointer-events: none;
+        }
+        .balloon {
+            width: 50px;
+            height: 70px;
+            background: url('https://www.flaticon.com/svg/vincode/balloon.svg') no-repeat center center / contain; /* Exemplo de balão, você pode usar uma imagem real */
+            filter: saturate(1.5) hue-rotate(300deg); /* Cores vibrantes */
+        }
+        .balloon:nth-child(1) { left: 5%; bottom: 0; animation-delay: 2s; }
+        .balloon:nth-child(2) { right: 8%; bottom: 0; animation-delay: 7s; }
+        .balloon:nth-child(3) { left: 30%; bottom: 0; animation-delay: 12s; }
+        .balloon:nth-child(4) { right: 20%; bottom: 0; animation-delay: 3s; }
+
+        .sparkle {
+            width: 15px;
+            height: 15px;
+            background-color: #ffd700;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ffd700, 0 0 20px #ffea00;
+            animation: sparkleFade 3s infinite ease-out forwards;
+        }
+        .sparkle:nth-child(1) { top: 5%; left: 50%; animation-delay: 0s; }
+        .sparkle:nth-child(2) { top: 15%; left: 30%; animation-delay: 1s; }
+        .sparkle:nth-child(3) { top: 10%; right: 20%; animation-delay: 2s; }
+        .sparkle:nth-child(4) { top: 20%; left: 70%; animation-delay: 0.5s; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(-150vh); opacity: 0; }
+        }
+
+        @keyframes sparkleFade {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.5); opacity: 1; }
+            100% { transform: scale(0); opacity: 0; }
         }
     </style>
 </head>
 <body>
-    <div class="butterfly"></div>
-    <div class="sparkle"></div>
-    <div class="balloon"></div>
-    <div class="balloon"></div>
-    <div class="balloon"></div>
-    <div class="balloon"></div>
-
     <h2>Confirmação de Presença</h2>
 
-    <div id="mainContent" class="main-container">
-        <form id="formulario">
-            <div class="form-group">
-                <label for="responsavel">Nome do Responsável:</label>
-                <input type="text" id="responsavel" name="responsavel" readonly />
+    <form id="formulario">
+        <div class="input-group">
+            <label for="familiaSelect">Selecione sua Família:</label>
+            <select id="familiaSelect">
+                <option value="">Carregando famílias...</option>
+            </select>
+        </div>
+
+        <div class="input-group" id="responsavelInputGroup" style="display: none;">
+            <label for="responsavelNome">Nome do Responsável:</label>
+            <input type="text" id="responsavelNome" placeholder="Seu nome">
+        </div>
+
+        <div id="membros">
             </div>
 
-            <div id="membros" class="form-group">
-                </div>
+        <button type="submit">Confirmar Presença</button>
+    </form>
 
-            <button type="submit" id="submitBtn">
-                <span id="buttonText">Confirmar Presença</span>
-                <div class="spinner"></div>
-            </button>
-        </form>
+    <div id="statusMessage" class="status-message"></div>
 
-        <div id="statusMessage" class="status-message"></div>
+    <div class="sugestao-card" id="sugestaoCard">
+        <div id="sugestaoContent">
+            </div>
     </div>
 
-    <div id="sugestaoCard">
-        <div class="sugestao-title">💝 Sugestão de Presente 💝</div>
-        <div class="sugestao-content" id="sugestaoContent">
-            🎁 Sugestão de Presente
-            👗 Roupa tamanho 1
-            👟 Sapato nº 17/18
-            🧸 Gosta de brinquedos coloridos
-            (Essas são apenas sugestões! Sua presença é o melhor presente. 💖)
-        </div>
-    </div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKt_3nG0rXoF1alrY2YNjQ2gqmf2_Nd0uDc0E3HUbv8t-waVwUNLhvJdXC86rKl8M0/exec"; // Substitua pela sua URL do Apps Script
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKt_3nG0rXoF1alrY2YNjQ2gqmf2_Nd0uDc0E3HUbv8t-waVwUNLhvJdXC86rKl8M0/exec";
+        const FAMILIAS_DATA_URL = "https://script.google.com/macros/s/AKfycbwKt_3nG0rXoF1alrY2YNjQ2gqmf2_Nd0uDc0E3HUbv8t-waVwUNLhvJdXC86rKl8M0/exec?action=getFamilias"; // Exemplo de URL para obter famílias
+        const SUGESTAO_KEY = 'conviteMaite_sugestao_v1';
 
-        const familias = {
-            sueli: ["Sueli", "Byanca", "Adilson", "Eduardo", "Jonathan"],
-            silvana: ["Cicero", "Tatiane", "Daiane", "Silvana"]
-        };
-
-        const formulario = document.getElementById('formulario');
-        const statusMessage = document.getElementById('statusMessage');
-        const submitBtn = document.getElementById('submitBtn');
-        const buttonText = document.getElementById('buttonText');
-        const mainContent = document.getElementById('mainContent');
-        const sugestaoCard = document.getElementById('sugestaoCard');
-
-        function getURLParams() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return {
-                familia: urlParams.get('familia'),
-                membros: urlParams.get('membros')
-            };
+        function mostrarStatus(message, isSuccess) {
+            const statusDiv = document.getElementById("statusMessage");
+            statusDiv.textContent = message;
+            statusDiv.className = `status-message ${isSuccess ? 'success' : 'error'}`;
+            statusDiv.style.display = "block";
+            setTimeout(() => {
+                statusDiv.style.display = "none";
+            }, 5000);
         }
 
         function carregarMembros() {
-            const params = getURLParams();
-            const responsavelInput = document.getElementById('responsavel');
-            const membrosContainer = document.getElementById('membros');
+            const familiaSelect = document.getElementById("familiaSelect");
+            const membrosDiv = document.getElementById("membros");
+            const responsavelInputGroup = document.getElementById("responsavelInputGroup");
+            membrosDiv.innerHTML = ""; // Limpa os membros anteriores
+            responsavelInputGroup.style.display = "none"; // Esconde o campo de responsável
 
-            let membrosParaCarregar = [];
-
-            if (params.familia && params.membros) {
-                membrosParaCarregar = params.membros.split(',').map(nome => nome.trim()).filter(m => m.length > 0);
-                responsavelInput.value = params.familia; // Preenche o responsável com o nome da família da URL
-            } else if (params.familia && familias[params.familia.toLowerCase()]) {
-                membrosParaCarregar = familias[params.familia.toLowerCase()];
-                responsavelInput.value = params.familia;
-            } else {
-                // Caso não haja membros na URL, ou família desconhecida, permite entrada manual
-                // E pré-seleciona a primeira família para o responsável se não houver família na URL
-                membrosParaCarregar = []; // Não carrega membros fixos para entrada manual inicial
-                responsavelInput.value = ''; // Campo de responsável vazio para ser preenchido
+            const selectedOption = familiaSelect.options[familiaSelect.selectedIndex];
+            if (!selectedOption || !selectedOption.value) {
+                return; // Nenhuma família selecionada
             }
 
-            membrosContainer.innerHTML = ''; // Limpa antes de adicionar
+            const [familiaNome, numMembros] = selectedOption.value.split("|");
+            const num = parseInt(numMembros, 10);
 
-            if (membrosParaCarregar.length > 0) {
-                membrosParaCarregar.forEach(membro => {
-                    const div = document.createElement('div');
-                    div.className = 'membro-confirmacao';
-                    div.innerHTML = `
-                        <label>${membro}:</label>
+            if (num > 0) {
+                responsavelInputGroup.style.display = "block"; // Mostra o campo de responsável
+                for (let i = 1; i <= num; i++) {
+                    const pessoaDiv = document.createElement("div");
+                    pessoaDiv.classList.add("pessoa");
+                    pessoaDiv.innerHTML = `
+                        <label>Pessoa ${i}:</label>
                         <div class="radio-group">
-                            <input type="radio" id="${membro}-sim" name="${CSS.escape(membro)}" value="Sim" required>
-                            <label for="${membro}-sim">Sim</label>
-                            <input type="radio" id="${membro}-nao" name="${CSS.escape(membro)}" value="Não">
-                            <label for="${membro}-nao">Não</label>
+                            <label><input type="radio" name="presencaPessoa${i}" value="Sim"> Sim</label>
+                            <label><input type="radio" name="presencaPessoa${i}" value="Nao"> Não</label>
                         </div>
                     `;
-                    membrosContainer.appendChild(div);
-                });
-            } else {
-                 // Entrada manual para quem não veio via URL com membros
-                const divNomeManual = document.createElement('div');
-                divNomeManual.className = 'membro-confirmacao';
-                divNomeManual.innerHTML = `
-                    <label>Seu nome completo:</label>
-                    <input type="text" id="membroManual" name="membroManual" placeholder="Digite seu nome" required>
-                `;
-                membrosContainer.appendChild(divNomeManual);
-
-                const divComparecer = document.createElement('div');
-                divComparecer.className = 'membro-confirmacao';
-                divComparecer.innerHTML = `
-                    <label>Você poderá comparecer?</label>
-                    <div class="radio-group">
-                        <input type="radio" id="comparecer-sim" name="comparecer" value="Sim" required>
-                        <label for="comparecer-sim">Sim</label>
-                        <input type="radio" id="comparecer-nao" name="comparecer" value="Não">
-                        <label for="comparecer-nao">Não</label>
-                    </div>
-                `;
-                membrosContainer.appendChild(divComparecer);
+                    membrosDiv.appendChild(pessoaDiv);
+                }
             }
         }
 
+        function carregarFamiliasDoBackend() {
+            fetch(FAMILIAS_DATA_URL)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erro ao carregar famílias do backend.");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const familiaSelect = document.getElementById("familiaSelect");
+                    familiaSelect.innerHTML = '<option value="">Selecione...</option>';
+                    if (data && data.familias && data.familias.length > 0) {
+                        data.familias.forEach(fam => {
+                            const option = document.createElement("option");
+                            option.value = `${fam.nome}|${fam.membros}`; // Adapte conforme a estrutura de dados do seu backend
+                            option.textContent = `${fam.nome} (${fam.membros} membros)`;
+                            // Opcional: Desabilitar se já confirmado (precisa de dados do Google Sheet)
+                            if (fam.confirmado) { // Assumindo que o backend envia um status 'confirmado'
+                                option.disabled = true;
+                                option.textContent += " (Confirmado)";
+                            }
+                            familiaSelect.appendChild(option);
+                        });
 
-        function carregarSugestaoPresente() {
-            try {
-                const sugestaoRaw = localStorage.getItem('conviteMaite_sugestao_v1');
-                if (sugestaoRaw) {
-                    document.getElementById('sugestaoContent').textContent = sugestaoRaw;
-                }
-            } catch(e) {
-                console.error('Erro ao carregar sugestão:', e);
-            }
+                        // Tenta pré-selecionar família se vier da URL
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const familiaParam = urlParams.get('familia');
+                        const membrosParam = urlParams.get('membros');
+
+                        if (familiaParam && membrosParam) {
+                            const valueToSelect = `${decodeURIComponent(familiaParam)}|${decodeURIComponent(membrosParam)}`;
+                            const optionToSelect = Array.from(familiaSelect.options).find(option => option.value === valueToSelect);
+                            if (optionToSelect) {
+                                familiaSelect.value = valueToSelect;
+                                carregarMembros(); // Carrega os membros para a família pré-selecionada
+                                // Desabilitar o formulário se já confirmado
+                                if (optionToSelect.disabled) {
+                                    document.getElementById("formulario").style.pointerEvents = "none";
+                                    document.getElementById("formulario").style.opacity = "0.6";
+                                    mostrarStatus("Sua presença já foi confirmada para esta família.", true);
+                                }
+                            }
+                        }
+                    } else {
+                        familiaSelect.innerHTML = '<option value="">Nenhuma família disponível.</option>';
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao carregar famílias:", error);
+                    mostrarStatus("Erro ao carregar lista de famílias. Tente novamente mais tarde.", false);
+                    document.getElementById("familiaSelect").innerHTML = '<option value="">Erro ao carregar famílias.</option>';
+                });
         }
 
         function exibirSugestaoPresente() {
-            sugestaoCard.style.display = 'block';
-            setTimeout(() => {
-                sugestaoCard.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center'
-                });
-            }, 100);
+            const sugestaoRaw = localStorage.getItem(SUGESTAO_KEY);
+            const sugestaoContent = document.getElementById('sugestaoContent');
+            const sugestaoCard = document.getElementById('sugestaoCard');
+
+            let contentToDisplay = `
+                <h3>🎁 Sugestão de Presente:</h3>
+                <ul>
+                    <li>Roupinhas tamanho 1</li>
+                    <li>Sapatinhos nº 17/18</li>
+                    <li>Adora brinquedos!</li>
+                </ul>
+                <p class="obs">Obs: São apenas sugestões! Sua presença é, sem dúvida, o melhor presente. 💕</p>
+            `;
+
+            if (sugestaoRaw) {
+                contentToDisplay = sugestaoRaw;
+            }
+            
+            sugestaoContent.innerHTML = contentToDisplay;
+            sugestaoCard.style.display = 'block'; // Mostra o card
         }
 
-        function mostrarStatusPermanente(mensagem, sucesso) {
-            statusMessage.textContent = ''; // Limpa o conteúdo
-            statusMessage.className = 'status-message success-permanent';
-            if (!sucesso) {
-                statusMessage.classList.add('error');
-                statusMessage.innerHTML = `<span class="icon">❌</span><p>${mensagem}</p>`;
-            } else {
-                statusMessage.innerHTML = `<span class="icon">✅</span><p>${mensagem}</p>`;
-            }
-            formulario.style.display = 'none'; // Esconde o formulário
-            statusMessage.style.display = 'flex'; // Mostra a mensagem
-            mainContent.style.height = 'auto'; // Ajusta a altura do container principal
-        }
 
-        formulario.addEventListener('submit', async function(event) {
-            event.preventDefault();
+        document.addEventListener("DOMContentLoaded", () => {
+            carregarFamiliasDoBackend();
+            exibirSugestaoPresente();
 
-            // Desabilita o botão e mostra o spinner
-            submitBtn.disabled = true;
-            submitBtn.classList.add('loading');
-            buttonText.textContent = 'Enviando...';
-            statusMessage.style.display = 'none'; // Esconde qualquer mensagem de status anterior
+            document.getElementById("familiaSelect").addEventListener("change", carregarMembros);
 
-            const params = getURLParams();
-            const responsavel = document.getElementById('responsavel').value.trim();
+            document.getElementById("formulario").addEventListener("submit", function (e) {
+                e.preventDefault();
 
-            if (!responsavel) {
-                mostrarStatusPermanente("Por favor, preencha o nome do responsável.", false);
-                submitBtn.disabled = false;
-                submitBtn.classList.remove('loading');
-                buttonText.textContent = 'Confirmar Presença';
-                return;
-            }
+                const familiaSelect = document.getElementById("familiaSelect");
+                const responsavel = document.getElementById("responsavelNome").value.trim();
+                const selectedOptionValue = familiaSelect.value;
 
-            const dados = {
-                familia: params.familia || responsavel, // Usa o nome do responsável como família se não vier da URL
-                responsavel: responsavel,
-                confirmacoes: {}
-            };
+                if (!selectedOptionValue) {
+                    mostrarStatus("Por favor, selecione sua família.", false);
+                    return;
+                }
+                if (!responsavel) {
+                    mostrarStatus("Por favor, digite o nome do responsável.", false);
+                    return;
+                }
 
-            const membrosConfirmacaoDivs = document.querySelectorAll("#membros .membro-confirmacao");
-            let allMembersAnswered = true;
+                const [familia, numMembros] = selectedOptionValue.split("|");
+                const dados = {
+                    familia: familia,
+                    responsavel: responsavel,
+                    confirmacoes: {}
+                };
 
-            if (params.membros || (params.familia && familias[params.familia.toLowerCase()])) {
-                // Cenário com membros da URL ou família pré-definida
-                membrosConfirmacaoDivs.forEach(div => {
-                    const nomeElement = div.querySelector("label");
-                    if (nomeElement) {
-                        const nome = nomeElement.innerText.replace(":", "").trim();
-                        const resposta = div.querySelector(`input[name="${CSS.escape(nome)}"]:checked`);
-                        if (!resposta) {
-                            allMembersAnswered = false;
-                        }
-                        dados.confirmacoes[nome] = resposta ? resposta.value : "Não Respondeu";
-                    }
+                // Coleta as respostas de presença
+                document.querySelectorAll("#membros .pessoa").forEach(div => {
+                    const nome = div.querySelector("label").innerText.replace(":", "");
+                    const resposta = div.querySelector("input[type=radio]:checked");
+                    dados.confirmacoes[nome] = resposta ? resposta.value : "";
                 });
-                if (!allMembersAnswered) {
-                    mostrarStatusPermanente("Por favor, responda se todos os membros da família poderão comparecer.", false);
-                    submitBtn.disabled = false;
-                    submitBtn.classList.remove('loading');
-                    buttonText.textContent = 'Confirmar Presença';
-                    return;
-                }
-            } else {
-                // Cenário de entrada manual
-                const membroManualInput = document.getElementById('membroManual');
-                const comparecerRadio = document.querySelector('input[name="comparecer"]:checked');
 
-                if (!membroManualInput || membroManualInput.value.trim() === "" || !comparecerRadio) {
-                    mostrarStatusPermanente("Por favor, preencha seu nome e selecione se poderá comparecer.", false);
-                    submitBtn.disabled = false;
-                    submitBtn.classList.remove('loading');
-                    buttonText.textContent = 'Confirmar Presença';
-                    return;
-                }
-                dados.confirmacoes[membroManualInput.value.trim()] = comparecerRadio.value;
-            }
+                mostrarStatus("Enviando dados...", true);
 
-            const formData = new FormData();
-            formData.append("familia", dados.familia);
-            formData.append("responsavel", dados.responsavel);
-            formData.append("confirmacoes", JSON.stringify(dados.confirmacoes));
-
-            try {
-                const response = await fetch(SCRIPT_URL, {
+                // Substitua esta URL pelo seu Script Web do Google Apps Script
+                fetch(SCRIPT_URL, {
                     method: "POST",
-                    body: formData,
+                    body: new URLSearchParams(dados),
                     redirect: "follow"
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error("Erro na rede");
+                    return response.text();
+                })
+                .then(() => {
+                    mostrarStatus("Confirmação enviada com sucesso! Agradecemos sua resposta.", true);
+                    document.getElementById("formulario").reset();
+                    carregarMembros(); // Recarrega para limpar as seleções e, se for o caso, o input manual
+                    // Opcional: Poderia redirecionar ou desabilitar o formulário aqui para evitar múltiplas submissões
+                })
+                .catch(err => {
+                    console.error("Erro:", err);
+                    mostrarStatus("Erro ao enviar confirmação. Tente novamente.", false);
                 });
-
-                const resultText = await response.text();
-                console.log('Resposta do script:', resultText);
-
-                // Check for success regardless of response.ok, as Apps Script might send 200 OK
-                // but include "Erro" in text, or 500 error but with "Sucesso" in text (less likely)
-                // We'll prioritize the text content if it explicitly states "sucesso".
-                if (resultText.toLowerCase().includes("sucesso")) {
-                    mostrarStatusPermanente("Sua presença foi confirmada com sucesso! Muito obrigado(a)! 🎉", true);
-                    exibirSugestaoPresente(); // Mostra sugestão após sucesso
-                } else {
-                    mostrarStatusPermanente(`Ops! Houve um problema ao confirmar sua presença. Mensagem: ${resultText || response.statusText}. Por favor, tente novamente ou entre em contato.`, false);
-                }
-            } catch (err) {
-                console.error("Erro:", err);
-                mostrarStatusPermanente(`Erro de conexão: ${err.message}. Verifique sua internet e tente novamente.`, false);
-            } finally {
-                // O botão não é reabilitado aqui porque o formulário é ocultado após o envio.
-                // Isso evita cliques duplos.
-            }
-        });
-
-        window.addEventListener('DOMContentLoaded', () => {
-            carregarMembros();
-            carregarSugestaoPresente(); // Carrega a sugestão ao carregar a página
+            });
         });
     </script>
 </body>
