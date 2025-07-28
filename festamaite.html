@@ -2,11 +2,11 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8"/>
-    <title>Festa da Maitê</title>
+    <title>Festa da Maitê - Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --rosa: #d63384;
@@ -96,7 +96,7 @@
         }
         /* Admin specific styles */
         #adminArea {
-            display: none;
+            display: none; /* Hidden by default, shown after login */
             position: fixed;
             inset: 0;
             background: #fff8fc;
@@ -262,81 +262,11 @@
             h1 { font-size: 1.6rem; }
             .btn { width: 100%; }
         }
-        /* Styles for gift suggestion on confirm page */
-        #sugestaoConfirmCard {
-            margin-top: 30px;
-            padding: 25px;
-            background: linear-gradient(135deg, #fff5f8, #ffe9f4);
-            border: 2px solid #ff69b4;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            display: none;
-        }
-        #sugestaoConfirmCard::before, #sugestaoConfirmCard::after {
-            content: "✨";
-            position: absolute;
-            font-size: 24px;
-            opacity: 0.7;
-        }
-        #sugestaoConfirmCard::before { top: 10px; left: 20px; }
-        #sugestaoConfirmCard::after { top: 10px; right: 20px; }
-        .sugestao-title-confirm {
-            color: #d63384;
-            font-size: 1.4rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-            text-shadow: 1px 1px 2px rgba(214, 51, 132, 0.3);
-        }
-        .sugestao-content-confirm {
-            color: #5a3a71;
-            font-size: 1rem;
-            line-height: 1.6;
-            white-space: pre-line;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px dashed #ff69b4;
-        }
     </style>
 </head>
 <body>
 
-<div id="homeView" class="center-wrap">
-    <div class="card text-center">
-        <h1>Festa da Maitê</h1>
-        <p>Estamos muito felizes em celebrar o 1º aninho da nossa princesa Maitê! </p>
-        <p>
-            Mamãe ou papai, estamos muito felizes em ajudar vocês com a festa da Maitê!<br>
-            Este espaço foi personalizado para facilitar o envio dos convites,
-            acompanhar as confirmações de presença e tornar esse momento ainda mais especial.
-        </p>
-        <button id="adminLoginBtn" class="btn" type="button">Área de Admin</button>
-    </div>
-</div>
-
-<div id="confirmView" class="center-wrap" hidden>
-    <div class="card" id="confirmCard">
-        <h1>Maitê faz 1 aninho! </h1>
-        <p id="familiaSaudacao"></p>
-        <p>
-            <strong>Data:</strong> 20 de Setembro<br>
-            <strong>Horário:</strong> das 19:30 às 23:30<br>
-            <strong>Local:</strong> Avenida São Miguel, 8001 - SP
-        </p>
-        <div class="text-center">
-            <button id="confirmarBtn" class="btn" type="button">Confirmar Presença</button>
-        </div>
-        <div id="sugestaoConfirmCard">
-            <div class="sugestao-title-confirm">Sugestão de Presente</div>
-            <div class="sugestao-content-confirm" id="sugestaoContentConfirm"></div>
-        </div>
-    </div>
-</div>
-
-<div id="loginView" class="center-wrap" hidden>
+<div id="loginView" class="center-wrap">
     <div class="card login-card">
         <h1>Acesso Administrativo</h1>
         <p>Por favor, insira a senha para acessar a área de gerenciamento.</p>
@@ -350,10 +280,10 @@
 </div>
 
 <div id="adminArea" hidden>
-    <button id="voltarBtn" type="button">Voltar</button>
-    <button class="closeBtn" type="button" aria-label="Fechar Admin">&times;</button>
+    <button id="voltarBtn" type="button" onclick="window.location.href='index.html'">Voltar para Convite</button>
+    <button class="closeBtn" type="button" aria-label="Fechar Admin" onclick="window.location.reload()">Sair</button>
     <div class="admin-inner">
-        <h2>Cadastro de Famílias</h2>
+        <h2>Gerenciamento de Famílias</h2>
         <div class="admin-form">
             <div class="form-group">
                 <label for="responsavel">Responsável (Ex: Sueli)</label>
@@ -419,20 +349,13 @@
             <br>
             Gosta de brinquedos coloridos
             <br><br>
-            _ (Essas são apenas sugestões! Sua presença é o melhor presente. )_
+            _ (Essas são apenas sugestões! Sua presença é o melhor presente.)_
         `.trim().replace(/\n/g, '');
 
-        function getQueryParams() {
-            const params = new URLSearchParams(window.location.search);
-            return {
-                familia: params.get('familia'),
-                membros: params.get('membros')
-            };
-        }
-
         function buildInviteLink(familiaName, membrosList) {
-            const baseUrl = window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
-            return `${baseUrl}index.html?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}`;
+            // Agora o link aponta para o index.html, que é a página de confirmação
+            const baseUrl = window.location.origin + window.location.pathname.replace(/festamaite.html$/, 'index.html');
+            return `${baseUrl}?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}`;
         }
 
         function sanitizePhone(raw) {
@@ -473,13 +396,6 @@
                 if ($('sugestaoPresente')) {
                     $('sugestaoPresente').innerHTML = sugestaoPresente;
                 }
-                // Update suggestion in Confirm page
-                if ($('sugestaoContentConfirm')) {
-                    $('sugestaoContentConfirm').innerHTML = sugestaoPresente;
-                    if (getQueryParams().familia) { // Only show on confirm page if relevant
-                       $('sugestaoConfirmCard').style.display = 'block';
-                    }
-                }
             } catch (e) {
                 console.error('Erro ao carregar storage', e);
             }
@@ -497,10 +413,7 @@
             try {
                 sugestaoPresente = $('sugestaoPresente').innerHTML;
                 localStorage.setItem(SUGESTAO_KEY, sugestaoPresente);
-                // Also update the confirm page suggestion when saved from admin
-                if ($('sugestaoContentConfirm')) {
-                    $('sugestaoContentConfirm').innerHTML = sugestaoPresente;
-                }
+                alert('Sugestão de presente salva e atualizada nas páginas de convite!');
             } catch(e) {
                 console.error('Erro ao salvar sugestão', e);
             }
@@ -554,25 +467,18 @@
         // #region PAGE & MODAL MANAGEMENT
         function showView(viewName) {
             const views = {
-                home: $('homeView'),
-                confirm: $('confirmView'),
                 login: $('loginView'),
                 admin: $('adminArea')
             };
             for (const view in views) {
-                views[view].hidden = true;
-                if (views[view].style) views[view].style.display = 'none';
+                if (views[view]) {
+                    views[view].hidden = true;
+                    if (views[view].style) views[view].style.display = 'none';
+                }
             }
             if (views[viewName]) {
                 views[viewName].hidden = false;
-                if (views[viewName].style) views[viewName].style.display = 'flex';
-            }
-            if (viewName === 'admin') {
-                views[viewName].style.display = 'block';
-            }
-             // Load suggestion when confirm view is shown
-            if (viewName === 'confirm') {
-                loadFromStorage();
+                if (views[viewName].style) views[viewName].style.display = (viewName === 'admin' ? 'block' : 'flex');
             }
         }
 
@@ -695,7 +601,6 @@ ${link}`;
             }
         }
 
-        // NEW FUNCTION: Send Reminder
         function enviarLembreteWhatsApp(fam) {
             const msg = `☑ Oi, amiguinhos e familiares!
 
@@ -753,32 +658,19 @@ Família da Maitê`;
         // #region INITIALIZATION
         loadFromStorage();
         renderFamilias();
-        const { familia, membros } = getQueryParams();
-        if (familia) {
-            $('familiaSaudacao').innerHTML = `Olá, <strong>${familia}</strong>!<br>Família convidada: ${membros || '—'}.`;
-            showView('confirm');
-        } else {
-            showView('home');
-        }
+        showView('login'); // Always start on the login view for festamaite.html
 
         // Event Listeners
-        $('adminLoginBtn').addEventListener('click', () => showView('login'));
         $('loginSubmitBtn').addEventListener('click', handleLogin);
         $('adminPassword').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') handleLogin();
         });
-        $('voltarBtn').addEventListener('click', () => showView('home'));
-        document.querySelector('#adminArea .closeBtn').addEventListener('click', () => showView('home'));
         $('addFamiliaBtn').addEventListener('click', handleAddFamilia);
         $('exportBtn').addEventListener('click', exportCSV);
         $('enviarTodosBtn').addEventListener('click', () => {
             alert('Esta função não está implementada nesta versão reestruturada, pois pode ser bloqueada por navegadores. Sugerimos enviar um a um para melhor controle.');
         });
         $('sugestaoPresente').addEventListener('input', saveSugestaoPresente);
-        $('confirmarBtn').addEventListener('click', () => {
-            const { familia, membros } = getQueryParams();
-            alert(`Obrigado! Presença confirmada para: ${familia} (${membros}). Em breve essa confirmação será registrada.`);
-        });
         // Delegated event listener for family actions
         $('familiasContainer').addEventListener('click', (e) => {
             const id = e.target.getAttribute('data-id');
