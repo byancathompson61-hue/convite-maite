@@ -123,7 +123,7 @@
         .admin-btn.add { background: var(--rosa); color: #fff; }
         .admin-btn.save { background: #007bff; color: #fff; }
         .admin-btn.mass { background: var(--verde); color: #fff; }
-        .admin-btn.mass:hover {filter: brightness (0.9); }
+        .admin-btn.mass:hover {filter: brightness(0.9); }
         #familiasContainer {
             margin-top: 24px;
         }
@@ -522,8 +522,8 @@ _(Essas são apenas sugestões! Sua presença é o melhor presente ❤️)_`.tri
         }
 
         function enviarLembreteWhatsApp(fam) {
-            const link = buildInviteLink(fam.responsavel, fam.membros); // <-- CORREÇÃO AQUI
-            const msg = `🩷✨ Olá, amiguinhos e familiares encantados! ✨🩷\n\nEstamos enviando esta mensagem com muito carinho porque o prazo de confirmação da presença na festinha mágica da nossa Maitê termina amanhã! 🎂🥳\n\nAinda não recebemos sua resposta... e como a nossa lista de convidados é limitada e especial, quem não confirmar até o prazo será considerado como ausência, e o espaço será aberto para outro convidado encantado que está aguardando por uma vaga. 🌟\n\n💫 Importante:\nA confirmação deve ser feita individualmente pelo link enviado abaixo.\n⛔ Não será permitido confirmar e enviar outra pessoa no lugar, nem levar acompanhantes extras. A entrada só será autorizada para os nomes confirmados antecipadamente na lista enviada à assessoria do buffet Kidahora.\n\nSe você não puder comparecer, tudo bem também! Só pedimos que nos avise dentro do prazo, assim conseguimos organizar tudo com muito cuidado e magia 💖\n\nCom muito amor e brilhinhos de felicidade,\nFamília da Maitê 👨‍👩‍👧‍👦✨\n\n🔗 Link para confirmação:\n${link}`; // <-- CORREÇÃO AQUI
+            const link = buildInviteLink(fam.responsavel, fam.membros);
+            const msg = `🩷✨ Olá, amiguinhos e familiares encantados! ✨🩷\n\nEstamos enviando esta mensagem com muito carinho porque o prazo de confirmação da presença na festinha mágica da nossa Maitê termina amanhã! 🎂🥳\n\nAinda não recebemos sua resposta... e como a nossa lista de convidados é limitada e especial, quem não confirmar até o prazo será considerado como ausência, e o espaço será aberto para outro convidado encantado que está aguardando por uma vaga. 🌟\n\n💫 Importante:\nA confirmação deve ser feita individualmente pelo link enviado abaixo.\n⛔ Não será permitido confirmar e enviar outra pessoa no lugar, nem levar acompanhantes extras. A entrada só será autorizada para os nomes confirmados antecipadamente na lista enviada à assessoria do buffet Kidahora.\n\nSe você não puder comparecer, tudo bem também! Só pedimos que nos avise dentro do prazo, assim conseguimos organizar tudo com muito cuidado e magia 💖\n\nCom muito amor e brilhinhos de felicidade,\nFamília da Maitê 👨‍👩‍👧‍👦✨\n\n🔗 Link para confirmação:\n${link}`;
             const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg )}`;
             const win = window.open(zap, '_blank');
             if (win) {
@@ -571,10 +571,11 @@ _(Essas são apenas sugestões! Sua presença é o melhor presente ❤️)_`.tri
             else if (e.target.classList.contains('fam-delete')) handleDeleteFamilia(id);
         });
         $('editSaveBtn').addEventListener('click', handleSaveEditFamilia);
-        $('editModal').addEventListener('click', (e) => e.target === e.currentTarget && closeEditModal());
-        $('.edit-close').addEventListener('click', closeEditModal);
+        $('editModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeEditModal();
+        });
+        document.querySelector('.edit-close').addEventListener('click', closeEditModal);
     });
 </script>
 </body>
 </html>
-
