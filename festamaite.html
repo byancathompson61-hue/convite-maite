@@ -188,6 +188,7 @@
         .fam-send { background: var(--verde); color: #fff; }
         .fam-edit { background: #ffc107; color: #000; }
         .fam-delete { background: #dc3545; color: #fff; }
+        .fam-lembrete { background: #007bff; color: #fff; } /* Adicionado estilo para Lembrete */
         .fam-btn:hover {filter: brightness(0.9); }
         .data-info {
             margin-top: 12px;
@@ -334,69 +335,75 @@
 </div>
 
 <script>
+    // #region UTILITIES & STATE (movido para fora do DOMContentLoaded para ser acessível globalmente se necessário, mas as chamadas estão dentro)
+    const $ = (id) => document.getElementById(id);
+    const STORAGE_KEY = 'conviteMaite_familias_v1';
+    const SUGESTAO_KEY = 'conviteMaite_sugestao_v1';
+    const ADMIN_PASSWORD = 'maite'; // TROQUE ESTA SENHA!
+
+    let familias = [];
+    let sugestaoPresente = `
+        *Sugestão de Presente*
+        <br><br>
+        Roupa tamanho 1
+        <br>
+        Sapato nº 17/18
+        <br>
+        Gosta de brinquedos coloridos
+        <br><br>
+        _ (Essas são apenas sugestões! Sua presença é o melhor presente.)_
+    `.trim().replace(/\n/g, '');
+
+    function buildInviteLink(familiaName, membrosList) {
+        // Obter o caminho completo do arquivo festamaite.html
+        const currentUrl = window.location.href;
+        let baseUrl = currentUrl;
+
+        // Se a URL termina em festamaite.html, substitua por index.html
+        if (baseUrl.endsWith('festamaite.html')) {
+            baseUrl = baseUrl.replace('festamaite.html', 'index.html');
+        } 
+        // Se for um diretório, adicione index.html
+        else if (baseUrl.endsWith('/')) {
+            baseUrl += 'index.html';
+        } else {
+            // Caso a URL seja algo como "file:///C:/pasta/festamaite" (sem .html),
+            // tentamos adicionar index.html no final.
+            // Para URLs de servidor, essa parte pode precisar de ajuste se for complexa.
+            baseUrl += '/index.html';
+        }
+
+        return `${baseUrl}?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}`;
+    }
+
+    function sanitizePhone(raw) {
+        const digits = raw.replace(/\D+/g, '');
+        return digits.length >= 10 ? digits : null;
+    }
+
+    function adicionarDiasUteis(data, diasUteis) {
+        const resultado = new Date(data);
+        let diasAdicionados = 0;
+        while (diasAdicionados < diasUteis) {
+            resultado.setDate(resultado.getDate() + 1);
+            if (resultado.getDay() !== 0 && resultado.getDay() !== 6) { // 0 = Sunday, 6 = Saturday
+                diasAdicionados++;
+            }
+        }
+        return resultado;
+    }
+
+    function formatarData(data) {
+        return data.toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+    }
+
+    // #endregion
+
     document.addEventListener('DOMContentLoaded', () => {
-        // #region UTILITIES & STATE
-        const $ = (id) => document.getElementById(id);
-        const STORAGE_KEY = 'conviteMaite_familias_v1';
-        const SUGESTAO_KEY = 'conviteMaite_sugestao_v1';
-        const ADMIN_PASSWORD = 'maite'; // TROQUE ESTA SENHA!
-
-        let familias = [];
-        let sugestaoPresente = `
-            *Sugestão de Presente*
-            <br><br>
-            Roupa tamanho 1
-            <br>
-            Sapato nº 17/18
-            <br>
-            Gosta de brinquedos coloridos
-            <br><br>
-            _ (Essas são apenas sugestões! Sua presença é o melhor presente.)_
-        `.trim().replace(/\n/g, '');
-
-        function buildInviteLink(familiaName, membrosList) {
-            // Garante que o link base seja sempre para index.html
-            const currentPath = window.location.pathname;
-            let baseUrl = window.location.origin;
-
-            if (currentPath.endsWith('festamaite.html')) {
-                baseUrl += currentPath.replace('festamaite.html', 'index.html');
-            } else if (currentPath.endsWith('/')) {
-                baseUrl += currentPath + 'index.html';
-            } else {
-                baseUrl += currentPath + '/index.html';
-            }
-
-            return `${baseUrl}?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}`;
-        }
-
-        function sanitizePhone(raw) {
-            const digits = raw.replace(/\D+/g, '');
-            return digits.length >= 10 ? digits : null;
-        }
-
-        function adicionarDiasUteis(data, diasUteis) {
-            const resultado = new Date(data);
-            let diasAdicionados = 0;
-            while (diasAdicionados < diasUteis) {
-                resultado.setDate(resultado.getDate() + 1);
-                if (resultado.getDay() !== 0 && resultado.getDay() !== 6) { // 0 = Sunday, 6 = Saturday
-                    diasAdicionados++;
-                }
-            }
-            return resultado;
-        }
-
-        function formatarData(data) {
-            return data.toLocaleDateString('pt-BR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
-            });
-        }
-
-        // #endregion
-
         // #region STORAGE MANAGEMENT
         function loadFromStorage() {
             try {
@@ -435,6 +442,8 @@
         // #region UI RENDERING
         function renderFamilias() {
             const container = $('familiasContainer');
+            if (!container) return; // Garante que o elemento existe antes de tentar manipulá-lo
+
             container.innerHTML = '';
             if (!familias.length) {
                 container.innerHTML = '<p>Nenhuma família cadastrada ainda.</p>';
@@ -515,20 +524,30 @@
 
         // #region EVENT HANDLERS
         function handleLogin() {
-            const password = $('adminPassword').value;
+            const passwordInput = $('adminPassword');
+            const errorMessage = $('loginErrorMessage');
+            if (!passwordInput || !errorMessage) return;
+
+            const password = passwordInput.value;
             if (password === ADMIN_PASSWORD) {
                 showView('admin');
-                $('loginErrorMessage').hidden = true;
-                $('adminPassword').value = '';
+                errorMessage.hidden = true;
+                passwordInput.value = '';
             } else {
-                $('loginErrorMessage').hidden = false;
+                errorMessage.hidden = false;
             }
         }
 
         function handleAddFamilia() {
-            const responsavel = $('responsavel').value.trim();
-            const membros = $('membros').value.trim();
-            const telefone = sanitizePhone($('telefone').value.trim());
+            const responsavelInput = $('responsavel');
+            const membrosInput = $('membros');
+            const telefoneInput = $('telefone');
+
+            if (!responsavelInput || !membrosInput || !telefoneInput) return;
+
+            const responsavel = responsavelInput.value.trim();
+            const membros = membrosInput.value.trim();
+            const telefone = sanitizePhone(telefoneInput.value.trim());
 
             if (!responsavel || !membros || !telefone) {
                 alert('Preencha todos os campos corretamente (telefone com DDD, só números).');
@@ -540,9 +559,9 @@
             saveToStorage();
             renderFamilias();
 
-            $('responsavel').value = '';
-            $('membros').value = '';
-            $('telefone').value = '';
+            responsavelInput.value = '';
+            membrosInput.value = '';
+            telefoneInput.value = '';
         }
 
         function handleSaveEditFamilia() {
@@ -550,9 +569,15 @@
             const fam = familias.find(f => f.id === editId);
             if (!fam) return;
 
-            const responsavel = $('editResponsavel').value.trim();
-            const membros = $('editMembros').value.trim();
-            const telefone = sanitizePhone($('editTelefone').value.trim());
+            const responsavelInput = $('editResponsavel');
+            const membrosInput = $('editMembros');
+            const telefoneInput = $('editTelefone');
+
+            if (!responsavelInput || !membrosInput || !telefoneInput) return;
+
+            const responsavel = responsavelInput.value.trim();
+            const membros = membrosInput.value.trim();
+            const telefone = sanitizePhone(telefoneInput.value.trim());
             if (!responsavel || !membros || !telefone) {
                 alert('Preencha todos os campos corretamente (telefone com DDD, só números).');
                 return;
@@ -682,7 +707,7 @@ Família da Maitê`;
         $('enviarTodosBtn').addEventListener('click', () => {
             alert('Esta função não está implementada nesta versão reestruturada, pois pode ser bloqueada por navegadores. Sugerimos enviar um a um para melhor controle.');
         });
-        $('saveSugestaoBtn').addEventListener('click', saveSugestaoPresente); // Botão para salvar a sugestão
+        $('saveSugestaoBtn').addEventListener('click', saveSugestaoPresente);
         // Delegated event listener for family actions
         $('familiasContainer').addEventListener('click', (e) => {
             const id = e.target.getAttribute('data-id');
