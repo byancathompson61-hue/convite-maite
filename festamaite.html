@@ -31,661 +31,469 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
-            padding: 16px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--radius-card);
+            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+            max-width: 900px;
+            width: 100%;
+            margin: 30px 0;
             text-align: center;
         }
-        .card {
-            background: var(--card-bg);
-            padding: 32px 28px;
-            border-radius: var(--radius-card);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-            max-width: 500px;
-            margin: 16px;
-            text-align: left;
+        h1 {
+            color: var(--rosa);
+            font-size: 2.8rem;
+            margin-bottom: 25px;
         }
-        h1, h2, h3 {
-            margin-top: 0;
-            font-weight: 600;
-        }
-        h1 { color: var(--rosa); font-size: 1.9rem; text-align: center; }
-        h2 { color: var(--rosa); font-size: 1.4rem; text-align: center; }
-        h3 { color: var(--rosa); font-size: 1.1rem; margin-bottom: 8px; }
-        p { line-height: 1.4; margin: 0 0 1em; }
-        .btn {
-            background-color: var(--rosa);
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: var(--radius-btn);
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 16px;
-            width: 100%;
-        }
-        .btn:hover { background-color: var(--rosa-escuro); }
-        .form-group {
-            margin-bottom: 1rem;
+        .form-section, .list-section {
+            margin-top: 30px;
+            border-top: 1px solid var(--cinza-borda);
+            padding-top: 20px;
         }
         label {
             display: block;
+            margin-bottom: 8px;
             font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--cinza-borda);
-            border-radius: var(--radius-btn);
-            box-sizing: border-box;
-        }
-        #sugestaoPresente {
-            width: 100%;
-            min-height: 120px;
-            padding: 0.75rem;
-            border: 1px solid var(--cinza-borda);
-            border-radius: var(--radius-btn);
-            box-sizing: border-box;
-            background: #f8f9fa;
-            line-height: 1.4;
+            color: #555;
             text-align: left;
-            cursor: text;
         }
-        .text-center {
-            text-align: center;
-        }
-        /* Admin specific styles */
-        #adminArea {
-            display: none; /* Hidden by default, shown after login */
-            position: fixed;
-            inset: 0;
-            background: #fff8fc;
-            z-index: 999;
-            padding: 40px 16px 80px;
-            overflow-y: auto;
-        }
-        .admin-inner {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        /* Removed .closeBtn and #voltarBtn styles */
-        .admin-actions {
-            margin-top: 16px;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .admin-btn {
-            padding: 8px 14px;
-            font-size: 14px;
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid var(--cinza-borda);
             border-radius: var(--radius-btn);
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        button {
+            background-color: var(--rosa);
+            color: white;
             border: none;
-            cursor: pointer;
-        }
-        .admin-btn.add { background: var(--rosa); color: #fff; }
-        .admin-btn.save { background: #007bff; color: #fff; } /* Novo estilo para o botão salvar */
-        .admin-btn.mass { background: var(--verde); color: #fff; }
-        .admin-btn.mass:hover {filter: brightness (0.9); }
-        #familiasContainer {
-            margin-top: 24px;
-        }
-        .familyBox {
-            border: 1px dashed var(--cinza-borda);
-            padding: 16px;
-            margin-bottom: 12px;
-            border-radius: var(--radius-card);
-            background: #ffffff;
-            position: relative;
-        }
-        .familyBox strong {
+            padding: 12px 25px;
+            border-radius: var(--radius-btn);
             font-size: 1.1rem;
-            color: var(--rosa-escuro);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin: 5px;
         }
-        .familyBox p {
-            margin: 4px 0;
-            font-size: 0.95rem;
+        button:hover {
+            background-color: var(--rosa-escuro);
+            transform: translateY(-2px);
         }
-        .fam-actions {
-            margin-top: 8px;
+        button.secondary {
+            background-color: #6c757d;
+        }
+        button.secondary:hover {
+            background-color: #5a6268;
+        }
+        button.danger {
+            background-color: #dc3545;
+        }
+        button.danger:hover {
+            background-color: #c82333;
+        }
+        button.success {
+            background-color: var(--verde);
+        }
+        button.success:hover {
+            background-color: #218838;
+        }
+
+        .familia-item {
             display: flex;
-            gap: 8px;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: var(--radius-btn);
+            padding: 15px;
+            margin-bottom: 10px;
+            text-align: left;
             flex-wrap: wrap;
         }
-        .fam-btn {
-            padding: 6px 12px;
-            font-size: 13px;
-            border: none;
-            border-radius: var(--radius-btn);
-            cursor: pointer;
+        .familia-info {
+            flex-grow: 1;
         }
-        .fam-send { background: var(--verde); color: #fff; }
-        .fam-edit { background: #ffc107; color: #000; }
-        .fam-delete { background: #dc3545; color: #fff; }
-        .fam-lembrete { background: #007bff; color: #fff; } /* Adicionado estilo para Lembrete */
-        .fam-btn:hover {filter: brightness(0.9); }
-        .data-info {
-            margin-top: 12px;
-            padding: 10px;
-            background: rgba(40, 167, 69, 0.1);
-            border-left: 4px solid #28a745;
-            border-radius: 4px;
-            font-size: 0.9rem;
+        .familia-info strong {
+            color: var(--rosa);
+            font-size: 1.2rem;
         }
-        .data-info.vencido {
-            background: rgba(220, 53, 69, 0.1);
-            border-left-color: #dc3545;
+        .familia-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
         }
-        .data-info p {
-            margin: 4px 0;
-            color: #495057;
-        }
-        .data-info.vencido p {
-            color: #721c24;
-        }
-        #editModal {
+
+        /* Modal Styles */
+        .modal {
             display: none;
             position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.45);
-            z-index: 1001;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
             justify-content: center;
             align-items: center;
-            padding: 16px;
         }
-        .edit-content {
-            background: #fff;
-            max-width: 420px;
-            width: 100%;
-            padding: 24px;
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: auto;
+            padding: 30px;
             border-radius: var(--radius-card);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             position: relative;
         }
         .edit-close {
+            color: #aaa;
             position: absolute;
-            top: 8px;
-            right: 12px;
-            background: transparent;
-            border: none;
-            font-size: 24px;
-            color: var(--rosa);
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
             cursor: pointer;
         }
-        .edit-save {
-            margin-top: 16px;
-            width: 100%;
-            background: var(--rosa);
-            color: #fff;
-            padding: 10px;
-            font-size: 16px;
-            border: none;
-            border-radius: var(--radius-btn);
+        .edit-close:hover,
+        .edit-close:focus {
+            color: #333;
+            text-decoration: none;
             cursor: pointer;
         }
-        .edit-save:hover { background: var(--rosa-escuro); }
-        .login-card {
-            text-align: center;
-        }
-        .error-message {
-            color: #dc3545;
+        .modal-body label {
+            text-align: left;
             margin-top: 10px;
-            font-size: 0.9rem;
-            text-align: center;
         }
-        @media (max-width:480px) {
-            .card { padding: 24px 20px; }
-            h1 { font-size: 1.6rem; }
-            .btn { width: 100%; }
+        .modal-body input[type="text"],
+        .modal-body input[type="number"] {
+            width: calc(100% - 20px);
+        }
+        .status-message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none; /* Hidden by default */
+        }
+        .status-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
     </style>
 </head>
 <body>
+    <div class="center-wrap">
+        <div class="container">
+            <h1>Gerenciar Convidados da Maitê</h1>
 
-<div id="loginView" class="center-wrap">
-    <div class="card login-card">
-        <h1>Acesso Administrativo</h1>
-        <p>Por favor, insira a senha para acessar a área de gerenciamento.</p>
-        <div class="form-group">
-            <label for="adminPassword">Senha:</label>
-            <input type="password" id="adminPassword" placeholder="Digite a senha">
+            <div class="form-section">
+                <h2>Adicionar Nova Família</h2>
+                <label for="familiaNome">Nome da Família:</label>
+                <input type="text" id="familiaNome" placeholder="Ex: Família Silva" />
+                <label for="numMembros">Número de Membros:</label>
+                <input type="number" id="numMembros" min="1" value="1" />
+                <button id="addFamiliaBtn">Adicionar Família</button>
+            </div>
+
+            <div class="form-section">
+                <h2>Sugestão de Presente (Editável)</h2>
+                <textarea id="sugestaoPresente"></textarea>
+                <button id="saveSugestaoBtn">Salvar Sugestão</button>
+            </div>
+
+            <div class="list-section">
+                <h2>Lista de Famílias Cadastradas</h2>
+                <button id="exportBtn" class="secondary">Exportar CSV</button>
+                <div id="familiasContainer">
+                    </div>
+            </div>
         </div>
-        <button id="loginSubmitBtn" class="btn" type="button">Entrar</button>
-        <p id="loginErrorMessage" class="error-message" hidden>Senha incorreta. Tente novamente.</p>
     </div>
-</div>
 
-<div id="adminArea" hidden>
-    <div class="admin-inner">
-        <h2>Gerenciamento de Famílias</h2>
-        <div class="admin-form">
-            <div class="form-group">
-                <label for="responsavel">Responsável (Ex: Sueli)</label>
-                <input id="responsavel" placeholder="Responsável" required />
-            </div>
-            <div class="form-group">
-                <label for="membros">Membros (Ex: Sueli, Adilson, Eduardo)</label>
-                <input id="membros" placeholder="Membros separados por vírgula" required />
-            </div>
-            <div class="form-group">
-                <label for="telefone">Telefone com DDD (somente números)</label>
-                <input id="telefone" type="tel" placeholder="Ex: 11999999999" required />
-            </div>
-            <div class="form-group">
-                <label for="sugestaoPresente">Sugestão de Presente</label>
-                <div id="sugestaoPresente" contenteditable="true" spellcheck="false" placeholder="Digite a sugestão de presente..."></div>
-                <button class="admin-btn save" type="button" id="saveSugestaoBtn">Salvar Sugestão</button>
-            </div>
-            <div class="admin-actions">
-                <button class="admin-btn add" type="button" id="addFamiliaBtn">Adicionar Família</button>
-                <button class="admin-btn mass" type="button" id="enviarTodosBtn">Enviar Todos</button>
-                <button class="admin-btn mass" type="button" id="exportBtn" title="Exportar em CSV">Exportar CSV</button>
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="edit-close">&times;</span>
+            <h2>Editar Família</h2>
+            <div class="modal-body">
+                <input type="hidden" id="editFamiliaId">
+                <label for="editFamiliaNome">Nome da Família:</label>
+                <input type="text" id="editFamiliaNome">
+                <label for="editNumMembros">Número de Membros:</label>
+                <input type="number" id="editNumMembros" min="1">
+                <button id="editSaveBtn" class="success">Salvar Alterações</button>
             </div>
         </div>
-        <div id="familiasContainer"></div>
     </div>
-</div>
 
-<div id="editModal">
-    <div class="edit-content">
-        <button class="edit-close" type="button" aria-label="Fechar edição">&times;</button>
-        <h3>Editar Família</h3>
-        <div class="form-group">
-            <label for="editResponsavel">Responsavel</label>
-            <input id="editResponsavel" />
-        </div>
-        <div class="form-group">
-            <label for="editMembros">Membros</label>
-            <input id="editMembros" />
-        </div>
-        <div class="form-group">
-            <label for="editTelefone">Telefone</label>
-            <input id="editTelefone" />
-        </div>
-        <button class="edit-save" type="button" id="editSaveBtn">Salvar Alterações</button>
-    </div>
-</div>
+    <script>
+        // Função utilitária para obter elementos
+        const $ = id => document.getElementById(id);
 
-<script>
-    const $ = (id) => document.getElementById(id);
-    const STORAGE_KEY = 'conviteMaite_familias_v1';
-    const SUGESTAO_KEY = 'conviteMaite_sugestao_v1';
-    const ADMIN_PASSWORD = 'maite'; // TROQUE ESTA SENHA!
+        const SUGESTAO_KEY = 'conviteMaite_sugestao_v1';
+        const FAMILIAS_KEY = 'conviteMaite_familias_v1';
+        let familias = [];
 
-    let familias = [];
-    let sugestaoPresente = `
-        *Sugestão de Presente*
-        <br><br>
-        Roupa tamanho 1
-        <br>
-        Sapato nº 17/18
-        <br>
-        Gosta de brinquedos coloridos
-        <br><br>
-        _(Essas são apenas sugestões! Sua presença é o melhor presente.)_
-    `.trim().replace(/\n/g, '');
-
-    function buildInviteLink(familiaName, membrosList) {
-        const currentUrl = window.location.href;
-        const parts = currentUrl.split('/');
-        let baseUrl;
-
-        const projectIndex = parts.indexOf('convite-maite');
-        if (projectIndex > -1) {
-            baseUrl = parts.slice(0, projectIndex + 1).join('/') + '/';
-        } else {
-            const path = window.location.pathname;
-            const lastSlash = path.lastIndexOf('/');
-            if (lastSlash > -1) {
-                baseUrl = window.location.origin + path.substring(0, lastSlash) + '/';
-            } else {
-                baseUrl = window.location.origin + '/';
-            }
-        }
-        
-        return `${baseUrl}index.html?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}`;
-    }
-
-    function sanitizePhone(raw) {
-        const digits = raw.replace(/\D+/g, '');
-        return digits.length >= 10 ? digits : null;
-    }
-
-    function adicionarDiasUteis(data, diasUteis) {
-        const resultado = new Date(data);
-        let diasAdicionados = 0;
-        while (diasAdicionados < diasUteis) {
-            resultado.setDate(resultado.getDate() + 1);
-            if (resultado.getDay() !== 0 && resultado.getDay() !== 6) { // 0 = Sunday, 6 = Saturday
-                diasAdicionados++;
-            }
-        }
-        return resultado;
-    }
-
-    function formatarData(data) {
-        return data.toLocaleDateString('pt-BR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        function loadFromStorage() {
-            try {
-                const raw = localStorage.getItem(STORAGE_KEY);
-                if (raw) familias = JSON.parse(raw);
-                const sugestaoRaw = localStorage.getItem(SUGESTAO_KEY);
-                if (sugestaoRaw) sugestaoPresente = sugestaoRaw;
-                if ($('sugestaoPresente')) {
-                    $('sugestaoPresente').innerHTML = sugestaoPresente;
-                }
-            } catch (e) {
-                console.error('Erro ao carregar storage', e);
-            }
+        // #region Funções de Armazenamento e Carga
+        function saveFamilias() {
+            localStorage.setItem(FAMILIAS_KEY, JSON.stringify(familias));
         }
 
-        function saveToStorage() {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(familias));
-            } catch (e) {
-                console.error('Erro ao salvar storage', e);
-            }
+        function loadFamilias() {
+            const storedFamilias = localStorage.getItem(FAMILIAS_KEY);
+            familias = storedFamilias ? JSON.parse(storedFamilias) : [];
+            renderFamilias();
         }
 
         function saveSugestaoPresente() {
-            try {
-                sugestaoPresente = $('sugestaoPresente').innerHTML;
-                localStorage.setItem(SUGESTAO_KEY, sugestaoPresente);
-                alert('Sugestão de presente salva e atualizada nas páginas de convite!');
-            } catch(e) {
-                console.error('Erro ao salvar sugestão', e);
-            }
+            const sugestao = $('sugestaoPresente').value;
+            localStorage.setItem(SUGESTAO_KEY, sugestao);
+            alert('Sugestão de presente salva com sucesso!');
         }
 
+        function loadSugestaoPresente() {
+            const sugestaoRaw = localStorage.getItem(SUGESTAO_KEY);
+            const defaultSugestao = `
+                <h3>🎁 Sugestão de Presente:</h3>
+                <ul>
+                    <li>Roupinhas tamanho 1</li>
+                    <li>Sapatinhos nº 17/18</li>
+                    <li>Adora brinquedos!</li>
+                </ul>
+                <p class="obs">Obs: São apenas sugestões! Sua presença é, sem dúvida, o melhor presente. 💕</p>
+            `;
+            $('sugestaoPresente').value = sugestaoRaw || defaultSugestao;
+        }
+        // #endregion
+
+        // #region Funções de Renderização e UI
         function renderFamilias() {
             const container = $('familiasContainer');
-            if (!container) return;
-
             container.innerHTML = '';
-            if (!familias.length) {
+            if (familias.length === 0) {
                 container.innerHTML = '<p>Nenhuma família cadastrada ainda.</p>';
                 return;
             }
             familias.forEach(fam => {
                 const div = document.createElement('div');
-                div.className = 'familyBox';
-                const link = buildInviteLink(fam.responsavel, fam.membros);
-
-                let dataInfo = '';
-                if (fam.dataEnvio && fam.dataVencimento) {
-                    const hoje = new Date();
-                    const vencimento = new Date(fam.dataVencimento);
-                    const vencido = hoje > vencimento;
-                    dataInfo = `
-                        <div class="data-info ${vencido ? 'vencido' : ''}">
-                            <p><strong>Enviado em:</strong> ${formatarData(new Date(fam.dataEnvio))}</p>
-                            <p><strong>Vence em:</strong> ${formatarData(vencimento)} ${vencido ? '(VENCIDO)' : ''}</p>
-                        </div>
-                    `;
-                }
+                div.classList.add('familia-item');
                 div.innerHTML = `
-                    <strong>${fam.responsavel}</strong>
-                    <p>Membros: ${fam.membros}</p>
-                    <p>Tel: ${fam.telefone}</p>
-                    <p style="font-size:12px;word-break:break-all;">Link: <a href="${link}" target="_blank">${link}</a></p>
-                    ${dataInfo}
-                    <div class="fam-actions">
-                        <button class="fam-btn fam-send" type="button" data-id="${fam.id}">Encaminhar</button>
-                        <button class="fam-btn fam-lembrete" type="button" data-id="${fam.id}">Lembrete</button>
-                        <button class="fam-btn fam-edit" type="button" data-id="${fam.id}">Editar</button>
-                        <button class="fam-btn fam-delete" type="button" data-id="${fam.id}">Excluir</button>
+                    <div class="familia-info">
+                        <strong>${fam.nome}</strong> (${fam.membros} membros)
+                        <br>
+                        <span>Link: <a href="${fam.link}" target="_blank">${fam.link.substring(0, 50)}...</a></span>
+                    </div>
+                    <div class="familia-actions">
+                        <button class="fam-send success" data-id="${fam.id}">Enviar Convite</button>
+                        <button class="fam-lembrete secondary" data-id="${fam.id}">Enviar Lembrete</button>
+                        <button class="fam-edit" data-id="${fam.id}">Editar</button>
+                        <button class="fam-delete danger" data-id="${fam.id}">Excluir</button>
                     </div>
                 `;
                 container.appendChild(div);
             });
         }
 
-        function showView(viewName) {
-            const views = {
-                login: $('loginView'),
-                admin: $('adminArea')
-            };
-            for (const view in views) {
-                if (views[view]) {
-                    views[view].hidden = true;
-                    if (views[view].style) views[view].style.display = 'none';
-                }
-            }
-            if (views[viewName]) {
-                views[viewName].hidden = false;
-                if (views[viewName].style) views[viewName].style.display = (viewName === 'admin' ? 'block' : 'flex');
-            }
+        function showStatusMessage(message, isSuccess) {
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('status-message');
+            msgDiv.classList.add(isSuccess ? 'success' : 'error');
+            msgDiv.textContent = message;
+            $('familiasContainer').before(msgDiv); // Adiciona antes do container de famílias
+            setTimeout(() => msgDiv.remove(), 5000); // Remove após 5 segundos
+        }
+        // #endregion
+
+        // #region Funções de Lógica de Negócio
+        function generateUniqueId() {
+            return '_' + Math.random().toString(36).substr(2, 9);
         }
 
-        let editId = null;
-        function openEditModal(id) {
-            const fam = familias.find(f => f.id === id);
-            if (!fam) return;
-
-            editId = id;
-            $('editResponsavel').value = fam.responsavel;
-            $('editMembros').value = fam.membros;
-            $('editTelefone').value = fam.telefone;
-            $('editModal').style.display = 'flex';
-        }
-
-        function closeEditModal() {
-            editId = null;
-            $('editModal').style.display = 'none';
-        }
-
-        function handleLogin() {
-            const passwordInput = $('adminPassword');
-            const errorMessage = $('loginErrorMessage');
-            if (!passwordInput || !errorMessage) return;
-
-            const password = passwordInput.value;
-            if (password === ADMIN_PASSWORD) {
-                showView('admin');
-                errorMessage.hidden = true;
-                passwordInput.value = '';
-            } else {
-                errorMessage.hidden = false;
-            }
+        function generateInviteLink(familiaNome, numMembros) {
+            const baseUrl = window.location.origin + '/index.html'; // Assume index.html na raiz
+            return `${baseUrl}?familia=${encodeURIComponent(familiaNome)}&membros=${encodeURIComponent(numMembros)}`;
         }
 
         function handleAddFamilia() {
-            const responsavelInput = $('responsavel');
-            const membrosInput = $('membros');
-            const telefoneInput = $('telefone');
+            const nome = $('familiaNome').value.trim();
+            const membros = parseInt($('numMembros').value, 10);
 
-            if (!responsavelInput || !membrosInput || !telefoneInput) return;
-
-            const responsavel = responsavelInput.value.trim();
-            const membros = membrosInput.value.trim();
-            const telefone = sanitizePhone(telefoneInput.value.trim());
-
-            if (!responsavel || !membros || !telefone) {
-                alert('Preencha todos os campos corretamente (telefone com DDD, só números).');
+            if (!nome || isNaN(membros) || membros <= 0) {
+                alert('Por favor, preencha o nome da família e o número de membros válidos.');
                 return;
             }
 
-            const id = crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random());
-            familias.push({ id, responsavel, membros, telefone });
-            saveToStorage();
+            const id = generateUniqueId();
+            const link = generateInviteLink(nome, membros);
+
+            familias.push({ id, nome, membros, link, confirmado: false }); // Adiciona 'confirmado' para controle futuro
+            saveFamilias();
             renderFamilias();
 
-            responsavelInput.value = '';
-            membrosInput.value = '';
-            telefoneInput.value = '';
-        }
-
-        function handleSaveEditFamilia() {
-            if (!editId) return;
-            const fam = familias.find(f => f.id === editId);
-            if (!fam) return;
-
-            const responsavelInput = $('editResponsavel');
-            const membrosInput = $('editMembros');
-            const telefoneInput = $('editTelefone');
-
-            if (!responsavelInput || !membrosInput || !telefoneInput) return;
-
-            const responsavel = responsavelInput.value.trim();
-            const membros = membrosInput.value.trim();
-            const telefone = sanitizePhone(telefoneInput.value.trim());
-            if (!responsavel || !membros || !telefone) {
-                alert('Preencha todos os campos corretamente (telefone com DDD, só números).');
-                return;
-            }
-
-            fam.responsavel = responsavel;
-            fam.membros = membros;
-            fam.telefone = telefone;
-
-            saveToStorage();
-            renderFamilias();
-            closeEditModal();
+            $('familiaNome').value = '';
+            $('numMembros').value = '1';
+            showStatusMessage('Família adicionada com sucesso!', true);
         }
 
         function handleDeleteFamilia(id) {
-            const fam = familias.find(f => f.id === id);
-            if (!fam) return;
-            if (!confirm(`Tem certeza que deseja excluir a família de ${fam.responsavel}?`)) return;
+            if (confirm('Tem certeza que deseja excluir esta família?')) {
+                familias = familias.filter(fam => fam.id !== id);
+                saveFamilias();
+                renderFamilias();
+                showStatusMessage('Família excluída.', true);
+            }
+        }
 
-            familias = familias.filter(f => f.id !== id);
-            saveToStorage();
-            renderFamilias();
+        function openEditModal(id) {
+            const fam = familias.find(f => f.id === id);
+            if (fam) {
+                $('editFamiliaId').value = fam.id;
+                $('editFamiliaNome').value = fam.nome;
+                $('editNumMembros').value = fam.membros;
+                $('editModal').style.display = 'flex';
+            }
+        }
+
+        function closeEditModal() {
+            $('editModal').style.display = 'none';
+        }
+
+        function handleSaveEditFamilia() {
+            const id = $('editFamiliaId').value;
+            const newNome = $('editFamiliaNome').value.trim();
+            const newMembros = parseInt($('editNumMembros').value, 10);
+
+            if (!newNome || isNaN(newMembros) || newMembros <= 0) {
+                alert('Por favor, preencha o nome da família e o número de membros válidos.');
+                return;
+            }
+
+            const famIndex = familias.findIndex(fam => fam.id === id);
+            if (famIndex > -1) {
+                const oldLink = familias[famIndex].link;
+                familias[famIndex].nome = newNome;
+                familias[famIndex].membros = newMembros;
+                // Atualiza o link se o nome ou membros mudarem para que o link reflita a edição
+                if (!oldLink.includes(`familia=${encodeURIComponent(newNome)}`) || !oldLink.includes(`membros=${encodeURIComponent(newMembros)}`)) {
+                    familias[famIndex].link = generateInviteLink(newNome, newMembros);
+                }
+                saveFamilias();
+                renderFamilias();
+                closeEditModal();
+                showStatusMessage('Família atualizada com sucesso!', true);
+            }
         }
 
         function enviarLinkWhatsApp(fam) {
-            const link = buildInviteLink(fam.responsavel, fam.membros);
-            const msg = `🌟✨ Olá, meus amiguinhos e familiares encantados! ✨🌟
-
-O meu aniversário está se aproximando, e eu estou radiante de alegria! 🥳🎂
-
-Quero muito que você faça parte dessa festinha dos sonhos, cheia de amor, magia e smiles! 🌈🧚‍♀️
-A sua presença é um presentão para mim! Mas, se não puder vir, não tem problema… vamos entender com muito carinho. 💌
-
-Como nossa lista de convidados é bem especial e limitada, é muito importante que cada pessoa confirme a presença individualmente.
-
-Assim conseguimos organizar tudo com muito amor e preparar um dia inesquecível! 🎉
-🔔 Importante:
-
-A confirmação deve ser feita em até 5 dias úteis após o envio deste convite mágico.
-
-Se não recebermos sua resposta dentro do prazo, vamos entender como uma ausência — e abriremos espaço para outros convidados encantados. ✨
-📜 Os nomes confirmados serão entregues aos magos da assessoria do Salão Kidáhora nesse prazo encantado!
-💖 Para confirmar, basta clicar no link abaixo.
-Com todo meu carinho de princesa,
-Maitê 💕👑🎈
-
-👇 Link de Confirmação:
-${link}`;
-
-            const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)}`;
-            const win = window.open(zap, '_blank');
-            if (win && !win.closed) {
-                const agora = new Date();
-                const vencimento = adicionarDiasUteis(agora, 5); // 5 business days
-                fam.dataEnvio = agora.toISOString();
-                fam.dataVencimento = vencimento.toISOString();
-                saveToStorage();
-                renderFamilias();
-                alert(`Convite enviado! Prazo para resposta: ${formatarData(vencimento)}`);
-            } else {
-                alert('Não consegui abrir o WhatsApp. Verifique se o navegador bloqueou pop-ups ou se o número está correto.');
-            }
+            const message = `Olá, ${fam.nome}! Você e seus ${fam.membros} membros estão convidados para o aniversário de 1 aninho da Maitê! 🎉\n\nConfirme sua presença aqui: ${fam.link}\n\nEsperamos vocês para celebrar esse momento mágico! ✨`;
+            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
         }
 
         function enviarLembreteWhatsApp(fam) {
-            const msg = `🩷 Oi, amiguinhos e familiares!
+            const lembreteMessage = `
+Oi, amiguinhos e familiares!
 
-Estamos encaminhando esta mensagem porque o prazo de confirmação da presença na festinha da Maitê está se aproximando — e ainda não recebemos a sua resposta 🎂🥳
+Estamos encaminhando esta mensagem porque o prazo de confirmação da presença na festinha da Maitê está se aproximando e ainda não recebemos a sua resposta.
 
-Como a lista de convidados é bem curtinha, precisamos muito saber quem poderá vir para que tudo seja organizado com carinho e atenção
+Como a lista de convidados é bem curtinha, precisamos muito saber quem poderá vir para que tudo seja organizado com carinho e atenção.
 
 Se puder confirmar o quanto antes, agradecemos demais!
 
-E, se não puder comparecer, não tem problema só pedimos que nos avise também
+E, se não puder comparecer, não tem problema, só pedimos que nos avise também.
 
 Beijinhos,
 
-Família da Maitê 👨‍👩‍👧`;
+Família da Maitê
 
-            const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)}`;
-            const win = window.open(zap, '_blank');
-            if (win && !win.closed) {
-                alert(`Lembrete enviado para ${fam.responsavel}!`);
-            } else {
-                alert('Não consegui abrir o WhatsApp para enviar o lembrete. Verifique se o navegador bloqueou pop-ups ou se o número está correto.');
-            }
+Confirme sua presença aqui: ${fam.link}
+            `;
+            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(lembreteMessage.trim())}`;
+            window.open(whatsappUrl, '_blank');
         }
-
 
         function exportCSV() {
-            if (!familias.length) {
-                alert('Nada para exportar.');
-                return;
-            }
-            const header = ['Responsavel', 'Membros', 'Telefone', 'Link'];
-            const rows = familias.map(f => {
-                const link = buildInviteLink(f.responsavel, f.membros);
-                return [
-                    `"${f.responsavel.replace(/"/g, '""')}"`,
-                    `"${f.membros.replace(/"/g, '""')}"`,
-                    `"${f.telefone}"`,
-                    `"${link}"`
-                ].join(',');
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "ID,Nome da Familia,Numero de Membros,Link do Convite,Confirmado\n"; // Header
+
+            familias.forEach(fam => {
+                let row = `${fam.id},"${fam.nome}",${fam.membros},"${fam.link}",${fam.confirmado ? 'Sim' : 'Não'}\n`;
+                csvContent += row;
             });
-            const csv = [header.join(','), ...rows].join('\r\n');
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'familias_convite_maite.csv';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "convidados_maite.csv");
+            document.body.appendChild(link); // Required for Firefox
+            link.click();
+            document.body.removeChild(link);
+            showStatusMessage('Dados exportados para CSV.', true);
         }
 
-        loadFromStorage();
-        renderFamilias();
-        showView('login');
+        // Esta função seria para a integração com o Google Sheet, mas o front-end sozinho não pode fazer isso por segurança.
+        // A lógica de "não ter mais a opção de confirmar" precisaria de uma integração backend robusta com a planilha.
+        // Por enquanto, o botão de confirmação no formulário sempre estará visível.
+        function verificarConfirmacaoGoogleSheet(familiaNome, membros) {
+            // Esta é uma função placeholder. A lógica real exigiria:
+            // 1. Um Google Apps Script que lê a planilha e retorna o status de confirmação.
+            // 2. Uma chamada fetch deste frontend para esse Apps Script.
+            console.log(`Verificando confirmação para ${familiaNome} (${membros})... (Funcionalidade de backend)`);
+            return false; // Retorna false por padrão, pois não há integração ativa aqui.
+        }
+        // #endregion
 
-        $('loginSubmitBtn').addEventListener('click', handleLogin);
-        $('adminPassword').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleLogin();
-        });
-        $('addFamiliaBtn').addEventListener('click', handleAddFamilia);
-        $('exportBtn').addEventListener('click', exportCSV);
-        $('enviarTodosBtn').addEventListener('click', () => {
-            alert('Esta função não está implementada nesta versão reestruturada, pois pode ser bloqueada por navegadores. Sugerimos enviar um a um para melhor controle.');
-        });
-        $('saveSugestaoBtn').addEventListener('click', saveSugestaoPresente);
-        $('familiasContainer').addEventListener('click', (e) => {
-            const id = e.target.getAttribute('data-id');
-            const fam = familias.find(f => f.id === id);
+        // #region Event Listeners
+        window.addEventListener('DOMContentLoaded', () => {
+            loadFamilias();
+            loadSugestaoPresente(); // Carrega a sugestão ao carregar a página admin
+            $('addFamiliaBtn').addEventListener('click', handleAddFamilia);
+            $('exportBtn').addEventListener('click', exportCSV);
+            // Removido: $('enviarTodosBtn').addEventListener('click', ...);
+            $('saveSugestaoBtn').addEventListener('click', saveSugestaoPresente); // Botão para salvar a sugestão
 
-            if (e.target.classList.contains('fam-send')) {
-                if (fam) enviarLinkWhatsApp(fam);
-            } else if (e.target.classList.contains('fam-lembrete')) {
-                if (fam) enviarLembreteWhatsApp(fam);
-            } else if (e.target.classList.contains('fam-edit')) {
-                openEditModal(id);
-            } else if (e.target.classList.contains('fam-delete')) {
-                handleDeleteFamilia(id);
-            }
-        });
+            // Delegated event listener for family actions
+            $('familiasContainer').addEventListener('click', (e) => {
+                const id = e.target.getAttribute('data-id');
+                const fam = familias.find(f => f.id === id);
 
-        $('editSaveBtn').addEventListener('click', handleSaveEditFamilia);
-        document.querySelector('#editModal .edit-close').addEventListener('click', closeEditModal);
-        $('editModal').addEventListener('click', (e) => {
-            if (e.target === $('editModal')) closeEditModal();
+                if (e.target.classList.contains('fam-send')) {
+                    if (fam) enviarLinkWhatsApp(fam);
+                } else if (e.target.classList.contains('fam-lembrete')) {
+                    if (fam) enviarLembreteWhatsApp(fam);
+                } else if (e.target.classList.contains('fam-edit')) {
+                    openEditModal(id);
+                } else if (e.target.classList.contains('fam-delete')) {
+                    handleDeleteFamilia(id);
+                }
+            });
+
+            $('editSaveBtn').addEventListener('click', handleSaveEditFamilia);
+            document.querySelector('#editModal .edit-close').addEventListener('click', closeEditModal);
+            $('editModal').addEventListener('click', (e) => {
+                if (e.target === $('editModal')) closeEditModal();
+            });
         });
-    });
-</script>
+        // #endregion
+    </script>
 </body>
 </html>
