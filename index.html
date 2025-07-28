@@ -35,7 +35,7 @@
             display: flex;
             flex-direction: column;
             gap: 25px; /* Espaço entre os cards */
-            max-width: 600px;
+            max-width: 650px; /* Aumentei a largura máxima do container */
             width: 100%;
         }
         .card {
@@ -65,13 +65,15 @@
         .detalhes {
             text-align: left;
             margin: 25px auto;
-            max-width: 300px;
+            max-width: 450px; /* Aumentei a largura do campo de detalhes */
+            width: 100%; /* Garante que ocupe a largura disponível */
             font-size: 1.05rem;
             line-height: 1.8;
             background: #fffafa;
-            padding: 15px 20px;
+            padding: 20px 25px; /* Ajustei o padding */
             border-radius: 15px;
             border: 1px dashed var(--cor-rosa-claro);
+            box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura */
         }
         .detalhes strong {
             color: var(--cor-rosa-escuro);
@@ -148,6 +150,7 @@
             .card, #sugestaoCard { padding: 25px 20px; }
             .btn { font-size: 1rem; padding: 12px 25px; }
             p, .detalhes, .sugestao-content { font-size: 0.95rem; }
+            .detalhes { max-width: 100%; padding: 15px 20px; } /* Ajuste para telas menores */
         }
     </style>
 </head>
