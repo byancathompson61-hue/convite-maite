@@ -2,229 +2,278 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confirmação de Presença</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --rosa-claro: #ffe9f4;
+            --rosa-medio: #f8b5f0;
+            --rosa-escuro: #a3478f;
+            --rosa-hover: #8b3a77;
+            --texto-principal: #333;
+            --texto-secundario: #666;
+            --borda-clara: #ccc;
+            --fundo-input: #f9f9f9;
+            --sombra-card: 0 8px 25px rgba(0, 0, 0, 0.15);
+            --transicao-padrao: all 0.3s ease;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             padding: 20px;
-            background: #fffafc;
-            color: #333;
+            background: linear-gradient(to bottom, var(--rosa-claro), var(--rosa-medio));
+            color: var(--texto-principal);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             text-align: center;
             flex-direction: column;
             position: relative;
             overflow: hidden;
         }
+
         h2 {
-            color: #a3478f;
-            margin-bottom: 20px;
+            color: var(--rosa-escuro);
+            margin-bottom: 25px;
             z-index: 1;
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
         }
-        select, input[type="text"], button {
-            margin: 10px 0;
-            padding: 8px;
+
+        /* Container principal para centralizar form ou mensagem */
+        .main-container {
             width: 100%;
-            max-width: 400px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
+            max-width: 480px; /* Um pouco maior para um visual mais clean */
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 25px 35px;
+            border-radius: 18px;
+            box-shadow: var(--sombra-card);
+            position: relative;
+            z-index: 1;
+            box-sizing: border-box;
+            transition: var(--transicao-padrao);
+        }
+
+        input[type="text"], button {
+            margin: 12px 0;
+            padding: 12px 15px;
+            width: calc(100% - 30px); /* Ajuste para padding */
+            border-radius: 8px;
+            border: 1px solid var(--borda-clara);
             font-size: 1rem;
             box-sizing: border-box;
             z-index: 1;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-        form#formulario {
-            margin-top: 10px;
-            width: 100%;
-            max-width: 420px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 25px 20px 30px;
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-            position: relative;
-            z-index: 1;
-            margin-bottom: 20px;
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--rosa-escuro);
+            box-shadow: 0 0 0 3px rgba(163, 71, 143, 0.2);
         }
+
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-align: left;
         }
+
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #666;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--texto-secundario);
+            font-size: 0.95rem;
         }
+
         .membro-confirmacao {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #f9f9f9;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-bottom: 8px;
+            flex-direction: column; /* Coloca label e radio em linhas separadas */
+            align-items: flex-start; /* Alinha labels à esquerda */
+            background-color: var(--fundo-input);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 12px;
             border: 1px solid #eee;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
-        .membro-confirmacao label {
+        .membro-confirmacao:last-child {
             margin-bottom: 0;
-            flex-grow: 1;
-            font-weight: normal;
-            color: #333;
         }
+
+        .membro-confirmacao label {
+            margin-bottom: 10px; /* Espaço entre o nome e os radios */
+            font-weight: 600;
+            color: var(--texto-principal);
+            font-size: 1.05rem;
+        }
+
         .membro-confirmacao .radio-group {
             display: flex;
-            gap: 15px;
+            gap: 25px; /* Mais espaço entre 'Sim' e 'Não' */
+            width: 100%; /* Ocupa a largura total para centralizar */
+            justify-content: center; /* Centraliza os radios */
         }
-        .membro-confirmacao input[type="radio"] {
-            width: auto;
-            margin-left: 5px;
-            vertical-align: middle;
+        .radio-group input[type="radio"] {
+            display: none; /* Esconde o radio button nativo */
         }
-        button[type="submit"] {
-            background-color: #a3478f;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
+        .radio-group label {
+            display: inline-block;
+            padding: 10px 20px;
+            border: 2px solid var(--rosa-escuro);
+            border-radius: 25px;
             cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--rosa-escuro);
+            transition: var(--transicao-padrao);
+            margin-bottom: 0; /* Override default label margin */
         }
-        button[type="submit"]:hover {
-            background-color: #8b3a77;
+        .radio-group input[type="radio"]:checked + label {
+            background-color: var(--rosa-escuro);
+            color: white;
+            box-shadow: 0 4px 10px rgba(163, 71, 143, 0.4);
         }
+        .radio-group label:hover {
+            background-color: var(--rosa-claro);
+            color: var(--rosa-escuro);
+        }
+        .radio-group input[type="radio"]:checked + label:hover {
+             background-color: var(--rosa-hover); /* Mantém a cor hover para o selecionado */
+        }
+
+        button[type="submit"] {
+            background-color: var(--rosa-escuro);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: var(--transicao-padrao);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: auto; /* Para centralizar */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        button[type="submit"]:hover:not(:disabled) {
+            background-color: var(--rosa-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(163, 71, 143, 0.4);
+        }
+        button[type="submit"]:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: none; /* Hidden by default */
+        }
+        button[type="submit"].loading .spinner {
+            display: block;
+        }
+        button[type="submit"].loading {
+            padding-right: 20px; /* Compensate for spinner space */
+        }
+        button[type="submit"].loading span {
+            margin-right: 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         .status-message {
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: bold;
-            display: none; /* Escondido por padrão */
-            background-color: #e0ffe0; /* Fundo verde claro para sucesso */
-            color: #007000; /* Texto verde escuro para sucesso */
-            border: 1px solid #a0ffa0;
+            margin-top: 25px;
+            padding: 20px 30px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1.3rem;
+            display: none;
+            background-color: #e0ffe0;
+            color: #007000;
+            border: 2px solid #a0ffa0;
             max-width: 400px;
             width: 100%;
             box-sizing: border-box;
             z-index: 1;
+            box-shadow: 0 4px 15px rgba(0, 112, 0, 0.2);
+            line-height: 1.5;
         }
         .status-message.error {
-            background-color: #ffe0e0; /* Fundo vermelho claro para erro */
-            color: #cc0000; /* Texto vermelho escuro para erro */
-            border: 1px solid #ffa0a0;
+            background-color: #ffe0e0;
+            color: #cc0000;
+            border: 2px solid #ffa0a0;
+            box-shadow: 0 4px 15px rgba(204, 0, 0, 0.2);
+        }
+        .status-message.success-permanent {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: auto; /* Permite que a altura se ajuste ao conteúdo */
+            min-height: 200px; /* Garante um tamanho mínimo */
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        .status-message.success-permanent .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #28a745;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Styles for floating elements */
+        /* Floating elements - existing styles, just ensuring z-index is lower */
         .sparkle, .balloon, .butterfly {
             position: absolute;
             opacity: 0.7;
             animation: float 10s ease-in-out infinite;
-            z-index: 0;
+            z-index: 0; /* Ensure they are behind the form/message */
         }
+        /* ... (rest of your existing floating element styles) ... */
 
-        .sparkle {
-            width: 15px;
-            height: 15px;
-            background-color: gold;
-            border-radius: 50%;
-            box-shadow: 0 0 10px gold, 0 0 20px orange;
-            animation: twinkle 1.5s infinite ease-in-out alternate;
-        }
-
+        .sparkle { width: 15px; height: 15px; background-color: gold; border-radius: 50%; box-shadow: 0 0 10px gold, 0 0 20px orange; animation: twinkle 1.5s infinite ease-in-out alternate; }
         .sparkle:nth-child(1) { top: 10%; left: 5%; animation-delay: 0.5s; }
         .sparkle:nth-child(2) { top: 30%; right: 10%; animation-delay: 1s; }
         .sparkle:nth-child(3) { bottom: 20%; left: 15%; animation-delay: 1.5s; }
         .sparkle:nth-child(4) { top: 50%; left: 40%; animation-delay: 0.2s; }
-
-        .balloon {
-            width: 40px;
-            height: 50px;
-            background-color: #ff99cc;
-            border-radius: 50%;
-            position: relative;
-            top: 0;
-            left: 0;
-            margin: 0 10px;
-            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.2);
-        }
-
-        .balloon::before {
-            content: '';
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            background-color: inherit;
-            border-radius: 50%;
-            top: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: inset -2px -2px 5px rgba(0,0,0,0.2);
-        }
-
-        .balloon::after {
-            content: '';
-            position: absolute;
-            width: 2px;
-            height: 20px;
-            background-color: #888;
-            top: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: -1;
-        }
-
+        .balloon { width: 40px; height: 50px; background-color: #ff99cc; border-radius: 50%; position: relative; top: 0; left: 0; margin: 0 10px; box-shadow: inset -5px -5px 10px rgba(0,0,0,0.2); }
+        .balloon::before { content: ''; position: absolute; width: 15px; height: 15px; background-color: inherit; border-radius: 50%; top: -5px; left: 50%; transform: translateX(-50%); box-shadow: inset -2px -2px 5px rgba(0,0,0,0.2); }
+        .balloon::after { content: ''; position: absolute; width: 2px; height: 20px; background-color: #888; top: 50px; left: 50%; transform: translateX(-50%); z-index: -1; }
         .balloon:nth-child(1) { top: 20%; left: 80%; background-color: #a0e6ff; animation-delay: 0s; }
         .balloon:nth-child(2) { top: 5%; left: 20%; background-color: #ffb380; animation-delay: 1.2s; }
         .balloon:nth-child(3) { bottom: 10%; left: 70%; background-color: #c0ff80; animation-delay: 2.4s; }
         .balloon:nth-child(4) { top: 40%; left: 5%; background-color: #ff80df; animation-delay: 3.6s; }
-
-        .butterfly {
-            width: 30px;
-            height: 20px;
-            background-color: #ffccff;
-            border-radius: 50%;
-            position: relative;
-            transform-origin: center;
-            animation: fly 2s ease-in-out infinite alternate;
-        }
-
-        .butterfly::before, .butterfly::after {
-            content: '';
-            position: absolute;
-            width: 25px;
-            height: 25px;
-            background-color: inherit;
-            border-radius: 50%;
-            top: -10px;
-        }
-
+        .butterfly { width: 30px; height: 20px; background-color: #ffccff; border-radius: 50%; position: relative; transform-origin: center; animation: fly 2s ease-in-out infinite alternate; }
+        .butterfly::before, .butterfly::after { content: ''; position: absolute; width: 25px; height: 25px; background-color: inherit; border-radius: 50%; top: -10px; }
         .butterfly::before { left: -10px; transform: rotate(-30deg); }
         .butterfly::after { right: -10px; transform: rotate(30deg); }
-
         .butterfly:nth-child(1) { top: 15%; left: 15%; animation-delay: 0.5s; background-color: #e0a0ff; }
         .butterfly:nth-child(2) { top: 70%; left: 85%; animation-delay: 1.5s; background-color: #ffa0a0; }
         .butterfly:nth-child(3) { bottom: 5%; left: 40%; animation-delay: 2.5s; background-color: #a0ffc0; }
 
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.7; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.5); }
-        }
-
-        @keyframes fly {
-            0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
-            25% { transform: translateY(-10px) translateX(10px) rotate(5deg); }
-            50% { transform: translateY(0px) translateX(0px) rotate(0deg); }
-            75% { transform: translateY(10px) translateX(-10px) rotate(-5deg); }
-            100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
-        }
+        @keyframes float { 0% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } 100% { transform: translateY(0px) rotate(0deg); } }
+        @keyframes twinkle { 0%, 100% { opacity: 0.7; transform: scale(1); } 50% { opacity: 1; transform: scale(1.5); } }
+        @keyframes fly { 0% { transform: translateY(0px) translateX(0px) rotate(0deg); } 25% { transform: translateY(-10px) translateX(10px) rotate(5deg); } 50% { transform: translateY(0px) translateX(0px) rotate(0deg); } 75% { transform: translateY(10px) translateX(-10px) rotate(-5deg); } 100% { transform: translateY(0px) translateX(0px) rotate(0deg); } }
     </style>
 </head>
 <body>
@@ -234,22 +283,33 @@
 
     <h2>Confirmação de Presença</h2>
 
-    <form id="formulario">
-        <div class="form-group">
-            <label for="responsavel">Nome do Responsável:</label>
-            <input type="text" id="responsavel" readonly />
-        </div>
-
-        <div id="membros" class="form-group">
+    <div id="mainContent" class="main-container">
+        <form id="formulario">
+            <div class="form-group">
+                <label for="responsavel">Nome do Responsável:</label>
+                <input type="text" id="responsavel" readonly />
             </div>
 
-        <button type="submit">Confirmar Presença</button>
-    </form>
+            <div id="membros" class="form-group">
+                </div>
 
-    <div id="statusMessage" class="status-message"></div>
+            <button type="submit" id="submitBtn">
+                <span id="buttonText">Confirmar Presença</span>
+                <div class="spinner"></div>
+            </button>
+        </form>
+
+        <div id="statusMessage" class="status-message"></div>
+    </div>
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKt_3nG0rXoF1alrY2YNjQ2gqmf2_Nd0uDc0E3HUbv8t-waVwUNLhvJdXC86rKl8M0/exec"; // Substitua pela sua URL do Apps Script
+
+        const formulario = document.getElementById('formulario');
+        const statusMessage = document.getElementById('statusMessage');
+        const submitBtn = document.getElementById('submitBtn');
+        const buttonText = document.getElementById('buttonText');
+        const mainContent = document.getElementById('mainContent');
 
         function getQueryParams() {
             const params = {};
@@ -268,7 +328,7 @@
             const membrosContainer = document.getElementById('membros');
 
             responsavelInput.value = familia || 'Convidado';
-            membrosContainer.innerHTML = '';
+            membrosContainer.innerHTML = ''; // Limpa antes de adicionar
 
             if (membros) {
                 const membrosArray = membros.split(',').map(m => m.trim()).filter(m => m.length > 0);
@@ -291,8 +351,8 @@
                 const div = document.createElement('div');
                 div.className = 'membro-confirmacao';
                 div.innerHTML = `
-                    <label>Nome Completo (para confirmação):</label>
-                    <input type="text" id="membroManual" name="membroManual" placeholder="Seu nome completo" required>
+                    <label>Seu nome completo:</label>
+                    <input type="text" id="membroManual" name="membroManual" placeholder="Digite seu nome" required>
                 `;
                 membrosContainer.appendChild(div);
 
@@ -311,27 +371,45 @@
             }
         }
 
-        function mostrarStatus(mensagem, sucesso) {
-            const statusMessage = document.getElementById('statusMessage');
-            if (statusMessage) {
-                statusMessage.textContent = mensagem;
-                statusMessage.className = 'status-message'; // Reset classes
-                if (!sucesso) {
-                    statusMessage.classList.add('error');
-                }
-                statusMessage.style.display = 'block';
-                setTimeout(() => {
-                    statusMessage.style.display = 'none';
-                }, 5000); // Esconde após 5 segundos
+        function mostrarStatusPermanente(mensagem, sucesso) {
+            statusMessage.textContent = ''; // Limpa o conteúdo
+            statusMessage.className = 'status-message success-permanent';
+            if (!sucesso) {
+                statusMessage.classList.add('error');
+                statusMessage.innerHTML = `<span class="icon">❌</span><p>${mensagem}</p>`;
+            } else {
+                statusMessage.innerHTML = `<span class="icon">✅</span><p>${mensagem}</p>`;
             }
+            formulario.style.display = 'none'; // Esconde o formulário
+            statusMessage.style.display = 'flex'; // Mostra a mensagem
+            mainContent.style.height = 'auto'; // Ajusta a altura do container
         }
 
-        document.getElementById('formulario').addEventListener('submit', function(event) {
+        function mostrarStatusTemporario(mensagem, sucesso) {
+            statusMessage.textContent = mensagem;
+            statusMessage.className = 'status-message';
+            if (!sucesso) {
+                statusMessage.classList.add('error');
+            }
+            statusMessage.style.display = 'block';
+            // Esconde o status message temporário após 5 segundos
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        formulario.addEventListener('submit', async function(event) {
             event.preventDefault();
+
+            // Desabilita o botão e mostra o spinner
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+            buttonText.textContent = 'Enviando...';
+            statusMessage.style.display = 'none'; // Esconde qualquer mensagem de status anterior
 
             const dados = {
                 familia: document.getElementById('responsavel').value,
-                responsavel: document.getElementById('responsavel').value, // Duplicado para manter compatibilidade
+                responsavel: document.getElementById('responsavel').value,
                 confirmacoes: {}
             };
 
@@ -339,53 +417,64 @@
             if (getQueryParams().membros) {
                 document.querySelectorAll("#membros .membro-confirmacao").forEach(div => {
                     const nomeElement = div.querySelector("label");
-                    // Verifica se o nomeElement existe e se é o label de um membro
                     if (nomeElement && !nomeElement.innerText.includes('Você poderá comparecer?')) {
                         const nome = nomeElement.innerText.replace(":", "").trim();
-                        const resposta = div.querySelector("input[type=radio]:checked");
-                        dados.confirmacoes[nome] = resposta ? resposta.value : "";
+                        const resposta = div.querySelector(`input[name="${CSS.escape(nome)}"]:checked`); // Use CSS.escape para nomes com caracteres especiais
+                        dados.confirmacoes[nome] = resposta ? resposta.value : "Não Respondeu"; // Default para "Não Respondeu"
                     }
                 });
             } else {
                 const membroManual = document.getElementById('membroManual');
                 const comparecerRadio = document.querySelector('input[name="comparecer"]:checked');
-                if (membroManual && comparecerRadio) {
+                if (membroManual && membroManual.value.trim() !== "" && comparecerRadio) {
                     dados.confirmacoes[membroManual.value.trim()] = comparecerRadio.value;
+                } else {
+                    // Se o nome manual ou a opção de comparecer não foram preenchidos
+                    mostrarStatusPermanente("Por favor, preencha seu nome e selecione se poderá comparecer.", false);
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('loading');
+                    buttonText.textContent = 'Confirmar Presença';
+                    return; // Interrompe o envio
                 }
             }
-
-
-            mostrarStatus("Enviando dados...", true);
 
             const formData = new FormData();
             formData.append("familia", dados.familia);
             formData.append("responsavel", dados.responsavel);
             formData.append("confirmacoes", JSON.stringify(dados.confirmacoes));
 
-            fetch(SCRIPT_URL, {
-                method: "POST",
-                body: formData,
-                redirect: "follow"
-            })
-            .then(response => {
-                if (!response.ok) throw new Error(`Erro de rede: ${response.status} ${response.statusText}`);
-                return response.text();
-            })
-            .then((result) => {
-                console.log('Resposta do script:', result);
-                if (result.includes("Sucesso")) { // Adapte esta verificação com base na sua resposta do Apps Script
-                    mostrarStatus("Confirmação enviada com sucesso!", true);
-                    document.getElementById("formulario").reset();
-                    carregarMembros(); // Recarrega para limpar as seleções
-                } else {
-                     // Se a resposta não for "Sucesso", pode ser um erro ou uma mensagem específica
-                    mostrarStatus(`Erro ao processar. Resposta: ${result}`, false);
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: "POST",
+                    body: formData,
+                    redirect: "follow"
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Erro de rede: ${response.status} ${response.statusText}. Detalhes: ${errorText}`);
                 }
-            })
-            .catch(err => {
+
+                const result = await response.text();
+                console.log('Resposta do script:', result);
+
+                if (result.includes("Sucesso")) {
+                    mostrarStatusPermanente("Sua presença foi confirmada com sucesso! Muito obrigado(a)! 🎉", true);
+                } else {
+                    mostrarStatusPermanente(`Ops! Houve um problema ao confirmar sua presença. Resposta: ${result}. Por favor, tente novamente ou entre em contato.`, false);
+                }
+            } catch (err) {
                 console.error("Erro:", err);
-                mostrarStatus(`Erro ao enviar confirmação. ${err.message}. Tente novamente.`, false);
-            });
+                mostrarStatusPermanente(`Erro ao enviar confirmação. ${err.message}. Por favor, tente novamente ou entre em contato.`, false);
+            } finally {
+                // Reabilita o botão e esconde o spinner apenas se o formulário não for ocultado
+                // Se a mensagem for permanente, o botão não precisa ser reabilitado
+                if (formulario.style.display !== 'none') {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('loading');
+                    buttonText.textContent = 'Confirmar Presença';
+                }
+            }
         });
 
         window.addEventListener('DOMContentLoaded', () => {
