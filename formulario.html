@@ -17,31 +17,31 @@
             --texto-secundario: #666;
             --borda-clara: #ccc;
             --fundo-input: #f9f9f9;
-            --sombra-card: 0 8px 25px rgba(0, 0, 0, 0.15);
+            --sombra-card: 0 6px 18px rgba(0, 0, 0, 0.1);
             --transicao-padrao: all 0.3s ease;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
-            padding: 20px;
+            padding: 15px; /* Reduzido o padding */
             background: linear-gradient(to bottom, var(--rosa-claro), var(--rosa-medio));
             color: var(--texto-principal);
             display: flex;
             justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            align-items: center; /* Centraliza verticalmente o conteúdo */
+            min-height: 100vh; /* Garante que a página ocupe a altura total, mas o conteúdo não se estica */
             margin: 0;
             text-align: center;
             flex-direction: column;
             position: relative;
-            overflow: hidden;
+            overflow: hidden; /* Mantém para os balões e borboletas */
         }
 
         h2 {
             color: var(--rosa-escuro);
-            margin-bottom: 25px;
+            margin-bottom: 20px; /* Reduzido a margem */
             z-index: 1;
-            font-size: 2.2rem;
+            font-size: 2rem; /* Ligeiramente menor */
             font-weight: 700;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
         }
@@ -49,24 +49,25 @@
         /* Container principal para centralizar form ou mensagem */
         .main-container {
             width: 100%;
-            max-width: 480px; /* Um pouco maior para um visual mais clean */
+            max-width: 400px; /* Mais compacto */
             background: rgba(255, 255, 255, 0.95);
-            padding: 30px 25px 35px;
-            border-radius: 18px;
+            padding: 25px 20px 30px; /* Reduzido o padding */
+            border-radius: 15px; /* Ligeiramente menor */
             box-shadow: var(--sombra-card);
             position: relative;
             z-index: 1;
             box-sizing: border-box;
             transition: var(--transicao-padrao);
+            margin-bottom: 20px; /* Espaço para a sugestão de presente */
         }
 
         input[type="text"], button {
-            margin: 12px 0;
-            padding: 12px 15px;
-            width: calc(100% - 30px); /* Ajuste para padding */
+            margin: 10px 0; /* Reduzido a margem */
+            padding: 10px 12px; /* Reduzido o padding */
+            width: calc(100% - 24px); /* Ajuste para padding */
             border-radius: 8px;
             border: 1px solid var(--borda-clara);
-            font-size: 1rem;
+            font-size: 0.95rem; /* Ligeiramente menor */
             box-sizing: border-box;
             z-index: 1;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -78,26 +79,26 @@
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px; /* Reduzido a margem */
             text-align: left;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 5px; /* Reduzido a margem */
             font-weight: 600;
             color: var(--texto-secundario);
-            font-size: 0.95rem;
+            font-size: 0.9rem; /* Ligeiramente menor */
         }
 
         .membro-confirmacao {
             display: flex;
-            flex-direction: column; /* Coloca label e radio em linhas separadas */
-            align-items: flex-start; /* Alinha labels à esquerda */
+            flex-direction: column;
+            align-items: flex-start;
             background-color: var(--fundo-input);
-            padding: 15px 20px;
+            padding: 12px 15px; /* Reduzido o padding */
             border-radius: 10px;
-            margin-bottom: 12px;
+            margin-bottom: 10px; /* Reduzido a margem */
             border: 1px solid #eee;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
@@ -106,69 +107,70 @@
         }
 
         .membro-confirmacao label {
-            margin-bottom: 10px; /* Espaço entre o nome e os radios */
+            margin-bottom: 8px; /* Reduzido a margem */
             font-weight: 600;
             color: var(--texto-principal);
-            font-size: 1.05rem;
+            font-size: 1rem;
         }
 
         .membro-confirmacao .radio-group {
             display: flex;
-            gap: 25px; /* Mais espaço entre 'Sim' e 'Não' */
-            width: 100%; /* Ocupa a largura total para centralizar */
-            justify-content: center; /* Centraliza os radios */
+            gap: 20px; /* Reduzido o espaço */
+            width: 100%;
+            justify-content: center;
         }
         .radio-group input[type="radio"] {
-            display: none; /* Esconde o radio button nativo */
+            display: none;
         }
         .radio-group label {
             display: inline-block;
-            padding: 10px 20px;
+            padding: 8px 18px; /* Reduzido o padding */
             border: 2px solid var(--rosa-escuro);
-            border-radius: 25px;
+            border-radius: 20px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.9rem; /* Ligeiramente menor */
             color: var(--rosa-escuro);
             transition: var(--transicao-padrao);
-            margin-bottom: 0; /* Override default label margin */
+            margin-bottom: 0;
         }
         .radio-group input[type="radio"]:checked + label {
             background-color: var(--rosa-escuro);
             color: white;
-            box-shadow: 0 4px 10px rgba(163, 71, 143, 0.4);
+            box-shadow: 0 3px 8px rgba(163, 71, 143, 0.3);
         }
         .radio-group label:hover {
             background-color: var(--rosa-claro);
             color: var(--rosa-escuro);
         }
         .radio-group input[type="radio"]:checked + label:hover {
-             background-color: var(--rosa-hover); /* Mantém a cor hover para o selecionado */
+             background-color: var(--rosa-hover);
         }
 
         button[type="submit"] {
             background-color: var(--rosa-escuro);
             color: white;
-            padding: 15px 30px;
+            padding: 12px 25px; /* Reduzido o padding */
             border: none;
             border-radius: 10px;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.1rem; /* Ligeiramente menor */
             font-weight: 700;
             letter-spacing: 0.5px;
             transition: var(--transicao-padrao);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            width: auto; /* Para centralizar */
+            gap: 8px; /* Reduzido o espaço */
+            width: auto;
             margin-left: auto;
             margin-right: auto;
+            margin-top: 20px; /* Adicionado um pouco de margem acima do botão */
         }
         button[type="submit"]:hover:not(:disabled) {
             background-color: var(--rosa-hover);
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(163, 71, 143, 0.4);
+            box-shadow: 0 4px 10px rgba(163, 71, 143, 0.3);
         }
         button[type="submit"]:disabled {
             background-color: #cccccc;
@@ -177,22 +179,19 @@
 
         /* Loading Spinner */
         .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid #fff;
+            border: 3px solid rgba(255, 255, 255, 0.3); /* Ligeiramente menor */
+            border-top: 3px solid #fff;
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            width: 18px; /* Ligeiramente menor */
+            height: 18px;
             animation: spin 1s linear infinite;
-            display: none; /* Hidden by default */
+            display: none;
         }
         button[type="submit"].loading .spinner {
             display: block;
         }
-        button[type="submit"].loading {
-            padding-right: 20px; /* Compensate for spinner space */
-        }
         button[type="submit"].loading span {
-            margin-right: 10px;
+            margin-right: 8px; /* Ajuste o espaçamento */
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -200,11 +199,11 @@
         }
 
         .status-message {
-            margin-top: 25px;
-            padding: 20px 30px;
+            margin-top: 0; /* Removido margem superior para o container */
+            padding: 20px 25px; /* Reduzido o padding */
             border-radius: 15px;
             font-weight: 600;
-            font-size: 1.3rem;
+            font-size: 1.2rem; /* Ligeiramente menor */
             display: none;
             background-color: #e0ffe0;
             color: #007000;
@@ -214,7 +213,7 @@
             box-sizing: border-box;
             z-index: 1;
             box-shadow: 0 4px 15px rgba(0, 112, 0, 0.2);
-            line-height: 1.5;
+            line-height: 1.4;
         }
         .status-message.error {
             background-color: #ffe0e0;
@@ -228,13 +227,13 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            height: auto; /* Permite que a altura se ajuste ao conteúdo */
-            min-height: 200px; /* Garante um tamanho mínimo */
+            height: auto;
+            min-height: 180px; /* Ligeiramente menor */
             animation: fadeIn 0.8s ease-out forwards;
         }
         .status-message.success-permanent .icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
+            font-size: 2.8rem; /* Ligeiramente menor */
+            margin-bottom: 12px; /* Reduzido a margem */
             color: #28a745;
         }
         @keyframes fadeIn {
@@ -242,15 +241,14 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Floating elements - existing styles, just ensuring z-index is lower */
+        /* Floating elements */
         .sparkle, .balloon, .butterfly {
             position: absolute;
             opacity: 0.7;
             animation: float 10s ease-in-out infinite;
-            z-index: 0; /* Ensure they are behind the form/message */
+            z-index: 0;
         }
-        /* ... (rest of your existing floating element styles) ... */
-
+        /* Your existing floating element styles */
         .sparkle { width: 15px; height: 15px; background-color: gold; border-radius: 50%; box-shadow: 0 0 10px gold, 0 0 20px orange; animation: twinkle 1.5s infinite ease-in-out alternate; }
         .sparkle:nth-child(1) { top: 10%; left: 5%; animation-delay: 0.5s; }
         .sparkle:nth-child(2) { top: 30%; right: 10%; animation-delay: 1s; }
@@ -274,11 +272,69 @@
         @keyframes float { 0% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } 100% { transform: translateY(0px) rotate(0deg); } }
         @keyframes twinkle { 0%, 100% { opacity: 0.7; transform: scale(1); } 50% { opacity: 1; transform: scale(1.5); } }
         @keyframes fly { 0% { transform: translateY(0px) translateX(0px) rotate(0deg); } 25% { transform: translateY(-10px) translateX(10px) rotate(5deg); } 50% { transform: translateY(0px) translateX(0px) rotate(0deg); } 75% { transform: translateY(10px) translateX(-10px) rotate(-5deg); } 100% { transform: translateY(0px) translateX(0px) rotate(0deg); } }
+
+        /* Sugestão de Presente */
+        #sugestaoCard {
+            display: none;
+            margin-top: 25px; /* Reduzido a margem superior */
+            padding: 20px; /* Reduzido o padding */
+            background: linear-gradient(135deg, #fff5f8, #ffe9f4);
+            border: 2px solid #ff69b4;
+            border-radius: 15px;
+            box-shadow: 0 6px 18px rgba(255, 105, 180, 0.25);
+            animation: slideDown 0.8s ease-out;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            max-width: 380px; /* Mais compacto */
+            box-sizing: border-box;
+        }
+
+        #sugestaoCard::before {
+            content: "✨";
+            position: absolute;
+            top: 10px;
+            left: 15px; /* Ajustado a posição */
+            font-size: 20px; /* Ligeiramente menor */
+            animation: sparkle 2s infinite;
+        }
+
+        #sugestaoCard::after {
+            content: "🎁";
+            position: absolute;
+            top: 10px;
+            right: 15px; /* Ajustado a posição */
+            font-size: 20px; /* Ligeiramente menor */
+            animation: bounce 2s infinite;
+        }
+
+        .sugestao-title {
+            color: #d63384;
+            font-size: 1.3rem; /* Ligeiramente menor */
+            font-weight: bold;
+            margin-bottom: 12px; /* Reduzido a margem */
+            text-shadow: 1px 1px 2px rgba(214, 51, 132, 0.3);
+        }
+
+        .sugestao-content {
+            color: #5a3a71;
+            font-size: 0.95rem; /* Ligeiramente menor */
+            line-height: 1.5;
+            white-space: pre-line;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 12px; /* Reduzido o padding */
+            border-radius: 8px;
+            border: 1px dashed #ff69b4;
+        }
     </style>
 </head>
 <body>
     <div class="butterfly"></div>
     <div class="sparkle"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
     <div class="balloon"></div>
 
     <h2>Confirmação de Presença</h2>
@@ -287,7 +343,7 @@
         <form id="formulario">
             <div class="form-group">
                 <label for="responsavel">Nome do Responsável:</label>
-                <input type="text" id="responsavel" readonly />
+                <input type="text" id="responsavel" name="responsavel" readonly />
             </div>
 
             <div id="membros" class="form-group">
@@ -302,63 +358,90 @@
         <div id="statusMessage" class="status-message"></div>
     </div>
 
+    <div id="sugestaoCard">
+        <div class="sugestao-title">💝 Sugestão de Presente 💝</div>
+        <div class="sugestao-content" id="sugestaoContent">
+            🎁 Sugestão de Presente
+            👗 Roupa tamanho 1
+            👟 Sapato nº 17/18
+            🧸 Gosta de brinquedos coloridos
+            (Essas são apenas sugestões! Sua presença é o melhor presente. 💖)
+        </div>
+    </div>
+
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKt_3nG0rXoF1alrY2YNjQ2gqmf2_Nd0uDc0E3HUbv8t-waVwUNLhvJdXC86rKl8M0/exec"; // Substitua pela sua URL do Apps Script
+
+        const familias = {
+            sueli: ["Sueli", "Byanca", "Adilson", "Eduardo", "Jonathan"],
+            silvana: ["Cicero", "Tatiane", "Daiane", "Silvana"]
+        };
 
         const formulario = document.getElementById('formulario');
         const statusMessage = document.getElementById('statusMessage');
         const submitBtn = document.getElementById('submitBtn');
         const buttonText = document.getElementById('buttonText');
         const mainContent = document.getElementById('mainContent');
+        const sugestaoCard = document.getElementById('sugestaoCard');
 
-        function getQueryParams() {
-            const params = {};
-            window.location.search.substring(1).split('&').forEach(param => {
-                const parts = param.split('=');
-                if (parts.length === 2) {
-                    params[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1].replace(/\+/g, ' '));
-                }
-            });
-            return params;
+        function getURLParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return {
+                familia: urlParams.get('familia'),
+                membros: urlParams.get('membros')
+            };
         }
 
         function carregarMembros() {
-            const { familia, membros } = getQueryParams();
+            const params = getURLParams();
             const responsavelInput = document.getElementById('responsavel');
             const membrosContainer = document.getElementById('membros');
 
-            responsavelInput.value = familia || 'Convidado';
+            let membrosParaCarregar = [];
+
+            if (params.familia && params.membros) {
+                membrosParaCarregar = params.membros.split(',').map(nome => nome.trim()).filter(m => m.length > 0);
+                responsavelInput.value = params.familia; // Preenche o responsável com o nome da família da URL
+            } else if (params.familia && familias[params.familia.toLowerCase()]) {
+                membrosParaCarregar = familias[params.familia.toLowerCase()];
+                responsavelInput.value = params.familia;
+            } else {
+                // Caso não haja membros na URL, ou família desconhecida, permite entrada manual
+                // E pré-seleciona a primeira família para o responsável se não houver família na URL
+                membrosParaCarregar = []; // Não carrega membros fixos para entrada manual inicial
+                responsavelInput.value = ''; // Campo de responsável vazio para ser preenchido
+            }
+
             membrosContainer.innerHTML = ''; // Limpa antes de adicionar
 
-            if (membros) {
-                const membrosArray = membros.split(',').map(m => m.trim()).filter(m => m.length > 0);
-                membrosArray.forEach(membro => {
+            if (membrosParaCarregar.length > 0) {
+                membrosParaCarregar.forEach(membro => {
                     const div = document.createElement('div');
                     div.className = 'membro-confirmacao';
                     div.innerHTML = `
                         <label>${membro}:</label>
                         <div class="radio-group">
-                            <input type="radio" id="${membro}-sim" name="${membro}" value="Sim" required>
+                            <input type="radio" id="${membro}-sim" name="${CSS.escape(membro)}" value="Sim" required>
                             <label for="${membro}-sim">Sim</label>
-                            <input type="radio" id="${membro}-nao" name="${membro}" value="Não">
+                            <input type="radio" id="${membro}-nao" name="${CSS.escape(membro)}" value="Não">
                             <label for="${membro}-nao">Não</label>
                         </div>
                     `;
                     membrosContainer.appendChild(div);
                 });
             } else {
-                // Caso não haja membros na URL, permite entrada manual
-                const div = document.createElement('div');
-                div.className = 'membro-confirmacao';
-                div.innerHTML = `
+                 // Entrada manual para quem não veio via URL com membros
+                const divNomeManual = document.createElement('div');
+                divNomeManual.className = 'membro-confirmacao';
+                divNomeManual.innerHTML = `
                     <label>Seu nome completo:</label>
                     <input type="text" id="membroManual" name="membroManual" placeholder="Digite seu nome" required>
                 `;
-                membrosContainer.appendChild(div);
+                membrosContainer.appendChild(divNomeManual);
 
-                const radioDiv = document.createElement('div');
-                radioDiv.className = 'membro-confirmacao';
-                radioDiv.innerHTML = `
+                const divComparecer = document.createElement('div');
+                divComparecer.className = 'membro-confirmacao';
+                divComparecer.innerHTML = `
                     <label>Você poderá comparecer?</label>
                     <div class="radio-group">
                         <input type="radio" id="comparecer-sim" name="comparecer" value="Sim" required>
@@ -367,8 +450,30 @@
                         <label for="comparecer-nao">Não</label>
                     </div>
                 `;
-                membrosContainer.appendChild(radioDiv);
+                membrosContainer.appendChild(divComparecer);
             }
+        }
+
+
+        function carregarSugestaoPresente() {
+            try {
+                const sugestaoRaw = localStorage.getItem('conviteMaite_sugestao_v1');
+                if (sugestaoRaw) {
+                    document.getElementById('sugestaoContent').textContent = sugestaoRaw;
+                }
+            } catch(e) {
+                console.error('Erro ao carregar sugestão:', e);
+            }
+        }
+
+        function exibirSugestaoPresente() {
+            sugestaoCard.style.display = 'block';
+            setTimeout(() => {
+                sugestaoCard.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }, 100);
         }
 
         function mostrarStatusPermanente(mensagem, sucesso) {
@@ -382,20 +487,7 @@
             }
             formulario.style.display = 'none'; // Esconde o formulário
             statusMessage.style.display = 'flex'; // Mostra a mensagem
-            mainContent.style.height = 'auto'; // Ajusta a altura do container
-        }
-
-        function mostrarStatusTemporario(mensagem, sucesso) {
-            statusMessage.textContent = mensagem;
-            statusMessage.className = 'status-message';
-            if (!sucesso) {
-                statusMessage.classList.add('error');
-            }
-            statusMessage.style.display = 'block';
-            // Esconde o status message temporário após 5 segundos
-            setTimeout(() => {
-                statusMessage.style.display = 'none';
-            }, 5000);
+            mainContent.style.height = 'auto'; // Ajusta a altura do container principal
         }
 
         formulario.addEventListener('submit', async function(event) {
@@ -407,35 +499,59 @@
             buttonText.textContent = 'Enviando...';
             statusMessage.style.display = 'none'; // Esconde qualquer mensagem de status anterior
 
+            const params = getURLParams();
+            const responsavel = document.getElementById('responsavel').value.trim();
+
+            if (!responsavel) {
+                mostrarStatusPermanente("Por favor, preencha o nome do responsável.", false);
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('loading');
+                buttonText.textContent = 'Confirmar Presença';
+                return;
+            }
+
             const dados = {
-                familia: document.getElementById('responsavel').value,
-                responsavel: document.getElementById('responsavel').value,
+                familia: params.familia || responsavel, // Usa o nome do responsável como família se não vier da URL
+                responsavel: responsavel,
                 confirmacoes: {}
             };
 
-            // Coleta confirmações para membros da URL ou entrada manual
-            if (getQueryParams().membros) {
-                document.querySelectorAll("#membros .membro-confirmacao").forEach(div => {
+            const membrosConfirmacaoDivs = document.querySelectorAll("#membros .membro-confirmacao");
+            let allMembersAnswered = true;
+
+            if (params.membros || (params.familia && familias[params.familia.toLowerCase()])) {
+                // Cenário com membros da URL ou família pré-definida
+                membrosConfirmacaoDivs.forEach(div => {
                     const nomeElement = div.querySelector("label");
-                    if (nomeElement && !nomeElement.innerText.includes('Você poderá comparecer?')) {
+                    if (nomeElement) {
                         const nome = nomeElement.innerText.replace(":", "").trim();
-                        const resposta = div.querySelector(`input[name="${CSS.escape(nome)}"]:checked`); // Use CSS.escape para nomes com caracteres especiais
-                        dados.confirmacoes[nome] = resposta ? resposta.value : "Não Respondeu"; // Default para "Não Respondeu"
+                        const resposta = div.querySelector(`input[name="${CSS.escape(nome)}"]:checked`);
+                        if (!resposta) {
+                            allMembersAnswered = false;
+                        }
+                        dados.confirmacoes[nome] = resposta ? resposta.value : "Não Respondeu";
                     }
                 });
+                if (!allMembersAnswered) {
+                    mostrarStatusPermanente("Por favor, responda se todos os membros da família poderão comparecer.", false);
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('loading');
+                    buttonText.textContent = 'Confirmar Presença';
+                    return;
+                }
             } else {
-                const membroManual = document.getElementById('membroManual');
+                // Cenário de entrada manual
+                const membroManualInput = document.getElementById('membroManual');
                 const comparecerRadio = document.querySelector('input[name="comparecer"]:checked');
-                if (membroManual && membroManual.value.trim() !== "" && comparecerRadio) {
-                    dados.confirmacoes[membroManual.value.trim()] = comparecerRadio.value;
-                } else {
-                    // Se o nome manual ou a opção de comparecer não foram preenchidos
+
+                if (!membroManualInput || membroManualInput.value.trim() === "" || !comparecerRadio) {
                     mostrarStatusPermanente("Por favor, preencha seu nome e selecione se poderá comparecer.", false);
                     submitBtn.disabled = false;
                     submitBtn.classList.remove('loading');
                     buttonText.textContent = 'Confirmar Presença';
-                    return; // Interrompe o envio
+                    return;
                 }
+                dados.confirmacoes[membroManualInput.value.trim()] = comparecerRadio.value;
             }
 
             const formData = new FormData();
@@ -450,35 +566,30 @@
                     redirect: "follow"
                 });
 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Erro de rede: ${response.status} ${response.statusText}. Detalhes: ${errorText}`);
-                }
+                const resultText = await response.text();
+                console.log('Resposta do script:', resultText);
 
-                const result = await response.text();
-                console.log('Resposta do script:', result);
-
-                if (result.includes("Sucesso")) {
+                // Check for success regardless of response.ok, as Apps Script might send 200 OK
+                // but include "Erro" in text, or 500 error but with "Sucesso" in text (less likely)
+                // We'll prioritize the text content if it explicitly states "sucesso".
+                if (resultText.toLowerCase().includes("sucesso")) {
                     mostrarStatusPermanente("Sua presença foi confirmada com sucesso! Muito obrigado(a)! 🎉", true);
+                    exibirSugestaoPresente(); // Mostra sugestão após sucesso
                 } else {
-                    mostrarStatusPermanente(`Ops! Houve um problema ao confirmar sua presença. Resposta: ${result}. Por favor, tente novamente ou entre em contato.`, false);
+                    mostrarStatusPermanente(`Ops! Houve um problema ao confirmar sua presença. Mensagem: ${resultText || response.statusText}. Por favor, tente novamente ou entre em contato.`, false);
                 }
             } catch (err) {
                 console.error("Erro:", err);
-                mostrarStatusPermanente(`Erro ao enviar confirmação. ${err.message}. Por favor, tente novamente ou entre em contato.`, false);
+                mostrarStatusPermanente(`Erro de conexão: ${err.message}. Verifique sua internet e tente novamente.`, false);
             } finally {
-                // Reabilita o botão e esconde o spinner apenas se o formulário não for ocultado
-                // Se a mensagem for permanente, o botão não precisa ser reabilitado
-                if (formulario.style.display !== 'none') {
-                    submitBtn.disabled = false;
-                    submitBtn.classList.remove('loading');
-                    buttonText.textContent = 'Confirmar Presença';
-                }
+                // O botão não é reabilitado aqui porque o formulário é ocultado após o envio.
+                // Isso evita cliques duplos.
             }
         });
 
         window.addEventListener('DOMContentLoaded', () => {
             carregarMembros();
+            carregarSugestaoPresente(); // Carrega a sugestão ao carregar a página
         });
     </script>
 </body>
