@@ -1,250 +1,333 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<title>Confirmação de Presença</title>
-<style>
-body {
-font-family: Arial, sans-serif;
-padding: 20px;
-background: #fffafc;
-color: #333;
-display: flex;
-justify-content: center;
-align-items: center;
-height: 100vh;
-margin: 0;
-text-align: center;
-flex-direction: column;
-position: relative;
-overflow: hidden;
-}
-h2 {
-color: #a3478f;
-margin-bottom: 20px;
-z-index: 1;
-}
-select, input[type="text"], button {
-margin: 10px 0;
-padding: 8px;
-width: 100%;
-max-width: 400px;
-border-radius: 6px;
-border: 1px solid #ccc;
-font-size: 1rem;
-box-sizing: border-box;
-z-index: 1;
-}
-form#formulario {
-margin-top: 10px;
-width: 100%;
-max-width: 420px;
-background: rgba(255, 255, 255, 0.9);
-padding: 25px 20px 30px 20px;
-border-radius: 15px;
-box-shadow: 0 6px 20px rgba(163, 71, 143, 0.3);
-z-index: 1;
-}
-.pessoa {
-margin-bottom: 12px;
-text-align: left;
-font-weight: 600;
-color: #4b3053;
-user-select: none;
-}
-.pessoa label {
-margin-right: 12px;
-font-weight: 600;
-color: #5a3a71;
-}
-.pessoa input[type="radio"] {
-margin-right: 6px;
-cursor: pointer;
-}
-button {
-background-color: #a3478f;
-color: white;
-border: none;
-cursor: pointer;
-font-weight: 600;
-transition: background-color 0.3s;
-}
-button:hover { background-color: #7a2f68; }
-.balloon {
-position: fixed;
-bottom: -60px;
-width: 25px;
-height: 35px;
-border-radius: 50% / 60%;
-background: linear-gradient(135deg, #ff7eb9, #ff65a3);
-box-shadow: inset -5px -5px 10px rgba(255,255,255,0.6);
-animation-name: rise;
-animation-timing-function: ease-out;
-animation-iteration-count: infinite;
-filter: drop-shadow(0 1px 2px #b7447d);
-z-index: 0;
-}
-.balloon::after {
-content: "";
-position: absolute;
-bottom: -15px;
-left: 50%;
-width: 2px;
-height: 15px;
-background: #c34274;
-transform: translateX(-50%);
-border-radius: 1px;
-}
-.balloon:nth-child(1) {
-left: 20%;
-animation-duration: 12s;
-animation-delay: 0s;
-}
-.balloon:nth-child(2) {
-left: 40%;
-animation-duration: 14s;
-animation-delay: 3s;
-}
-.balloon:nth-child(3) {
-left: 60%;
-animation-duration: 13s;
-animation-delay: 6s;
-}
-.balloon:nth-child(4) {
-left: 80%;
-animation-duration: 15s;
-animation-delay: 2s;
-}
-@keyframes rise {
-0% { transform: translateY(0) scale(1);
-opacity: 0; }
-10% { opacity: 1; }
-100% { transform: translateY(-120vh) scale(1.1); opacity: 0;
-} }
-#status {
-margin-top: 15px;
-padding: 10px;
-border-radius: 5px;
-display: none;
-}
-.success {
-background-color: #d4edda;
-color: #155724;
-}
-.error {
-background-color: #f8d7da;
-color: #721c24;
-}
-.responsavel-section {
-margin-top: 20px;
-padding-top: 15px;
-border-top: 1px solid #ddd;
-}
-#sugestaoCard {
-display: none;
-margin-top: 30px;
-padding: 25px;
-background: linear-gradient(135deg, #fff5f8, #ffe9f4);
-border: 2px solid #ff69b4;
-border-radius: 20px;
-box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
-animation: slideDown 0.8s ease-out;
-text-align: center;
-position: relative;
-overflow: hidden;
-}
-#sugestaoCard::before {
-content: " ";
-position: absolute;
-top: 10px;
-left: 20px;
-font-size: 24px;
-animation: sparkle 2s infinite;
-}
-#sugestaoCard::after {
-content: " ";
-position: absolute;
-top: 10px;
-right: 20px;
-font-size: 24px;
-animation: bounce 2s infinite;
-}
-.sugestao-title {
-color: #d63384;
-font-size: 1.4rem;
-font-weight: bold;
-margin-bottom: 15px;
-text-shadow: 1px 1px 2px rgba(214, 51, 132, 0.3);
-}
-.sugestao-content {
-color: #5a3a71;
-font-size: 1rem;
-line-height: 1.6;
-white-space: pre-line;
-background: rgba(255, 255, 255, 0.7);
-padding: 15px;
-border-radius: 10px;
-border: 1px dashed #ff69b4;
-}
-@keyframes slideDown {
-from { opacity: 0; transform: translateY(-30px); }
-to { opacity: 1;
-transform: translateY(0); }
-}
-@keyframes sparkle {
-0%, 100% { transform: scale(1) rotate(0deg); }
-50% { transform: scale(1.2) rotate(180deg);
-} }
-@keyframes bounce {
-0%, 100% { transform: translateY(0); }
-50% { transform: translateY(-10px);
-} }
-</style>
+    <meta charset="UTF-8" />
+    <title>Confirmação de Presença</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #fffafc;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        h2 {
+            color: #a3478f;
+            margin-bottom: 20px;
+            z-index: 1;
+        }
+        select, input[type="text"], button {
+            margin: 10px 0;
+            padding: 8px;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            box-sizing: border-box;
+            z-index: 1;
+        }
+        form#formulario {
+            margin-top: 10px;
+            width: 100%;
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px 20px 30px 20px;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(163, 71, 143, 0.3);
+            z-index: 1;
+        }
+        .pessoa {
+            margin-bottom: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #4b3053;
+            user-select: none;
+        }
+        .pessoa label {
+            margin-right: 12px;
+            font-weight: 600;
+            color: #5a3a71;
+        }
+        .pessoa input[type="radio"] {
+            margin-right: 6px;
+            cursor: pointer;
+        }
+        button {
+            background-color: #a3478f;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        button:hover { background-color: #7a2f68; }
+        .balloon {
+            position: fixed;
+            bottom: -60px;
+            width: 25px;
+            height: 35px;
+            border-radius: 50% / 60%;
+            background: linear-gradient(135deg, #ff7eb9, #ff65a3);
+            box-shadow: inset -5px -5px 10px rgba(255,255,255,0.6);
+            animation-name: rise;
+            animation-timing-function: ease-out;
+            animation-iteration-count: infinite;
+            filter: drop-shadow(0 1px 2px #b7447d);
+            z-index: 0;
+        }
+        .balloon::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            width: 2px;
+            height: 15px;
+            background: #c34274;
+            transform: translateX(-50%);
+            border-radius: 1px;
+        }
+        .balloon:nth-child(1) { left: 20%; animation-duration: 12s; animation-delay: 0s; }
+        .balloon:nth-child(2) { left: 40%; animation-duration: 14s; animation-delay: 3s; }
+        .balloon:nth-child(3) { left: 60%; animation-duration: 13s; animation-delay: 6s; }
+        .balloon:nth-child(4) { left: 80%; animation-duration: 15s; animation-delay: 2s; }
+        @keyframes rise {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(-120vh) scale(1.1); opacity: 0; }
+        }
+        #status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .responsavel-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+        #sugestaoCard {
+            display: none;
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #fff5f8, #ffe9f4);
+            border: 2px solid #ff69b4;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
+            animation: slideDown 0.8s ease-out;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        #sugestaoCard::before {
+            content: "✨";
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 24px;
+            animation: sparkle 2s infinite;
+        }
+        #sugestaoCard::after {
+            content: "✨";
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
+            animation: bounce 2s infinite;
+        }
+        .sugestao-title {
+            color: #d63384;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(214, 51, 132, 0.3);
+        }
+        .sugestao-content {
+            color: #5a3a71;
+            font-size: 1rem;
+            line-height: 1.6;
+            white-space: pre-line;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px dashed #ff69b4;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(180deg); }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
 </head>
 <body>
-<h2>Confirmar Presença</h2>
-<form id="formulario" onsubmit="enviarFormulario(event)">
-<div id="membros"></div>
-<div class="responsavel-section">
-<label for="responsavel" style="font-weight:600; color:#6e3c7a;">Responsável pelo preenchimento:</label>
-<input type="text" id="responsavel" name="responsavel" required>
-</div>
-<button type="submit">Enviar</button>
-<div id="status"></div>
-</form>
-<div id="sugestaoCard">
-<div class="sugestao-title">
-Sugestão de Presente
-</div>
-<div class="sugestao-content" id="sugestaoContent">
-Sugestão de Presente
-Roupa tamanho 1
-Sapato nº 17/18
-Gosta de brinquedos coloridos
-(Essas são apenas sugestões! Sua presença é o melhor presente. )
-</div>
-</div>
-<div class="balloon"></div>
-<div class="balloon"></div>
-<div class="balloon"></div>
-<div class="balloon"></div>
-<script>
-const familias = { sueli: ["Sueli", "Byanca", "Adilson", "Eduardo", "Jonathan"], silvana: ["Cicero", "Tatiane", "Daiane", "Silvana"] };
-function carregarSugestaoPresente() { try { const sugestaoRaw = localStorage.getItem('conviteMaite_sugestao_v1'); if (sugestaoRaw) { document.getElementById('sugestaoContent').textContent = sugestaoRaw;
-} } catch(e) { console.error('Erro ao carregar sugestão:', e); } } function exibirSugestaoPresente() { const sugestaoCard = document.getElementById('sugestaoCard');
-sugestaoCard.style.display = 'block'; setTimeout(() => { sugestaoCard.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
-} function getURLParams() { const urlParams = new URLSearchParams(window.location.search); return { familia: urlParams.get('familia'), membros: urlParams.get('membros') };
-} function carregarMembros() { const params = getURLParams(); const membrosDiv = document.getElementById("membros"); let membros = [];
-if (params.familia && params.membros) { membros = params.membros.split(',').map(nome => nome.trim()); } else if (params.familia && familias[params.familia]) { membros = familias[params.familia];
-} else { membros = familias.sueli; } membrosDiv.innerHTML = "";
-membros.forEach(nome => { const container = document.createElement("div"); container.className = "pessoa"; container.innerHTML = ` <label>${nome}:</label> <input type="radio" name="${nome}" value="Sim" required> Sim <input type="radio" name="${nome}" value="Não" required> Não `; membrosDiv.appendChild(container); });
-} function mostrarStatus(mensagem, isSuccess) { const statusDiv = document.getElementById("status"); statusDiv.textContent = mensagem; statusDiv.className = isSuccess ? "success" : "error";
-statusDiv.style.display = "block"; setTimeout(() => { statusDiv.style.display = "none"; }, 5000); } function enviarFormulario(event) { event.preventDefault(); const params = getURLParams();
-const responsavel = document.getElementById("responsavel").value; const radios = document.querySelectorAll("#membros input[type=radio]:checked"); if (radios.length !== document.querySelectorAll("#membros .pessoa").length) { mostrarStatus("Por favor, responda por todos os membros da família.", false);
-return; } const dados = { familia: params.familia || 'sueli', responsavel: responsavel, confirmacoes: {} };
-document.querySelectorAll("#membros .pessoa").forEach(div => { const nome = div.querySelector("label").innerText.replace(":", ""); const resposta = div.querySelector("input[type=radio]:checked"); dados.confirmacoes[nome] = resposta ? resposta.value : ""; });
-mostrarStatus("Enviando dados...", true); const formData = new FormData(); formData.append("familia", dados.familia); formData.append("responsavel", responsavel); formData.append("confirmacoes", JSON.stringify(dados.confirmacoes)); const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKt_3nG0rXoF1alrY2YNjQ2gqmf2_Nd 0uDc0E3HUbv8t-waVwUNLhvJdXC86rKl8M0/exec";
-fetch(SCRIPT_URL, { method: "POST", body: formData,...
-</script>
+    <h2>Confirmar Presença</h2>
+    <form id="formulario" onsubmit="enviarFormulario(event)">
+        <div id="membros"></div>
+        <div class="responsavel-section">
+            <label for="responsavel" style="font-weight:600; color:#6e3c7a;">Responsável pelo preenchimento:</label>
+            <input type="text" id="responsavel" name="responsavel" required>
+        </div>
+        <button type="submit">Enviar</button>
+        <div id="status"></div>
+    </form>
+
+    <div id="sugestaoCard">
+        <div class="sugestao-title">Sugestão de Presente</div>
+        <div class="sugestao-content" id="sugestaoContent">
+            Sugestão de Presente
+            Roupa tamanho 1
+            Sapato nº 17/18
+            Gosta de brinquedos coloridos
+            (Essas são apenas sugestões! Sua presença é o melhor presente. )
+        </div>
+    </div>
+
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+
+    <script>
+        const familias = {
+            sueli: ["Sueli", "Byanca", "Adilson", "Eduardo", "Jonathan"],
+            silvana: ["Cicero", "Tatiane", "Daiane", "Silvana"]
+        };
+
+        function carregarSugestaoPresente() {
+            try {
+                const sugestaoRaw = localStorage.getItem('conviteMaite_sugestao_v1');
+                if (sugestaoRaw) {
+                    document.getElementById('sugestaoContent').innerHTML = sugestaoRaw;
+                }
+            } catch(e) {
+                console.error('Erro ao carregar sugestão:', e);
+            }
+        }
+
+        function exibirSugestaoPresente() {
+            const sugestaoCard = document.getElementById("sugestaoCard");
+            sugestaoCard.style.display = 'block';
+            setTimeout(() => {
+                sugestaoCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        }
+
+        function getURLParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return {
+                familia: urlParams.get('familia'),
+                membros: urlParams.get('membros')
+            };
+        }
+
+        function carregarMembros() {
+            const params = getURLParams();
+            const membrosDiv = document.getElementById("membros");
+            let membros = [];
+
+            if (params.familia && params.membros) {
+                membros = params.membros.split(',').map(nome => nome.trim());
+            } else if (params.familia && familias[params.familia]) {
+                membros = familias[params.familia];
+            } else {
+                membros = familias.sueli;
+            }
+
+            membrosDiv.innerHTML = "";
+            membros.forEach(nome => {
+                const container = document.createElement("div");
+                container.className = "pessoa";
+                container.innerHTML = `
+                    <label>${nome}:</label>
+                    <input type="radio" name="${nome}" value="Sim" required> Sim
+                    <input type="radio" name="${nome}" value="Não" required> Não
+                `;
+                membrosDiv.appendChild(container);
+            });
+        }
+
+        function mostrarStatus(mensagem, isSuccess) {
+            const statusDiv = document.getElementById("status");
+            statusDiv.textContent = mensagem;
+            statusDiv.className = isSuccess ? "success" : "error";
+            statusDiv.style.display = "block";
+            setTimeout(() => {
+                statusDiv.style.display = "none";
+            }, 5000);
+        }
+
+        function enviarFormulario(event) {
+            event.preventDefault();
+            const params = getURLParams();
+            const responsavel = document.getElementById("responsavel").value;
+            const radios = document.querySelectorAll("#membros input[type=radio]:checked");
+
+            if (radios.length !== document.querySelectorAll("#membros .pessoa").length) {
+                mostrarStatus("Por favor, responda por todos os membros da família.", false);
+                return;
+            }
+
+            const dados = {
+                familia: params.familia || 'sueli',
+                responsavel: responsavel,
+                confirmacoes: {}
+            };
+
+            document.querySelectorAll("#membros .pessoa").forEach(div => {
+                const nome = div.querySelector("label").innerText.replace(":", "");
+                const resposta = div.querySelector("input[type=radio]:checked");
+                dados.confirmacoes[nome] = resposta ? resposta.value : "";
+            });
+
+            mostrarStatus("Enviando dados...", true);
+
+            const formData = new FormData();
+            formData.append("familia", dados.familia);
+            formData.append("responsavel", responsavel);
+            formData.append("confirmacoes", JSON.stringify(dados.confirmacoes));
+
+            const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKt_3nG0rXoF1alrY2YNjQ2gqmf2_Nd0uDc0E3HUbv8t-waVwUNLhvJdXC86rKl8M0/exec";
+
+            fetch(SCRIPT_URL, { method: "POST", body: formData, redirect: "follow" })
+                .then(response => {
+                    if (!response.ok) throw new Error("Erro na rede");
+                    return response.text();
+                })
+                .then(() => {
+                    mostrarStatus("Confirmação enviada com sucesso!", true);
+                    document.getElementById("formulario").reset();
+                    carregarMembros();
+                    exibirSugestaoPresente();
+                })
+                .catch(err => {
+                    console.error("Erro:", err);
+                    mostrarStatus("Erro ao enviar confirmação. Tente novamente.", false);
+                });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            carregarMembros();
+            carregarSugestaoPresente();
+        });
+    </script>
 </body>
 </html>
+
