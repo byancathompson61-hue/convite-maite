@@ -247,16 +247,31 @@
 
             if (params.familia && params.membros) {
                 membros = params.membros.split(',').map(nome => nome.trim());
-            } else if (params.familia && familiasDefault[params.familia]) {
-                membros = familiasDefault[params.familia];
+            } else if (params.familia && familiasDefault[params.familia.toLowerCase()]) { // Converte para minúsculas
+                membros = familiasDefault[params.familia.toLowerCase()];
             } else {
-                // Se nenhum parâmetro for passado, use uma família padrão ou exiba mensagem
-                membrosDiv.innerHTML = "<p>Nenhum membro especificado. Por favor, acesse o link de convite.</p>";
-                return;
+                // Se nenhum parâmetro for passado, exibe um input para o responsável digitar os nomes
+                membrosDiv.innerHTML = `
+                    <p>Por favor, digite os nomes dos membros que irão confirmar presença, separados por vírgula:</p>
+                    <input type="text" id="membrosManual" placeholder="Ex: Nome1, Nome2, Nome3" required>
+                `;
+                document.getElementById('membrosManual').addEventListener('change', (e) => {
+                    const nomesDigitados = e.target.value.split(',').map(nome => nome.trim()).filter(nome => nome !== '');
+                    gerarRadiosDinamicos(nomesDigitados);
+                });
+                return; // Impede que o restante do código crie rádios vazios
             }
+            gerarRadiosDinamicos(membros);
+        }
 
-            membrosDiv.innerHTML = "";
-            membros.forEach(nome => {
+        function gerarRadiosDinamicos(nomes) {
+            const membrosDiv = document.getElementById("membros");
+            membrosDiv.innerHTML = ''; // Limpa os inputs antigos
+            if (nomes.length === 0) {
+                 membrosDiv.innerHTML = "<p>Por favor, adicione os membros ou acesse o link de convite.</p>";
+                 return;
+            }
+            nomes.forEach(nome => {
                 const container = document.createElement("div");
                 container.className = "pessoa";
                 container.innerHTML = `
@@ -283,8 +298,20 @@
             const params = getURLParams();
             const responsavel = document.getElementById("responsavel").value;
             const radios = document.querySelectorAll("#membros input[type=radio]:checked");
+            const membrosDinamicosInputs = document.querySelectorAll("#membros .pessoa").length;
 
-            if (radios.length !== document.querySelectorAll("#membros .pessoa").length) {
+
+            // Se houver o input manual, verifica se foi preenchido e quantos nomes foram gerados a partir dele
+            let membrosAConfirmar = 0;
+            const membrosManualInput = document.getElementById('membrosManual');
+            if (membrosManualInput) {
+                const nomesDigitados = membrosManualInput.value.split(',').map(nome => nome.trim()).filter(nome => nome !== '');
+                membrosAConfirmar = nomesDigitados.length;
+            } else {
+                membrosAConfirmar = membrosDinamicosInputs;
+            }
+
+            if (radios.length !== membrosAConfirmar) {
                 mostrarStatus("Por favor, responda por todos os membros da família.", false);
                 return;
             }
@@ -314,7 +341,7 @@
                 .then(() => {
                     mostrarStatus("Confirmação enviada com sucesso!", true);
                     document.getElementById("formulario").reset();
-                    carregarMembros(); // Recarrega para limpar as seleções
+                    carregarMembros(); // Recarrega para limpar as seleções e, se for o caso, o input manual
                     exibirSugestaoPresente();
                 })
                 .catch(err => {
