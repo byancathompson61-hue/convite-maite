@@ -108,17 +108,7 @@
             max-width: 700px;
             margin: 0 auto;
         }
-        .closeBtn {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            background: transparent;
-            font-size: 32px;
-            line-height: 1;
-            border: none;
-            color: var(--rosa);
-            cursor: pointer;
-        }
+        /* Removed .closeBtn and #voltarBtn styles */
         .admin-actions {
             margin-top: 16px;
             display: flex;
@@ -136,23 +126,6 @@
         .admin-btn.save { background: #007bff; color: #fff; } /* Novo estilo para o botão salvar */
         .admin-btn.mass { background: var(--verde); color: #fff; }
         .admin-btn.mass:hover {filter: brightness (0.9); }
-        #voltarBtn {
-            position: fixed;
-            top: 16px;
-            left: 16px;
-            background: rgba(255,255,255,0.7);
-            color: var(--rosa);
-            font-weight: bold;
-            border: 2px solid var(--rosa);
-            border-radius: 30px;
-            padding: 6px 18px;
-            cursor: pointer;
-            z-index: 1000;
-            font-size: 14px;
-        }
-        #voltarBtn:hover {
-            background: rgba(255,255,255,0.9);
-        }
         #familiasContainer {
             margin-top: 24px;
         }
@@ -282,8 +255,6 @@
 </div>
 
 <div id="adminArea" hidden>
-    <button id="voltarBtn" type="button" onclick="window.location.href='index.html'">Voltar para Convite</button>
-    <button class="closeBtn" type="button" aria-label="Fechar Admin" onclick="window.location.reload()">Sair</button>
     <div class="admin-inner">
         <h2>Gerenciamento de Famílias</h2>
         <div class="admin-form">
@@ -350,26 +321,18 @@
         <br>
         Gosta de brinquedos coloridos
         <br><br>
-        _ (Essas são apenas sugestões! Sua presença é o melhor presente.)_
+        _(Essas são apenas sugestões! Sua presença é o melhor presente.)_
     `.trim().replace(/\n/g, '');
 
     function buildInviteLink(familiaName, membrosList) {
-        // Obter a base da URL (o domínio e a pasta do projeto, se houver)
-        // Ex: para 'https://byancathompson61-hue.github.io/convite-maite/festamaite.html'
-        // Queremos 'https://byancathompson61-hue.github.io/convite-maite/'
         const currentUrl = window.location.href;
         const parts = currentUrl.split('/');
         let baseUrl;
 
-        // Tenta encontrar o "convite-maite" na URL para determinar a base
         const projectIndex = parts.indexOf('convite-maite');
         if (projectIndex > -1) {
-            // Reconstruir a base da URL até a pasta do projeto
             baseUrl = parts.slice(0, projectIndex + 1).join('/') + '/';
         } else {
-            // Fallback para caso não encontre "convite-maite" (ex: executando localmente sem estrutura clara)
-            // Usa o diretório do festamaite.html como base, se for o caso, então sobe um nível.
-            // Isso pode ser menos robusto para todos os cenários.
             const path = window.location.pathname;
             const lastSlash = path.lastIndexOf('/');
             if (lastSlash > -1) {
@@ -379,7 +342,6 @@
             }
         }
         
-        // Constrói o link final para index.html
         return `${baseUrl}index.html?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}`;
     }
 
@@ -599,22 +561,27 @@
 
         function enviarLinkWhatsApp(fam) {
             const link = buildInviteLink(fam.responsavel, fam.membros);
-            const msg = `*Olá, meus amiguinhos e familiares encantados!*
+            const msg = `🌟✨ Olá, meus amiguinhos e familiares encantados! ✨🌟
 
-O meu aniversário está se aproximando, e eu estou radiante de alegria!
-Quero muito que você faça parte dessa festinha dos sonhos, cheia de amor, magia e sorrisos!
-A sua presença é um presentão para mim! Mas, se não puder vir, não tem problema… vamos entender com muito carinho.
+O meu aniversário está se aproximando, e eu estou radiante de alegria! 🥳🎂
+
+Quero muito que você faça parte dessa festinha dos sonhos, cheia de amor, magia e smiles! 🌈🧚‍♀️
+A sua presença é um presentão para mim! Mas, se não puder vir, não tem problema… vamos entender com muito carinho. 💌
+
 Como nossa lista de convidados é bem especial e limitada, é muito importante que cada pessoa confirme a presença individualmente.
-Assim conseguimos organizar tudo com muito amor e preparar um dia inesquecível!
-*Importante:*
-A confirmação deve ser feita em até 5 dias úteis após o envio deste convite mágico.
-Se não recebermos sua resposta dentro do prazo, vamos entender como uma ausência — e abriremos espaço para outros convidados encantados.
-_Os nomes confirmados serão entregues aos magos da assessoria do Salão Kidáhora nesse prazo encantado!_
-Para confirmar, basta clicar no link abaixo.
-Com todo meu carinho de princesa,
-Maitê
 
-*Link de Confirmação:*
+Assim conseguimos organizar tudo com muito amor e preparar um dia inesquecível! 🎉
+🔔 Importante:
+
+A confirmação deve ser feita em até 5 dias úteis após o envio deste convite mágico.
+
+Se não recebermos sua resposta dentro do prazo, vamos entender como uma ausência — e abriremos espaço para outros convidados encantados. ✨
+📜 Os nomes confirmados serão entregues aos magos da assessoria do Salão Kidáhora nesse prazo encantado!
+💖 Para confirmar, basta clicar no link abaixo.
+Com todo meu carinho de princesa,
+Maitê 💕👑🎈
+
+👇 Link de Confirmação:
 ${link}`;
 
             const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)}`;
@@ -633,9 +600,9 @@ ${link}`;
         }
 
         function enviarLembreteWhatsApp(fam) {
-            const msg = `☑ Oi, amiguinhos e familiares!
+            const msg = `🩷 Oi, amiguinhos e familiares!
 
-Estamos encaminhando esta mensagem porque o prazo de confirmação da presença na festinha da Maitê está se aproximando e ainda não recebemos a sua resposta
+Estamos encaminhando esta mensagem porque o prazo de confirmação da presença na festinha da Maitê está se aproximando — e ainda não recebemos a sua resposta 🎂🥳
 
 Como a lista de convidados é bem curtinha, precisamos muito saber quem poderá vir para que tudo seja organizado com carinho e atenção
 
@@ -645,7 +612,7 @@ E, se não puder comparecer, não tem problema só pedimos que nos avise também
 
 Beijinhos,
 
-Família da Maitê`;
+Família da Maitê 👨‍👩‍👧`;
 
             const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)}`;
             const win = window.open(zap, '_blank');
