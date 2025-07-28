@@ -1201,8 +1201,8 @@ ${link}`;
 
 
         function enviarLembreteWhatsApp(fam) {
-
-            const msg = `🩷✨ Olá, amiguinhos e familiares encantados! ✨🩷
+    const link = buildInviteLink(fam.responsavel, fam.membros); // É importante ter o link aqui, caso contrário a variável 'link' no corpo da mensagem estará indefinida.
+    const msg = `🩷✨ Olá, amiguinhos e familiares encantados! ✨🩷
 
 Estamos enviando esta mensagem com muito carinho porque o prazo de confirmação da presença na festinha mágica da nossa Maitê termina amanhã! 🎂🥳
 
@@ -1220,23 +1220,14 @@ Família da Maitê 👨‍👩‍👧‍👦✨
 🔗 Link para confirmação:
 ${link}`;
 
-
-
-            const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)}`;
-
-            const win = window.open(zap, '_blank');
-
-            if (win && !win.closed) {
-
-                alert(`Lembrete enviado para ${fam.responsavel}!`);
-
-            } else {
-
-                alert('Não consegui abrir o WhatsApp para enviar o lembrete. Verifique se o navegador bloqueou pop-ups ou se o número está correto.');
-
-            }
-
-        }
+    const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)}`;
+    const win = window.open(zap, '_blank');
+    if (win && !win.closed) {
+        alert(`Lembrete enviado para ${fam.responsavel}!`);
+    } else {
+        alert('Não consegui abrir o WhatsApp para enviar o lembrete. Verifique se o navegador bloqueou pop-ups ou se o número está correto.');
+    }
+}
 
 
 
