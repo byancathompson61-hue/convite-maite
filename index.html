@@ -13,12 +13,12 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
+      height: 100vh;
       text-align: center;
-      overflow-x: hidden;
+      overflow: hidden;
       position: relative;
-      padding: 20px;
-      box-sizing: border-box;
+      padding: 20px; /* Adiciona um padding geral para evitar que o conteúdo encoste nas bordas em telas pequenas */
+      box-sizing: border-box; /* Garante que o padding não aumente a largura total */
     }
     .card {
       background-color: rgba(255, 255, 255, 0.9);
@@ -26,10 +26,10 @@
       border-radius: 20px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
       max-width: 500px;
-      width: 100%;
+      width: 100%; /* Garante que ocupe a largura total disponível */
       position: relative;
       z-index: 10;
-      box-sizing: border-box;
+      box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura */
     }
     h1 {
       color: #d94ba2;
@@ -50,20 +50,9 @@
       font-size: 1rem;
       line-height: 1.8;
       color: #666;
-      text-align: left;
     }
-    .detalhes div {
-        display: flex;
-        align-items: center;
-        margin-bottom: 8px;
-    }
-    .detalhes div:last-child {
-        margin-bottom: 0;
-    }
-    .detalhes strong {
+    strong {
       color: #ad2a6b;
-      min-width: 90px;
-      display: inline-block;
     }
     button {
       background-color: #d63384;
@@ -81,8 +70,83 @@
       background-color: #ad2a6b;
       transform: translateY(-2px);
     }
+
+    /* Elementos decorativos */
+    .butterfly, .balloon, .sparkle {
+      position: absolute;
+      opacity: 0; /* Começam invisíveis */
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+      z-index: 1;
+    }
+    .butterfly {
+      width: 40px;
+      height: 40px;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23d94ba2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm-2 7h4v2h-4z"/></svg>'); /* Exemplo de SVG para borboleta, pode ser substituído por imagem real */
+      background-size: contain;
+      animation-name: fly;
+    }
+    .butterfly:nth-child(1) { top: 10%; left: 5%; animation-duration: 15s; animation-delay: 0s; }
+    .butterfly:nth-child(2) { top: 30%; right: 10%; animation-duration: 12s; animation-delay: 5s; }
+    .butterfly:nth-child(3) { bottom: 20%; left: 20%; animation-duration: 18s; animation-delay: 10s; }
+
+    @keyframes fly {
+      0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+      10% { opacity: 1; }
+      50% { transform: translateY(-50px) translateX(20px) scale(1.1); }
+      100% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+    }
+
+    .balloon {
+        width: 30px;
+        height: 40px;
+        border-radius: 50% / 60%;
+        background: linear-gradient(135deg, #ff99cc, #ff66b2);
+        box-shadow: inset -3px -3px 8px rgba(255,255,255,0.6);
+        animation-name: rise;
+    }
+    .balloon::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        width: 2px;
+        height: 10px;
+        background: #cc3388;
+        transform: translateX(-50%);
+        border-radius: 1px;
+    }
+    .balloon:nth-child(4) { left: 15%; animation-duration: 10s; animation-delay: 0s; }
+    .balloon:nth-child(5) { right: 20%; animation-duration: 11s; animation-delay: 3s; }
+    .balloon:nth-child(6) { bottom: 10%; left: 30%; animation-duration: 9s; animation-delay: 6s; }
+    .balloon:nth-child(7) { top: 5%; right: 5%; animation-duration: 12s; animation-delay: 2s; }
+
+    @keyframes rise {
+      0% { transform: translateY(0) scale(1); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(-120vh) scale(1.1); opacity: 0; }
+    }
+
+    .sparkle {
+      width: 10px;
+      height: 10px;
+      background-color: gold;
+      border-radius: 50%;
+      box-shadow: 0 0 5px gold, 0 0 10px yellow;
+      animation-name: twinkle;
+      animation-duration: 2s;
+    }
+    .sparkle:nth-child(8) { top: 25%; left: 25%; animation-delay: 0s; }
+    .sparkle:nth-child(9) { top: 40%; right: 30%; animation-delay: 0.5s; }
+    .sparkle:nth-child(10) { bottom: 15%; left: 50%; animation-delay: 1s; }
+    .sparkle:nth-child(11) { top: 10%; left: 60%; animation-delay: 1.5s; }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1.5); }
+    }
     #sugestaoCard {
-        display: none;
+        display: none; /* Hidden by default, shown by JS */
         margin-top: 30px;
         padding: 25px;
         background: linear-gradient(135deg, #fff5f8, #ffe9f4);
@@ -93,9 +157,9 @@
         text-align: center;
         position: relative;
         overflow: hidden;
-        max-width: 500px;
-        width: 100%;
-        box-sizing: border-box;
+        max-width: 500px; /* Para ficar alinhado com o card principal */
+        width: 100%; /* Para que ocupe a largura total dentro do max-width */
+        box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura */
     }
     #sugestaoCard::before {
         content: "✨";
@@ -106,7 +170,7 @@
         animation: sparkle 2s infinite;
     }
     #sugestaoCard::after {
-        content: "🎁";
+        content: "✨";
         position: absolute;
         top: 10px;
         right: 20px;
@@ -124,72 +188,109 @@
         color: #5a3a71;
         font-size: 1rem;
         line-height: 1.6;
+        white-space: pre-line; /* Mantém quebras de linha do HTML ou texto */
         background: rgba(255, 255, 255, 0.7);
         padding: 15px;
         border-radius: 10px;
         border: 1px dashed #ff69b4;
-        text-align: left;
     }
     @keyframes slideDown {
         from { opacity: 0; transform: translateY(-30px); }
         to { opacity: 1; transform: translateY(0); }
     }
     @keyframes sparkle {
-        0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.7; }
-        50% { transform: scale(1.2) rotate(15deg); opacity: 1; }
+        0%, 100% { transform: scale(1) rotate(0deg); }
+        50% { transform: scale(1.2) rotate(180deg); }
     }
     @keyframes bounce {
         0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-8px); }
+        50% { transform: translateY(-10px); }
     }
+
+    /* --- Media Queries para Dispositivos Móveis --- */
     @media (max-width: 600px) {
       body {
+        /* Remove o height: 100vh para permitir rolagem se o conteúdo for maior */
         height: auto;
-        min-height: 100vh;
-        padding: 15px;
+        min-height: 100vh; /* Garante que o gradiente de fundo ainda preencha a tela */
+        padding: 15px; /* Reduz um pouco o padding geral */
       }
+
       .card {
-        padding: 1.5rem;
-        margin-bottom: 20px;
+        padding: 1.5rem; /* Reduz o padding interno do cartão */
+        margin-bottom: 20px; /* Adiciona um espaço para o cartão de sugestão */
       }
-      h1 { font-size: 2rem; }
-      p { font-size: 1rem; }
+
+      h1 {
+        font-size: 2rem; /* Reduz o tamanho do título principal */
+      }
+
+      p {
+        font-size: 1rem; /* Reduz o tamanho do parágrafo */
+      }
+
       .detalhes {
-        padding: 0.8rem;
-        margin: 1rem 0;
-        font-size: 0.9rem;
+        padding: 0.8rem; /* Reduz o padding dos detalhes */
+        margin: 1rem 0; /* Reduz as margens dos detalhes */
+        font-size: 0.9rem; /* Reduz o tamanho da fonte dos detalhes */
       }
+
       button {
-        padding: 12px 25px;
-        font-size: 1rem;
+        padding: 12px 25px; /* Reduz o padding do botão */
+        font-size: 1rem; /* Reduz o tamanho da fonte do botão */
       }
+
       #sugestaoCard {
-        margin-top: 20px;
-        padding: 20px;
+        margin-top: 20px; /* Reduz a margem superior do cartão de sugestão */
+        padding: 20px; /* Reduz o padding interno do cartão de sugestão */
       }
-      .sugestao-title { font-size: 1.2rem; }
-      .sugestao-content { font-size: 0.9rem; padding: 12px; }
+
+      .sugestao-title {
+        font-size: 1.2rem; /* Reduz o tamanho da fonte do título da sugestão */
+      }
+
+      .sugestao-content {
+        font-size: 0.9rem; /* Reduz o tamanho da fonte do conteúdo da sugestão */
+        padding: 12px; /* Reduz o padding do conteúdo da sugestão */
+      }
+
+      /* Oculta os elementos decorativos para não atrapalhar em telas muito pequenas */
+      .butterfly, .balloon, .sparkle {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
   <div class="card">
     <h1>Maitê faz 1 aninho! 🧙‍♀️💖</h1>
-    <p>Venham comemorar esse momento mágico com a gente! 🌸✨  
-
+    <p>Venham comemorar esse momento mágico com a gente! 🌸✨<br>
     A festa será encantadora e ainda mais especial com a sua presença.</p>
     <div class="detalhes">
-      <div><strong>🗓️ Data:</strong> <span>20 de Setembro</span></div>
-      <div><strong>⏰ Horário:</strong> <span>das 19:30 às 23:30</span></div>
-      <div><strong>📍 Local:</strong> <span>Avenida São Miguel, 8001 - SP</span></div>
+      <strong>🗓️ Data:</strong> 20 de Setembro<br>
+      <strong>⏰ Horário:</strong> das 19:30 às 23:30<br>
+      <strong>📍 Local:</strong> Avenida São Miguel, 8001 - SP
     </div>
     <button onclick="redirecionarParaFormulario()">Confirmar Presença</button>
   </div>
 
   <div id="sugestaoCard">
       <div class="sugestao-title">Sugestão de Presente</div>
-      <div class="sugestao-content" id="sugestaoContent"></div>
+      <div class="sugestao-content" id="sugestaoContent">
+          </div>
   </div>
+
+  <div class="butterfly"></div>
+  <div class="butterfly"></div>
+  <div class="butterfly"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="sparkle"></div>
+  <div class="sparkle"></div>
+  <div class="sparkle"></div>
+  <div class="sparkle"></div>
 
   <script>
     const SUGESTAO_KEY = 'conviteMaite_sugestao_v1';
@@ -197,17 +298,17 @@
     function carregarSugestaoPresente() {
         try {
             const sugestaoRaw = localStorage.getItem(SUGESTAO_KEY);
-            const sugestaoContentEl = document.getElementById('sugestaoContent');
-            const sugestaoCardEl = document.getElementById('sugestaoCard');
+            const sugestaoContent = document.getElementById('sugestaoContent');
+            const sugestaoCard = document.getElementById('sugestaoCard');
 
-            if (sugestaoRaw && sugestaoContentEl && sugestaoCardEl) {
-                sugestaoContentEl.innerHTML = sugestaoRaw;
-                sugestaoCardEl.style.display = 'block';
-            } else if (sugestaoCardEl) {
-                sugestaoCardEl.style.display = 'none';
+            if (sugestaoRaw) {
+                sugestaoContent.innerHTML = sugestaoRaw;
+                sugestaoCard.style.display = 'block'; // Mostra o card se houver sugestão
+            } else {
+                sugestaoCard.style.display = 'none'; // Esconde se não houver
             }
         } catch(e) {
-            console.error('Erro ao carregar sugestão de presente:', e);
+            console.error('Erro ao carregar sugestão:', e);
         }
     }
 
@@ -218,6 +319,8 @@
       
       let formularioURL = 'formulario.html';
       
+      // Se houver parâmetros de família e membros na URL atual (index.html),
+      // adicione-os à URL do formulário.
       if (familia && membros) {
         formularioURL += `?familia=${encodeURIComponent(familia)}&membros=${encodeURIComponent(membros)}`;
       }
@@ -225,6 +328,7 @@
       window.location.href = formularioURL;
     }
 
+    // Carrega a sugestão de presente quando a página é carregada
     window.addEventListener('DOMContentLoaded', carregarSugestaoPresente);
   </script>
 </body>
