@@ -17,6 +17,8 @@
       text-align: center;
       overflow: hidden;
       position: relative;
+      padding: 20px; /* Adiciona um padding geral para evitar que o conteúdo encoste nas bordas em telas pequenas */
+      box-sizing: border-box; /* Garante que o padding não aumente a largura total */
     }
     .card {
       background-color: rgba(255, 255, 255, 0.9);
@@ -24,8 +26,10 @@
       border-radius: 20px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
       max-width: 500px;
+      width: 100%; /* Garante que ocupe a largura total disponível */
       position: relative;
       z-index: 10;
+      box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura */
     }
     h1 {
       color: #d94ba2;
@@ -201,6 +205,59 @@
     @keyframes bounce {
         0%, 100% { transform: translateY(0); }
         50% { transform: translateY(-10px); }
+    }
+
+    /* --- Media Queries para Dispositivos Móveis --- */
+    @media (max-width: 600px) {
+      body {
+        /* Remove o height: 100vh para permitir rolagem se o conteúdo for maior */
+        height: auto;
+        min-height: 100vh; /* Garante que o gradiente de fundo ainda preencha a tela */
+        padding: 15px; /* Reduz um pouco o padding geral */
+      }
+
+      .card {
+        padding: 1.5rem; /* Reduz o padding interno do cartão */
+        margin-bottom: 20px; /* Adiciona um espaço para o cartão de sugestão */
+      }
+
+      h1 {
+        font-size: 2rem; /* Reduz o tamanho do título principal */
+      }
+
+      p {
+        font-size: 1rem; /* Reduz o tamanho do parágrafo */
+      }
+
+      .detalhes {
+        padding: 0.8rem; /* Reduz o padding dos detalhes */
+        margin: 1rem 0; /* Reduz as margens dos detalhes */
+        font-size: 0.9rem; /* Reduz o tamanho da fonte dos detalhes */
+      }
+
+      button {
+        padding: 12px 25px; /* Reduz o padding do botão */
+        font-size: 1rem; /* Reduz o tamanho da fonte do botão */
+      }
+
+      #sugestaoCard {
+        margin-top: 20px; /* Reduz a margem superior do cartão de sugestão */
+        padding: 20px; /* Reduz o padding interno do cartão de sugestão */
+      }
+
+      .sugestao-title {
+        font-size: 1.2rem; /* Reduz o tamanho da fonte do título da sugestão */
+      }
+
+      .sugestao-content {
+        font-size: 0.9rem; /* Reduz o tamanho da fonte do conteúdo da sugestão */
+        padding: 12px; /* Reduz o padding do conteúdo da sugestão */
+      }
+
+      /* Oculta os elementos decorativos para não atrapalhar em telas muito pequenas */
+      .butterfly, .balloon, .sparkle {
+        display: none;
+      }
     }
   </style>
 </head>
