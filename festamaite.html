@@ -231,4 +231,350 @@
             text-align: center;
         }
         @media (max-width:480px) {
-            .c
+            .card { padding: 24px 20px; }
+            h1 { font-size: 1.6rem; }
+            .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="loginView" class="center-wrap">
+    <div class="card login-card">
+        <h1>Acesso Administrativo</h1>
+        <p>Por favor, insira a senha para acessar a área de gerenciamento.</p>
+        <div class="form-group">
+            <label for="adminPassword">Senha:</label>
+            <input type="password" id="adminPassword" placeholder="Digite a senha">
+        </div>
+        <button id="loginSubmitBtn" class="btn" type="button">Entrar</button>
+        <p id="loginErrorMessage" class="error-message" hidden>Senha incorreta. Tente novamente.</p>
+    </div>
+</div>
+
+<div id="adminArea" hidden>
+    <div class="admin-inner">
+        <h2>Gerenciamento de Famílias</h2>
+        <div class="admin-form">
+            <div class="form-group">
+                <label for="responsavel">Responsável (Ex: Sueli)</label>
+                <input id="responsavel" placeholder="Responsável" required />
+            </div>
+            <div class="form-group">
+                <label for="membros">Membros (Ex: Sueli, Adilson, Eduardo)</label>
+                <input id="membros" placeholder="Membros separados por vírgula" required />
+            </div>
+            <div class="form-group">
+                <label for="telefone">Telefone com DDD (somente números)</label>
+                <input id="telefone" type="tel" placeholder="Ex: 11999999999" required />
+            </div>
+            <div class="form-group">
+                <label for="sugestaoPresente">Sugestão de Presente</label>
+                <div id="sugestaoPresente" contenteditable="true" spellcheck="false" placeholder="Digite a sugestão de presente..."></div>
+                <button class="admin-btn save" type="button" id="saveSugestaoBtn">Salvar Sugestão</button>
+            </div>
+            <div class="admin-actions">
+                <button class="admin-btn add" type="button" id="addFamiliaBtn">Adicionar Família</button>
+                <button class="admin-btn mass" type="button" id="enviarTodosBtn">Enviar Todos</button>
+                <button class="admin-btn mass" type="button" id="exportBtn" title="Exportar em CSV">Exportar CSV</button>
+            </div>
+        </div>
+        <div id="familiasContainer"></div>
+    </div>
+</div>
+
+<div id="editModal">
+    <div class="edit-content">
+        <button class="edit-close" type="button" aria-label="Fechar edição">&times;</button>
+        <h3>Editar Família</h3>
+        <div class="form-group">
+            <label for="editResponsavel">Responsavel</label>
+            <input id="editResponsavel" />
+        </div>
+        <div class="form-group">
+            <label for="editMembros">Membros</label>
+            <input id="editMembros" />
+        </div>
+        <div class="form-group">
+            <label for="editTelefone">Telefone</label>
+            <input id="editTelefone" />
+        </div>
+        <button class="edit-save" type="button" id="editSaveBtn">Salvar Alterações</button>
+    </div>
+</div>
+
+<script>
+    const $ = (id) => document.getElementById(id);
+    const STORAGE_KEY = 'conviteMaite_familias_v1';
+    const SUGESTAO_KEY = 'conviteMaite_sugestao_v1';
+    const ADMIN_PASSWORD = 'maite';
+
+    let familias = [];
+    let sugestaoPresente = `🎁 *Sugestão de Presente* 🎁
+  
+  
+
+👗 Roupa tamanho 1
+  
+
+👟 Sapato nº 17/18
+  
+
+🧸 Gosta de brinquedos coloridos
+  
+  
+
+_(Essas são apenas sugestões! Sua presença é o melhor presente ❤️)_`.trim();
+
+    function buildInviteLink(familiaName, membrosList) {
+        const currentUrl = window.location.href;
+        const parts = currentUrl.split('/');
+        let baseUrl;
+        const projectIndex = parts.indexOf('convite-maite');
+        if (projectIndex > -1) {
+            baseUrl = parts.slice(0, projectIndex + 1).join('/') + '/';
+        } else {
+            const path = window.location.pathname;
+            const lastSlash = path.lastIndexOf('/');
+            baseUrl = (lastSlash > -1) ? window.location.origin + path.substring(0, lastSlash) + '/' : window.location.origin + '/';
+        }
+        return `${baseUrl}index.html?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}`;
+    }
+
+    function sanitizePhone(raw) {
+        return raw.replace(/\D+/g, '');
+    }
+
+    function adicionarDiasUteis(data, diasUteis) {
+        const resultado = new Date(data);
+        let diasAdicionados = 0;
+        while (diasAdicionados < diasUteis) {
+            resultado.setDate(resultado.getDate() + 1);
+            if (resultado.getDay() !== 0 && resultado.getDay() !== 6) {
+                diasAdicionados++;
+            }
+        }
+        return resultado;
+    }
+
+    function formatarData(data) {
+        return new Date(data).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        function loadFromStorage() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) familias = JSON.parse(raw);
+                const sugestaoRaw = localStorage.getItem(SUGESTAO_KEY);
+                if (sugestaoRaw) sugestaoPresente = sugestaoRaw;
+                if ($('sugestaoPresente')) {
+                    $('sugestaoPresente').innerHTML = sugestaoPresente;
+                }
+            } catch (e) { console.error('Erro ao carregar storage', e); }
+        }
+
+        function saveToStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(familias));
+            } catch (e) { console.error('Erro ao salvar storage', e); }
+        }
+
+        function saveSugestaoPresente() {
+            try {
+                sugestaoPresente = $('sugestaoPresente').innerHTML;
+                localStorage.setItem(SUGESTAO_KEY, sugestaoPresente);
+                alert('Sugestão de presente salva!');
+            } catch(e) { console.error('Erro ao salvar sugestão', e); }
+        }
+
+        function renderFamilias() {
+            const container = $('familiasContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            if (!familias.length) {
+                container.innerHTML = '<p>Nenhuma família cadastrada ainda.</p>';
+                return;
+            }
+            familias.forEach(fam => {
+                const div = document.createElement('div');
+                div.className = 'familyBox';
+                const link = buildInviteLink(fam.responsavel, fam.membros);
+                let dataInfo = '';
+                if (fam.dataEnvio && fam.dataVencimento) {
+                    const hoje = new Date();
+                    const vencimento = new Date(fam.dataVencimento);
+                    const vencido = hoje > vencimento;
+                    dataInfo = `<div class="data-info ${vencido ? 'vencido' : ''}">
+                                    <p><strong>Enviado em:</strong> ${formatarData(fam.dataEnvio)}</p>
+                                    <p><strong>Vence em:</strong> ${formatarData(vencimento)} ${vencido ? '(VENCIDO)' : ''}</p>
+                                </div>`;
+                }
+                div.innerHTML = `<strong>${fam.responsavel}</strong>
+                                 <p>Membros: ${fam.membros}</p>
+                                 <p>Tel: ${fam.telefone}</p>
+                                 <p style="font-size:12px;word-break:break-all;">Link: <a href="${link}" target="_blank">${link}</a></p>
+                                 ${dataInfo}
+                                 <div class="fam-actions">
+                                     <button class="fam-btn fam-send" type="button" data-id="${fam.id}">Encaminhar</button>
+                                     <button class="fam-btn fam-lembrete" type="button" data-id="${fam.id}">Lembrete</button>
+                                     <button class="fam-btn fam-edit" type="button" data-id="${fam.id}">Editar</button>
+                                     <button class="fam-btn fam-delete" type="button" data-id="${fam.id}">Excluir</button>
+                                 </div>`;
+                container.appendChild(div);
+            });
+        }
+
+        function showView(viewName) {
+            ['loginView', 'adminArea'].forEach(id => {
+                const view = $(id);
+                if (view) view.style.display = 'none';
+            });
+            const viewToShow = $(viewName);
+            if (viewToShow) viewToShow.style.display = (viewName === 'admin' ? 'block' : 'flex');
+        }
+
+        let editId = null;
+        function openEditModal(id) {
+            const fam = familias.find(f => f.id === id);
+            if (!fam) return;
+            editId = id;
+            $('editResponsavel').value = fam.responsavel;
+            $('editMembros').value = fam.membros;
+            $('editTelefone').value = fam.telefone;
+            $('editModal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            editId = null;
+            $('editModal').style.display = 'none';
+        }
+
+        function handleLogin() {
+            if ($('adminPassword').value === ADMIN_PASSWORD) {
+                showView('admin');
+                $('loginErrorMessage').hidden = true;
+                $('adminPassword').value = '';
+            } else {
+                $('loginErrorMessage').hidden = false;
+            }
+        }
+
+        function handleAddFamilia() {
+            const responsavel = $('responsavel').value.trim();
+            const membros = $('membros').value.trim();
+            const telefone = sanitizePhone($('telefone').value.trim());
+            if (!responsavel || !membros || !telefone) {
+                alert('Preencha todos os campos corretamente.');
+                return;
+            }
+            const id = crypto.randomUUID ? crypto.randomUUID() : String(Date.now());
+            familias.push({ id, responsavel, membros, telefone });
+            saveToStorage();
+            renderFamilias();
+            ['responsavel', 'membros', 'telefone'].forEach(id => $(id).value = '');
+        }
+
+        function handleSaveEditFamilia() {
+            if (!editId) return;
+            const fam = familias.find(f => f.id === editId);
+            if (!fam) return;
+            const responsavel = $('editResponsavel').value.trim();
+            const membros = $('editMembros').value.trim();
+            const telefone = sanitizePhone($('editTelefone').value.trim());
+            if (!responsavel || !membros || !telefone) {
+                alert('Preencha todos os campos corretamente.');
+                return;
+            }
+            fam.responsavel = responsavel;
+            fam.membros = membros;
+            fam.telefone = telefone;
+            saveToStorage();
+            renderFamilias();
+            closeEditModal();
+        }
+
+        function handleDeleteFamilia(id) {
+            const fam = familias.find(f => f.id === id);
+            if (fam && confirm(`Tem certeza que deseja excluir a família de ${fam.responsavel}?`)) {
+                familias = familias.filter(f => f.id !== id);
+                saveToStorage();
+                renderFamilias();
+            }
+        }
+
+        function enviarLinkWhatsApp(fam) {
+            const link = buildInviteLink(fam.responsavel, fam.membros);
+            const msg = `🌟✨ Olá, meus amiguinhos e familiares encantados! ✨🌟\n\nO meu aniversário está se aproximando, e eu estou radiante de alegria! 🥳🎂\n\nQuero muito que você faça parte dessa festinha dos sonhos, cheia de amor, magia e smiles! 🌈🧚‍♀️\nA sua presença é um presentão para mim! Mas, se não puder vir, não tem problema… vamos entender com muito carinho. 💌\n\nComo nossa lista de convidados é bem especial e limitada, é muito importante que cada pessoa confirme a presença individualmente.\n\nAssim conseguimos organizar tudo com muito amor e preparar um dia inesquecível! 🎉\n🔔 Importante:\n\nA confirmação deve ser feita em até 5 dias úteis após o envio deste convite mágico.\n\nSe não recebermos sua resposta dentro do prazo, vamos entender como uma ausência — e abriremos espaço para outros convidados encantados. ✨\n📜 Os nomes confirmados serão entregues aos magos da assessoria do Salão Kidáhora nesse prazo encantado!\n💖 Para confirmar, basta clicar no link abaixo.\nCom todo meu carinho de princesa,\nMaitê 💕👑🎈\n\n👇 Link de Confirmação:\n${link}`;
+            const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg )}`;
+            const win = window.open(zap, '_blank');
+            if (win) {
+                const agora = new Date();
+                const vencimento = adicionarDiasUteis(agora, 5);
+                fam.dataEnvio = agora.toISOString();
+                fam.dataVencimento = vencimento.toISOString();
+                saveToStorage();
+                renderFamilias();
+                alert(`Convite enviado! Prazo para resposta: ${formatarData(vencimento)}`);
+            } else {
+                alert('Não foi possível abrir o WhatsApp. Verifique o bloqueador de pop-ups.');
+            }
+        }
+
+        function enviarLembreteWhatsApp(fam) {
+            const link = buildInviteLink(fam.responsavel, fam.membros); // <-- CORREÇÃO AQUI
+            const msg = `🩷✨ Olá, amiguinhos e familiares encantados! ✨🩷\n\nEstamos enviando esta mensagem com muito carinho porque o prazo de confirmação da presença na festinha mágica da nossa Maitê termina amanhã! 🎂🥳\n\nAinda não recebemos sua resposta... e como a nossa lista de convidados é limitada e especial, quem não confirmar até o prazo será considerado como ausência, e o espaço será aberto para outro convidado encantado que está aguardando por uma vaga. 🌟\n\n💫 Importante:\nA confirmação deve ser feita individualmente pelo link enviado abaixo.\n⛔ Não será permitido confirmar e enviar outra pessoa no lugar, nem levar acompanhantes extras. A entrada só será autorizada para os nomes confirmados antecipadamente na lista enviada à assessoria do buffet Kidahora.\n\nSe você não puder comparecer, tudo bem também! Só pedimos que nos avise dentro do prazo, assim conseguimos organizar tudo com muito cuidado e magia 💖\n\nCom muito amor e brilhinhos de felicidade,\nFamília da Maitê 👨‍👩‍👧‍👦✨\n\n🔗 Link para confirmação:\n${link}`; // <-- CORREÇÃO AQUI
+            const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg )}`;
+            const win = window.open(zap, '_blank');
+            if (win) {
+                alert(`Lembrete enviado para ${fam.responsavel}!`);
+            } else {
+                alert('Não foi possível abrir o WhatsApp para enviar o lembrete.');
+            }
+        }
+
+        function exportCSV() {
+            if (!familias.length) return alert('Nada para exportar.');
+            const header = ['Responsavel', 'Membros', 'Telefone', 'Link'];
+            const rows = familias.map(f => {
+                const link = buildInviteLink(f.responsavel, f.membros);
+                return [`"${f.responsavel}"`, `"${f.membros}"`, `"${f.telefone}"`, `"${link}"`].join(',');
+            });
+            const csv = [header.join(','), ...rows].join('\r\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'familias_convite_maite.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        loadFromStorage();
+        renderFamilias();
+        showView('login');
+
+        $('loginSubmitBtn').addEventListener('click', handleLogin);
+        $('adminPassword').addEventListener('keypress', (e) => e.key === 'Enter' && handleLogin());
+        $('addFamiliaBtn').addEventListener('click', handleAddFamilia);
+        $('exportBtn').addEventListener('click', exportCSV);
+        $('enviarTodosBtn').addEventListener('click', () => alert('Função não implementada. Envie um a um.'));
+        $('saveSugestaoBtn').addEventListener('click', saveSugestaoPresente);
+        $('familiasContainer').addEventListener('click', (e) => {
+            const id = e.target.getAttribute('data-id');
+            if (!id) return;
+            const fam = familias.find(f => f.id === id);
+            if (!fam) return;
+            if (e.target.classList.contains('fam-send')) enviarLinkWhatsApp(fam);
+            else if (e.target.classList.contains('fam-lembrete')) enviarLembreteWhatsApp(fam);
+            else if (e.target.classList.contains('fam-edit')) openEditModal(id);
+            else if (e.target.classList.contains('fam-delete')) handleDeleteFamilia(id);
+        });
+        $('editSaveBtn').addEventListener('click', handleSaveEditFamilia);
+        $('editModal').addEventListener('click', (e) => e.target === e.currentTarget && closeEditModal());
+        $('.edit-close').addEventListener('click', closeEditModal);
+    });
+</script>
+</body>
+</html>
+
