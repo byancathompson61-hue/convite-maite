@@ -118,7 +118,7 @@
             border-top: 1px solid #ddd;
         }
         #sugestaoCard {
-            display: none;
+            display: none; /* Hidden by default, shown by JS */
             margin-top: 30px;
             padding: 25px;
             background: linear-gradient(135deg, #fff5f8, #ffe9f4);
@@ -192,12 +192,7 @@
     <div id="sugestaoCard">
         <div class="sugestao-title">Sugestão de Presente</div>
         <div class="sugestao-content" id="sugestaoContent">
-            Sugestão de Presente
-            Roupa tamanho 1
-            Sapato nº 17/18
-            Gosta de brinquedos coloridos
-            (Essas são apenas sugestões! Sua presença é o melhor presente. )
-        </div>
+            </div>
     </div>
 
     <div class="balloon"></div>
@@ -206,16 +201,23 @@
     <div class="balloon"></div>
 
     <script>
-        const familias = {
+        const SUGESTAO_KEY = 'conviteMaite_sugestao_v1';
+        const familiasDefault = { // Mantém a lista de famílias padrão para preenchimento, se necessário
             sueli: ["Sueli", "Byanca", "Adilson", "Eduardo", "Jonathan"],
             silvana: ["Cicero", "Tatiane", "Daiane", "Silvana"]
         };
 
         function carregarSugestaoPresente() {
             try {
-                const sugestaoRaw = localStorage.getItem('conviteMaite_sugestao_v1');
+                const sugestaoRaw = localStorage.getItem(SUGESTAO_KEY);
+                const sugestaoContent = document.getElementById('sugestaoContent');
+                const sugestaoCard = document.getElementById('sugestaoCard');
+
                 if (sugestaoRaw) {
-                    document.getElementById('sugestaoContent').innerHTML = sugestaoRaw;
+                    sugestaoContent.innerHTML = sugestaoRaw;
+                    sugestaoCard.style.display = 'block'; // Mostra o card se houver sugestão
+                } else {
+                    sugestaoCard.style.display = 'none'; // Esconde se não houver
                 }
             } catch(e) {
                 console.error('Erro ao carregar sugestão:', e);
@@ -245,10 +247,12 @@
 
             if (params.familia && params.membros) {
                 membros = params.membros.split(',').map(nome => nome.trim());
-            } else if (params.familia && familias[params.familia]) {
-                membros = familias[params.familia];
+            } else if (params.familia && familiasDefault[params.familia]) {
+                membros = familiasDefault[params.familia];
             } else {
-                membros = familias.sueli;
+                // Se nenhum parâmetro for passado, use uma família padrão ou exiba mensagem
+                membrosDiv.innerHTML = "<p>Nenhum membro especificado. Por favor, acesse o link de convite.</p>";
+                return;
             }
 
             membrosDiv.innerHTML = "";
@@ -286,7 +290,7 @@
             }
 
             const dados = {
-                familia: params.familia || 'sueli',
+                familia: params.familia || 'Não especificado', // Usa o nome da família do parâmetro ou 'Não especificado'
                 responsavel: responsavel,
                 confirmacoes: {}
             };
@@ -299,14 +303,10 @@
 
             mostrarStatus("Enviando dados...", true);
 
-            const formData = new FormData();
-            formData.append("familia", dados.familia);
-            formData.append("responsavel", responsavel);
-            formData.append("confirmacoes", JSON.stringify(dados.confirmacoes));
-
+            // Substitua esta URL pelo seu Script Web do Google Apps Script
             const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKt_3nG0rXoF1alrY2YNjQ2gqmf2_Nd0uDc0E3HUbv8t-waVwUNLhvJdXC86rKl8M0/exec";
 
-            fetch(SCRIPT_URL, { method: "POST", body: formData, redirect: "follow" })
+            fetch(SCRIPT_URL, { method: "POST", body: new URLSearchParams(dados), redirect: "follow" })
                 .then(response => {
                     if (!response.ok) throw new Error("Erro na rede");
                     return response.text();
@@ -314,7 +314,7 @@
                 .then(() => {
                     mostrarStatus("Confirmação enviada com sucesso!", true);
                     document.getElementById("formulario").reset();
-                    carregarMembros();
+                    carregarMembros(); // Recarrega para limpar as seleções
                     exibirSugestaoPresente();
                 })
                 .catch(err => {
@@ -330,4 +330,3 @@
     </script>
 </body>
 </html>
-
