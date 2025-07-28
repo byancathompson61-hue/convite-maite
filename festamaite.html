@@ -272,15 +272,17 @@
 
         function loadSugestaoPresente() {
             const sugestaoRaw = localStorage.getItem(SUGESTAO_KEY);
+            // Conteúdo padrão da sugestão de presente, formatado em HTML
             const defaultSugestao = `
-                <h3>🎁 Sugestão de Presente:</h3>
-                <ul>
-                    <li>Roupinhas tamanho 1</li>
-                    <li>Sapatinhos nº 17/18</li>
-                    <li>Adora brinquedos!</li>
-                </ul>
-                <p class="obs">Obs: São apenas sugestões! Sua presença é, sem dúvida, o melhor presente. 💕</p>
-            `;
+<h3>🎁 Sugestão de Presente:</h3>
+<ul>
+    <li>Roupinhas tamanho 1</li>
+    <li>Sapatinhos nº 17/18</li>
+    <li>Adora brinquedos!</li>
+</ul>
+<p class="obs">Obs: São apenas sugestões! Sua presença é, sem dúvida, o melhor presente. 💕</p>
+            `.trim(); // Usar trim para remover quebras de linha extras do template string
+
             $('sugestaoPresente').value = sugestaoRaw || defaultSugestao;
         }
         // #endregion
