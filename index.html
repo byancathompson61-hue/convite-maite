@@ -1,335 +1,240 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Aniversário da Maitê 🎉</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom, #ffe9f4, #f8b5f0);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-      overflow: hidden;
-      position: relative;
-      padding: 20px; /* Adiciona um padding geral para evitar que o conteúdo encoste nas bordas em telas pequenas */
-      box-sizing: border-box; /* Garante que o padding não aumente a largura total */
-    }
-    .card {
-      background-color: rgba(255, 255, 255, 0.9);
-      padding: 2rem;
-      border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      max-width: 500px;
-      width: 100%; /* Garante que ocupe a largura total disponível */
-      position: relative;
-      z-index: 10;
-      box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura */
-    }
-    h1 {
-      color: #d94ba2;
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-    p {
-      color: #444;
-      font-size: 1.1rem;
-      line-height: 1.6;
-    }
-    .detalhes {
-      background-color: rgba(255, 255, 255, 0.7);
-      border: 1px solid #ffccdd;
-      border-radius: 10px;
-      padding: 1rem;
-      margin: 1.5rem 0;
-      font-size: 1rem;
-      line-height: 1.8;
-      color: #666;
-    }
-    strong {
-      color: #ad2a6b;
-    }
-    button {
-      background-color: #d63384;
-      color: white;
-      padding: 15px 30px;
-      border: none;
-      border-radius: 30px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      box-shadow: 0 4px 10px rgba(214, 51, 132, 0.4);
-    }
-    button:hover {
-      background-color: #ad2a6b;
-      transform: translateY(-2px);
-    }
-
-    /* Elementos decorativos */
-    .butterfly, .balloon, .sparkle {
-      position: absolute;
-      opacity: 0; /* Começam invisíveis */
-      animation-iteration-count: infinite;
-      animation-timing-function: linear;
-      z-index: 1;
-    }
-    .butterfly {
-      width: 40px;
-      height: 40px;
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23d94ba2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm-2 7h4v2h-4z"/></svg>'); /* Exemplo de SVG para borboleta, pode ser substituído por imagem real */
-      background-size: contain;
-      animation-name: fly;
-    }
-    .butterfly:nth-child(1) { top: 10%; left: 5%; animation-duration: 15s; animation-delay: 0s; }
-    .butterfly:nth-child(2) { top: 30%; right: 10%; animation-duration: 12s; animation-delay: 5s; }
-    .butterfly:nth-child(3) { bottom: 20%; left: 20%; animation-duration: 18s; animation-delay: 10s; }
-
-    @keyframes fly {
-      0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
-      10% { opacity: 1; }
-      50% { transform: translateY(-50px) translateX(20px) scale(1.1); }
-      100% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
-    }
-
-    .balloon {
-        width: 30px;
-        height: 40px;
-        border-radius: 50% / 60%;
-        background: linear-gradient(135deg, #ff99cc, #ff66b2);
-        box-shadow: inset -3px -3px 8px rgba(255,255,255,0.6);
-        animation-name: rise;
-    }
-    .balloon::after {
-        content: "";
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        width: 2px;
-        height: 10px;
-        background: #cc3388;
-        transform: translateX(-50%);
-        border-radius: 1px;
-    }
-    .balloon:nth-child(4) { left: 15%; animation-duration: 10s; animation-delay: 0s; }
-    .balloon:nth-child(5) { right: 20%; animation-duration: 11s; animation-delay: 3s; }
-    .balloon:nth-child(6) { bottom: 10%; left: 30%; animation-duration: 9s; animation-delay: 6s; }
-    .balloon:nth-child(7) { top: 5%; right: 5%; animation-duration: 12s; animation-delay: 2s; }
-
-    @keyframes rise {
-      0% { transform: translateY(0) scale(1); opacity: 0; }
-      10% { opacity: 1; }
-      100% { transform: translateY(-120vh) scale(1.1); opacity: 0; }
-    }
-
-    .sparkle {
-      width: 10px;
-      height: 10px;
-      background-color: gold;
-      border-radius: 50%;
-      box-shadow: 0 0 5px gold, 0 0 10px yellow;
-      animation-name: twinkle;
-      animation-duration: 2s;
-    }
-    .sparkle:nth-child(8) { top: 25%; left: 25%; animation-delay: 0s; }
-    .sparkle:nth-child(9) { top: 40%; right: 30%; animation-delay: 0.5s; }
-    .sparkle:nth-child(10) { bottom: 15%; left: 50%; animation-delay: 1s; }
-    .sparkle:nth-child(11) { top: 10%; left: 60%; animation-delay: 1.5s; }
-
-    @keyframes twinkle {
-      0%, 100% { opacity: 0; transform: scale(0.5); }
-      50% { opacity: 1; transform: scale(1.5); }
-    }
-    #sugestaoCard {
-        display: none; /* Hidden by default, shown by JS */
-        margin-top: 30px;
-        padding: 25px;
-        background: linear-gradient(135deg, #fff5f8, #ffe9f4);
-        border: 2px solid #ff69b4;
-        border-radius: 20px;
-        box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
-        animation: slideDown 0.8s ease-out;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-        max-width: 500px; /* Para ficar alinhado com o card principal */
-        width: 100%; /* Para que ocupe a largura total dentro do max-width */
-        box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura */
-    }
-    #sugestaoCard::before {
-        content: "✨";
-        position: absolute;
-        top: 10px;
-        left: 20px;
-        font-size: 24px;
-        animation: sparkle 2s infinite;
-    }
-    #sugestaoCard::after {
-        content: "✨";
-        position: absolute;
-        top: 10px;
-        right: 20px;
-        font-size: 24px;
-        animation: bounce 2s infinite;
-    }
-    .sugestao-title {
-        color: #d63384;
-        font-size: 1.4rem;
-        font-weight: bold;
-        margin-bottom: 15px;
-        text-shadow: 1px 1px 2px rgba(214, 51, 132, 0.3);
-    }
-    .sugestao-content {
-        color: #5a3a71;
-        font-size: 1rem;
-        line-height: 1.6;
-        white-space: pre-line; /* Mantém quebras de linha do HTML ou texto */
-        background: rgba(255, 255, 255, 0.7);
-        padding: 15px;
-        border-radius: 10px;
-        border: 1px dashed #ff69b4;
-    }
-    @keyframes slideDown {
-        from { opacity: 0; transform: translateY(-30px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes sparkle {
-        0%, 100% { transform: scale(1) rotate(0deg); }
-        50% { transform: scale(1.2) rotate(180deg); }
-    }
-    @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
-    }
-
-    /* --- Media Queries para Dispositivos Móveis --- */
-    @media (max-width: 600px) {
-      body {
-        /* Remove o height: 100vh para permitir rolagem se o conteúdo for maior */
-        height: auto;
-        min-height: 100vh; /* Garante que o gradiente de fundo ainda preencha a tela */
-        padding: 15px; /* Reduz um pouco o padding geral */
-      }
-
-      .card {
-        padding: 1.5rem; /* Reduz o padding interno do cartão */
-        margin-bottom: 20px; /* Adiciona um espaço para o cartão de sugestão */
-      }
-
-      h1 {
-        font-size: 2rem; /* Reduz o tamanho do título principal */
-      }
-
-      p {
-        font-size: 1rem; /* Reduz o tamanho do parágrafo */
-      }
-
-      .detalhes {
-        padding: 0.8rem; /* Reduz o padding dos detalhes */
-        margin: 1rem 0; /* Reduz as margens dos detalhes */
-        font-size: 0.9rem; /* Reduz o tamanho da fonte dos detalhes */
-      }
-
-      button {
-        padding: 12px 25px; /* Reduz o padding do botão */
-        font-size: 1rem; /* Reduz o tamanho da fonte do botão */
-      }
-
-      #sugestaoCard {
-        margin-top: 20px; /* Reduz a margem superior do cartão de sugestão */
-        padding: 20px; /* Reduz o padding interno do cartão de sugestão */
-      }
-
-      .sugestao-title {
-        font-size: 1.2rem; /* Reduz o tamanho da fonte do título da sugestão */
-      }
-
-      .sugestao-content {
-        font-size: 0.9rem; /* Reduz o tamanho da fonte do conteúdo da sugestão */
-        padding: 12px; /* Reduz o padding do conteúdo da sugestão */
-      }
-
-      /* Oculta os elementos decorativos para não atrapalhar em telas muito pequenas */
-      .butterfly, .balloon, .sparkle {
-        display: none;
-      }
-    }
-  </style>
+    <meta charset="UTF-8"/>
+    <title>Festa da Maitê</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rosa: #d63384;
+            --rosa-escuro: #ad2a6b;
+            --verde: #28a745;
+            --cinza-borda: #dcdcdc;
+            --bg-grad: linear-gradient(135deg, #ffe0f0, #ffc4e1);
+            --card-bg: #fff;
+            --radius-card: 18px;
+            --radius-btn: 8px;
+            --poppins: 'Poppins', sans-serif;
+        }
+        body {
+            margin: 0;
+            font-family: var(--poppins);
+            background: var(--bg-grad);
+            min-height: 100vh;
+            color: #333;
+        }
+        .center-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 16px;
+            text-align: center;
+        }
+        .card {
+            background: var(--card-bg);
+            padding: 32px 28px;
+            border-radius: var(--radius-card);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: 16px;
+            text-align: left;
+        }
+        h1, h2, h3 {
+            margin-top: 0;
+            font-weight: 600;
+        }
+        h1 { color: var(--rosa); font-size: 1.9rem; text-align: center; }
+        h2 { color: var(--rosa); font-size: 1.4rem; text-align: center; }
+        h3 { color: var(--rosa); font-size: 1.1rem; margin-bottom: 8px; }
+        p { line-height: 1.4; margin: 0 0 1em; }
+        .btn {
+            background-color: var(--rosa);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--radius-btn);
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 16px;
+            width: 100%;
+        }
+        .btn:hover { background-color: var(--rosa-escuro); }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--cinza-borda);
+            border-radius: var(--radius-btn);
+            box-sizing: border-box;
+        }
+        #sugestaoPresente {
+            width: 100%;
+            min-height: 120px;
+            padding: 0.75rem;
+            border: 1px solid var(--cinza-borda);
+            border-radius: var(--radius-btn);
+            box-sizing: border-box;
+            background: #f8f9fa;
+            line-height: 1.4;
+            text-align: left;
+            cursor: text;
+        }
+        .text-center {
+            text-align: center;
+        }
+        @media (max-width:480px) {
+            .card { padding: 24px 20px; }
+            h1 { font-size: 1.6rem; }
+            .btn { width: 100%; }
+        }
+    </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Maitê faz 1 aninho! 🧙‍♀️💖</h1>
-    <p>Venham comemorar esse momento mágico com a gente! 🌸✨<br>
-    A festa será encantadora e ainda mais especial com a sua presença.</p>
-    <div class="detalhes">
-      <strong>🗓️ Data:</strong> 20 de Setembro<br>
-      <strong>⏰ Horário:</strong> das 19:30 às 23:30<br>
-      <strong>📍 Local:</strong> Avenida São Miguel, 8001 - SP
+
+<div class="center-wrap">
+    <div class="card">
+        <h1>Aniversário da Maitê!</h1>
+        <p>Olá, <strong id="responsavelNome"></strong>!</p>
+        <p>A Maitê está muito feliz em te convidar para a festa de aniversário dela! Por favor, confirme a presença dos seguintes membros:</p>
+        <ul id="listaMembros"></ul>
+        <div class="form-group">
+            <label for="confirmacaoSelect">Confirmar Presença:</label>
+            <select id="confirmacaoSelect" class="form-control">
+                <option value="sim">Sim, vamos!</option>
+                <option value="nao">Não poderemos ir</option>
+            </select>
+        </div>
+        <div id="campoAusencia" class="form-group" style="display:none;">
+            <label for="motivoAusencia">Qual o motivo da ausência (opcional)?</label>
+            <input type="text" id="motivoAusencia" placeholder="Ex: Viagem, outro compromisso">
+        </div>
+        <button id="enviarConfirmacao" class="btn" type="button">Enviar Confirmação</button>
+        <div id="mensagemAgradecimento" style="display:none; margin-top: 20px;">
+            <h2>Obrigado por sua confirmação!</h2>
+            <p>Sua resposta é muito importante para a organização da festa da Maitê.</p>
+            <h3>Sugestão de Presente para a Maitê:</h3>
+            <div id="sugestaoPresente"></div>
+        </div>
+        <p style="text-align:center; margin-top: 20px; font-size: 0.8em; color: #888;">Em caso de dúvidas, entre em contato com a Família da Maitê.</p>
     </div>
-    <button onclick="redirecionarParaFormulario()">Confirmar Presença</button>
-  </div>
+</div>
 
-  <div id="sugestaoCard">
-      <div class="sugestao-title">Sugestão de Presente</div>
-      <div class="sugestao-content" id="sugestaoContent">
-          </div>
-  </div>
-
-  <div class="butterfly"></div>
-  <div class="butterfly"></div>
-  <div class="butterfly"></div>
-  <div class="balloon"></div>
-  <div class="balloon"></div>
-  <div class="balloon"></div>
-  <div class="balloon"></div>
-  <div class="sparkle"></div>
-  <div class="sparkle"></div>
-  <div class="sparkle"></div>
-  <div class="sparkle"></div>
-
-  <script>
+<script>
+    const STORAGE_KEY = 'conviteMaite_familias_v1'; // Chave para o localStorage
     const SUGESTAO_KEY = 'conviteMaite_sugestao_v1';
+    let sugestaoPresente = `
+        *Sugestão de Presente*
+        <br><br>
+        Roupa tamanho 1
+        <br>
+        Sapato nº 17/18
+        <br>
+        Gosta de brinquedos coloridos
+        <br><br>
+        _(Essas são apenas sugestões! Sua presença é o melhor presente.)_
+    `.trim().replace(/\n/g, '');
 
-    function carregarSugestaoPresente() {
-        try {
-            const sugestaoRaw = localStorage.getItem(SUGESTAO_KEY);
-            const sugestaoContent = document.getElementById('sugestaoContent');
-            const sugestaoCard = document.getElementById('sugestaoCard');
+    document.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        const responsavel = params.get('familia');
+        const membrosRaw = params.get('membros');
 
-            if (sugestaoRaw) {
-                sugestaoContent.innerHTML = sugestaoRaw;
-                sugestaoCard.style.display = 'block'; // Mostra o card se houver sugestão
-            } else {
-                sugestaoCard.style.display = 'none'; // Esconde se não houver
+        // --- INÍCIO DA NOVA VERIFICAÇÃO DE LINK EXPIRADO ---
+        if (responsavel && membrosRaw) {
+            try {
+                const familias = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+                const fam = familias.find(f => 
+                    decodeURIComponent(f.responsavel) === responsavel && 
+                    decodeURIComponent(f.membros) === membrosRaw
+                );
+
+                if (fam && fam.linkDesativado) {
+                    // Redireciona para a página de link expirado
+                    window.location.replace('link_expirado.html');
+                    return; // Interrompe a execução do script
+                }
+            } catch (e) {
+                console.error("Erro ao verificar status do link:", e);
+                // Em caso de erro, continua para não travar a página, mas pode ser um ponto a investigar.
             }
-        } catch(e) {
-            console.error('Erro ao carregar sugestão:', e);
         }
-    }
+        // --- FIM DA NOVA VERIFICAÇÃO DE LINK EXPIRADO ---
 
-    function redirecionarParaFormulario() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const familia = urlParams.get('familia');
-      const membros = urlParams.get('membros');
-      
-      let formularioURL = 'formulario.html';
-      
-      // Se houver parâmetros de família e membros na URL atual (index.html),
-      // adicione-os à URL do formulário.
-      if (familia && membros) {
-        formularioURL += `?familia=${encodeURIComponent(familia)}&membros=${encodeURIComponent(membros)}`;
-      }
-      
-      window.location.href = formularioURL;
-    }
+        if (!responsavel || !membrosRaw) {
+            // Se não houver parâmetros na URL, redireciona para alguma página de erro ou home
+            window.location.href = 'link_invalido.html'; // Crie um link_invalido.html se quiser
+            return;
+        }
 
-    // Carrega a sugestão de presente quando a página é carregada
-    window.addEventListener('DOMContentLoaded', carregarSugestaoPresente);
-  </script>
+        const membros = membrosRaw.split(',').map(m => m.trim());
+
+        document.getElementById('responsavelNome').textContent = responsavel;
+        const listaMembros = document.getElementById('listaMembros');
+        membros.forEach(m => {
+            const li = document.createElement('li');
+            li.textContent = m;
+            listaMembros.appendChild(li);
+        });
+
+        const sugestaoSalva = localStorage.getItem(SUGESTAO_KEY);
+        if (sugestaoSalva) {
+            sugestaoPresente = sugestaoSalva;
+        }
+        document.getElementById('sugestaoPresente').innerHTML = sugestaoPresente;
+
+        const confirmacaoSelect = document.getElementById('confirmacaoSelect');
+        const campoAusencia = document.getElementById('campoAusencia');
+        const enviarConfirmacaoBtn = document.getElementById('enviarConfirmacao');
+        const mensagemAgradecimentoDiv = document.getElementById('mensagemAgradecimento');
+
+        confirmacaoSelect.addEventListener('change', () => {
+            if (confirmacaoSelect.value === 'nao') {
+                campoAusencia.style.display = 'block';
+            } else {
+                campoAusencia.style.display = 'none';
+            }
+        });
+
+        enviarConfirmacaoBtn.addEventListener('click', () => {
+            const confirmacao = confirmacaoSelect.value;
+            const motivoAusencia = document.getElementById('motivoAusencia').value.trim();
+            const dataConfirmacao = new Date().toLocaleString('pt-BR');
+
+            const mensagem = `Confirmação de Presença:\n\n` +
+                             `Família do Responsável: ${responsavel}\n` +
+                             `Membros: ${membrosRaw}\n` +
+                             `Presença: ${confirmacao === 'sim' ? 'SIM' : 'NÃO'}\n` +
+                             (confirmacao === 'nao' && motivoAusencia ? `Motivo da Ausência: ${motivoAusencia}\n` : '') +
+                             `Data da Confirmação: ${dataConfirmacao}\n\n` +
+                             `Link do Convite (para referência): ${window.location.href}`;
+
+            // Simula o envio para a planilha ou outro serviço
+            // console.log(mensagem); // Apenas para debug no console
+
+            // Aqui você integraria com o script que salva na planilha, se existir
+            // Por enquanto, apenas exibimos a mensagem de agradecimento
+            document.querySelector('.card').style.display = 'none';
+            mensagemAgradecimentoDiv.style.display = 'block';
+
+            // Opcional: Impedir múltiplas confirmações (salvando o status no localStorage)
+            // Você precisaria de um ID único para cada família na URL para isso.
+            // Por enquanto, a funcionalidade de "expirar link" já gerencia isso indiretamente.
+
+            alert('Sua confirmação foi registrada com sucesso! Agradecemos muito.');
+        });
+    });
+</script>
 </body>
 </html>
