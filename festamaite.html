@@ -350,7 +350,8 @@
         _(Essas são apenas sugestões! Sua presença é o melhor presente.)_
     `.trim().replace(/\n/g, '');
 
-    function buildInviteLink(familiaName, membrosList) {
+    // Função para construir o link do convite
+    function buildInviteLink(familiaName, membrosList, linkDesativado = false) {
         const currentUrl = window.location.href;
         const parts = currentUrl.split('/');
         let baseUrl;
@@ -368,6 +369,12 @@
             }
         }
         
+        // Se o link estiver desativado, redireciona para uma página de "link expirado"
+        if (linkDesativado) {
+            // Você precisaria criar um arquivo link_expirado.html no mesmo diretório
+            return `${baseUrl}link_expirado.html`; 
+        }
+
         return `${baseUrl}index.html?familia=${encodeURIComponent(familiaName)}&membros=${encodeURIComponent(membrosList)}`;
     }
 
@@ -441,7 +448,8 @@
             familias.forEach(fam => {
                 const div = document.createElement('div');
                 div.className = 'familyBox';
-                const link = buildInviteLink(fam.responsavel, fam.membros);
+                // Passa o novo status para buildInviteLink
+                const link = buildInviteLink(fam.responsavel, fam.membros, fam.linkDesativado);
 
                 let dataInfo = '';
                 if (fam.dataEnvio && fam.dataVencimento) {
@@ -455,11 +463,15 @@
                         </div>
                     `;
                 }
+
+                // Adiciona uma indicação visual se o link estiver desativado
+                const linkStatus = fam.linkDesativado ? '<span style="color: red; font-weight: bold;"> (LINK DESATIVADO)</span>' : '';
+
                 div.innerHTML = `
                     <strong>${fam.responsavel}</strong>
                     <p>Membros: ${fam.membros}</p>
                     <p>Tel: ${fam.telefone}</p>
-                    <p style="font-size:12px;word-break:break-all;">Link: <a href="${link}" target="_blank">${link}</a></p>
+                    <p style="font-size:12px;word-break:break-all;">Link: <a href="${link}" target="_blank">${link}</a>${linkStatus}</p>
                     ${dataInfo}
                     <div class="fam-actions">
                         <select class="send-type" data-id="${fam.id}">
@@ -543,7 +555,7 @@
             }
 
             const id = crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random());
-            familias.push({ id, responsavel, membros, telefone });
+            familias.push({ id, responsavel, membros, telefone, linkDesativado: false }); // Inicializa com linkDesativado: false
             saveToStorage();
             renderFamilias();
 
@@ -591,7 +603,17 @@
         }
 
         function enviarMensagemWhatsApp(fam, messageType) {
-            const link = buildInviteLink(fam.responsavel, fam.membros);
+            // Se o link já estiver desativado e o tipo não for "Convite"
+            // pode-se adicionar uma validação aqui para não enviar certos tipos de mensagens
+            // se o link já estiver expirado. Ex: Não enviar "Lembrete 5 dias" se já venceu.
+            // if (fam.linkDesativado && messageType !== 'convite') {
+            //     alert(`O link para ${fam.responsavel} já foi desativado. Não é possível enviar este tipo de lembrete.`);
+            //     return;
+            // }
+
+            // IMPORTANTE: O link passado aqui não considera o status de linkDesativado,
+            // pois a função buildInviteLink já fará essa verificação.
+            const link = buildInviteLink(fam.responsavel, fam.membros, fam.linkDesativado); 
             let msg = '';
 
             switch (messageType) {
@@ -622,6 +644,7 @@ ${link}`;
                     const vencimento = adicionarDiasUteis(agora, 5); // 5 business days
                     fam.dataEnvio = agora.toISOString();
                     fam.dataVencimento = vencimento.toISOString();
+                    fam.linkDesativado = false; // Garante que o link está ativo ao enviar o convite
                     saveToStorage();
                     break;
                 case 'lembrete5dias':
@@ -629,11 +652,11 @@ ${link}`;
 
 Estamos enviando esta mensagem com muito carinho porque o prazo de confirmação da presença na festinha mágica da nossa Maitê termina amanhã! 🎂🥳
 
-Ainda não recebemos sua resposta... e como a nossa lista de convidados é limitada e especial, quem não confirmar até o prazo será considerado como ausência, e o espaço será aberto para outro convidado encantado que está aguardando por uma vaga. 🌟
+Ainda não recebemos sua resposta... e como a nossa lista de convidados é limitada e especial, quem não confirmar até o prazo será considerado como ausência, e o espaço será aberto para outro convidado encantado que está aguardando por uma vaga.🌟
 
 💫 Importante:
 A confirmação deve ser feita individualmente pelo link enviado abaixo.
-⛔ Não será permitido confirmar e enviar outra pessoa no lugar, nem levar acompanhantes extras. A entrada só será autorizada para os nomes confirmados antecipadamente na lista enviada à assessoria do buffet Kidahora.
+⛔ Não será permitido confirmar e enviar outra pessoa no lugar, nem levar acompanhantes extras. A entrada só será autorizada para os nomes confirmados antecipadamente na lista enviada à assessoria do buffet Kidáhora.
 
 Se você não puder comparecer, tudo bem também! Só pedimos que nos avise dentro do prazo, assim conseguimos organizar tudo com muito cuidado e magia 💖
 
@@ -673,6 +696,8 @@ Se por algum motivo você ainda pretende comparecer, pedimos a gentileza de nos 
 Agradecemos pela compreensão e seguimos à disposição.
 Com carinho,
 Família da Maitê 🩷`;
+                    fam.linkDesativado = true; // Define que o link está desativado
+                    saveToStorage(); // Salva a alteração no status do link
                     break;
                 default:
                     alert('Tipo de mensagem não reconhecido.');
@@ -683,8 +708,8 @@ Família da Maitê 🩷`;
             const win = window.open(zap, '_blank');
             if (win && !win.closed) {
                 alert(`Mensagem "${messageType}" enviada para ${fam.responsavel}!`);
-                if (messageType === 'convite') {
-                    renderFamilias(); // Re-render to show updated date info
+                if (messageType === 'convite' || messageType === 'vencimento') {
+                    renderFamilias(); // Re-renderiza para mostrar o status atualizado do link/data
                 }
             } else {
                 alert('Não consegui abrir o WhatsApp. Verifique se o navegador bloqueou pop-ups ou se o número está correto.');
@@ -696,14 +721,18 @@ Família da Maitê 🩷`;
                 alert('Nada para exportar.');
                 return;
             }
-            const header = ['Responsavel', 'Membros', 'Telefone', 'Link'];
+            // Adiciona o cabeçalho 'Link Desativado?' para o CSV
+            const header = ['Responsavel', 'Membros', 'Telefone', 'Link', 'Link Desativado?', 'Data Envio', 'Data Vencimento'];
             const rows = familias.map(f => {
-                const link = buildInviteLink(f.responsavel, f.membros);
+                const link = buildInviteLink(f.responsavel, f.membros, f.linkDesativado);
                 return [
                     `"${f.responsavel.replace(/"/g, '""')}"`,
                     `"${f.membros.replace(/"/g, '""')}"`,
                     `"${f.telefone}"`,
-                    `"${link}"`
+                    `"${link}"`,
+                    `"${f.linkDesativado ? 'Sim' : 'Não'}"`, // Novo campo no CSV
+                    `"${f.dataEnvio ? formatarData(new Date(f.dataEnvio)) : ''}"`,
+                    `"${f.dataVencimento ? formatarData(new Date(f.dataVencimento)) : ''}"`
                 ].join(',');
             });
             const csv = [header.join(','), ...rows].join('\r\n');
