@@ -155,26 +155,36 @@
         if (responsavel && membrosRaw) {
             try {
                 const familias = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-                const fam = familias.find(f => 
-                    decodeURIComponent(f.responsavel) === responsavel && 
-                    decodeURIComponent(f.membros) === membrosRaw
+                const decodedResponsavel = decodeURIComponent(responsavel);
+                const decodedMembrosRaw = decodeURIComponent(membrosRaw);
+
+                // Encontrar a família pelo responsável e membros
+                const fam = familias.find(f =>
+                    f.responsavel === decodedResponsavel &&
+                    f.membros === decodedMembrosRaw
                 );
 
                 if (fam && fam.linkDesativado) {
                     // Redireciona para a página de link expirado
+                    // Certifique-se de que link_expirado.html esteja no mesmo diretório
                     window.location.replace('link_expirado.html');
-                    return; // Interrompe a execução do script
+                    return; // Interrompe a execução do script para não carregar o formulário
                 }
             } catch (e) {
                 console.error("Erro ao verificar status do link:", e);
-                // Em caso de erro, continua para não travar a página, mas pode ser um ponto a investigar.
+                // Em caso de erro ao ler o localStorage, o formulário ainda será exibido.
+                // Isso pode ser ajustado para um tratamento de erro mais robusto se necessário.
             }
         }
         // --- FIM DA NOVA VERIFICAÇÃO DE LINK EXPIRADO ---
 
         if (!responsavel || !membrosRaw) {
             // Se não houver parâmetros na URL, redireciona para alguma página de erro ou home
-            window.location.href = 'link_invalido.html'; // Crie um link_invalido.html se quiser
+            // Você pode criar um link_invalido.html se quiser para casos de links malformados
+            // window.location.href = 'link_invalido.html';
+            // return;
+            // Para este caso, apenas exibe um erro ou oculta o conteúdo se não houver dados.
+            document.querySelector('.card').innerHTML = '<h1>Link Inválido</h1><p>Parece que o link que você acessou está incorreto ou incompleto. Por favor, verifique ou entre em contato com a Família da Maitê.</p>';
             return;
         }
 
@@ -182,6 +192,7 @@
 
         document.getElementById('responsavelNome').textContent = responsavel;
         const listaMembros = document.getElementById('listaMembros');
+        listaMembros.innerHTML = ''; // Limpa antes de adicionar
         membros.forEach(m => {
             const li = document.createElement('li');
             li.textContent = m;
@@ -220,17 +231,12 @@
                              `Data da Confirmação: ${dataConfirmacao}\n\n` +
                              `Link do Convite (para referência): ${window.location.href}`;
 
-            // Simula o envio para a planilha ou outro serviço
-            // console.log(mensagem); // Apenas para debug no console
-
-            // Aqui você integraria com o script que salva na planilha, se existir
+            // AQUI VOCÊ INTEGRARIA COM O SCRIPT QUE SALVA NA PLANILHA, SE EXISTIR
             // Por enquanto, apenas exibimos a mensagem de agradecimento
+            
+            // Oculta o conteúdo do card e exibe a mensagem de agradecimento
             document.querySelector('.card').style.display = 'none';
             mensagemAgradecimentoDiv.style.display = 'block';
-
-            // Opcional: Impedir múltiplas confirmações (salvando o status no localStorage)
-            // Você precisaria de um ID único para cada família na URL para isso.
-            // Por enquanto, a funcionalidade de "expirar link" já gerencia isso indiretamente.
 
             alert('Sua confirmação foi registrada com sucesso! Agradecemos muito.');
         });
