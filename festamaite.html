@@ -150,6 +150,7 @@
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
+            align-items: center; /* Align items vertically */
         }
         .fam-btn {
             padding: 6px 12px;
@@ -158,10 +159,9 @@
             border-radius: var(--radius-btn);
             cursor: pointer;
         }
-        .fam-send { background: var(--verde); color: #fff; }
+        .fam-send-selected { background: var(--verde); color: #fff; } /* New button for selected action */
         .fam-edit { background: #ffc107; color: #000; }
         .fam-delete { background: #dc3545; color: #fff; }
-        .fam-lembrete { background: #007bff; color: #fff; } /* Adicionado estilo para Lembrete */
         .fam-btn:hover {filter: brightness(0.9); }
         .data-info {
             margin-top: 12px;
@@ -232,10 +232,36 @@
             font-size: 0.9rem;
             text-align: center;
         }
+        /* New styles for select dropdown */
+        .fam-actions select {
+            padding: 6px 10px;
+            border-radius: var(--radius-btn);
+            border: 1px solid var(--cinza-borda);
+            font-size: 13px;
+            height: 32px; /* Match button height */
+            cursor: pointer;
+            background-color: #f8f8f8;
+            appearance: none; /* Remove default arrow */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ad2a6b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13.2-6.5H18.6c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%204.8%201.8%209.1%205.4%2012.7l128%20128c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4l128-128c3.6-3.6%205.4-7.8%205.4-12.8%200-5-1.8-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 8px top 50%;
+            background-size: 12px auto;
+            padding-right: 30px; /* Make space for the arrow */
+        }
         @media (max-width:480px) {
             .card { padding: 24px 20px; }
             h1 { font-size: 1.6rem; }
             .btn { width: 100%; }
+            .fam-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .fam-actions select, .fam-btn {
+                width: 100%;
+                margin-bottom: 8px; /* Add some space between stacked elements */
+            }
         }
     </style>
 </head>
@@ -436,8 +462,13 @@
                     <p style="font-size:12px;word-break:break-all;">Link: <a href="${link}" target="_blank">${link}</a></p>
                     ${dataInfo}
                     <div class="fam-actions">
-                        <button class="fam-btn fam-send" type="button" data-id="${fam.id}">Encaminhar</button>
-                        <button class="fam-btn fam-lembrete" type="button" data-id="${fam.id}">Lembrete</button>
+                        <select class="send-type" data-id="${fam.id}">
+                            <option value="convite">Convite</option>
+                            <option value="lembrete5dias">Lembrete do prazo 5 dias</option>
+                            <option value="lembretehoje">Lembrete prazo hoje</option>
+                            <option value="vencimento">Vencimento</option>
+                        </select>
+                        <button class="fam-btn fam-send-selected" type="button" data-id="${fam.id}">Enviar</button>
                         <button class="fam-btn fam-edit" type="button" data-id="${fam.id}">Editar</button>
                         <button class="fam-btn fam-delete" type="button" data-id="${fam.id}">Excluir</button>
                     </div>
@@ -559,9 +590,13 @@
             renderFamilias();
         }
 
-        function enviarLinkWhatsApp(fam) {
+        function enviarMensagemWhatsApp(fam, messageType) {
             const link = buildInviteLink(fam.responsavel, fam.membros);
-            const msg = `🌟✨ Olá, meus amiguinhos e familiares encantados! ✨🌟
+            let msg = '';
+
+            switch (messageType) {
+                case 'convite':
+                    msg = `🌟✨ Olá, meus amiguinhos e familiares encantados! ✨🌟
 
 O meu aniversário está se aproximando, e eu estou radiante de alegria! 🥳🎂
 
@@ -583,25 +618,14 @@ Maitê 💕👑🎈
 
 👇 Link de Confirmação:
 ${link}`;
-
-            const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)}`;
-            const win = window.open(zap, '_blank');
-            if (win && !win.closed) {
-                const agora = new Date();
-                const vencimento = adicionarDiasUteis(agora, 5); // 5 business days
-                fam.dataEnvio = agora.toISOString();
-                fam.dataVencimento = vencimento.toISOString();
-                saveToStorage();
-                renderFamilias();
-                alert(`Convite enviado! Prazo para resposta: ${formatarData(vencimento)}`);
-            } else {
-                alert('Não consegui abrir o WhatsApp. Verifique se o navegador bloqueou pop-ups ou se o número está correto.');
-            }
-        }
-
-        function enviarLembreteWhatsApp(fam) {
-        const link = buildInviteLink(fam.responsavel, fam.membros);
-            const msg = `🩷✨ Olá, amiguinhos e familiares encantados! ✨🩷
+                    const agora = new Date();
+                    const vencimento = adicionarDiasUteis(agora, 5); // 5 business days
+                    fam.dataEnvio = agora.toISOString();
+                    fam.dataVencimento = vencimento.toISOString();
+                    saveToStorage();
+                    break;
+                case 'lembrete5dias':
+                    msg = `🩷✨ Olá, amiguinhos e familiares encantados! ✨🩷
 
 Estamos enviando esta mensagem com muito carinho porque o prazo de confirmação da presença na festinha mágica da nossa Maitê termina amanhã! 🎂🥳
 
@@ -618,16 +642,54 @@ Família da Maitê 👨‍👩‍👧‍👦✨
 
 🔗 Link para confirmação:
 ${link}`;
+                    break;
+                case 'lembretehoje':
+                    msg = `🩷✨ Olá, amiguinhos e familiares encantados! ✨🩷
+
+Estamos passando por aqui com muito carinho para lembrar que o prazo final para confirmar presença na festinha mágica da nossa Maitê é HOJE! 🎂🥳
+
+Ainda não recebemos a sua resposta... e como a lista de convidados é limitada e muito especial, quem não confirmar até hoje será considerado como ausência, e a vaga será cedida a outro convidado encantado que está na fila de espera 🌟
+
+💫 Importante lembrar:
+A confirmação é individual e deve ser feita somente pelo link abaixo.
+⛔ Não será possível confirmar para outra pessoa, nem levar acompanhantes extras. Apenas os nomes confirmados com antecedência estarão autorizados na entrada do buffet Kidahora, conforme lista enviada à assessoria.
+
+Se você não puder comparecer, sem problemas! Mas, por favor, nos avise ainda hoje, para que possamos organizar tudo com o mesmo cuidado e magia 💖
+
+Com muito amor e brilhinhos de felicidade,
+Família da Maitê 👨‍👩‍👧‍👦✨
+🔗 Link para confirmação:
+${link}`;
+                    break;
+                case 'vencimento':
+                    msg = `Olá! Tudo bem?
+
+Estamos entrando em contato com muito carinho para informar que, como não recebemos sua confirmação dentro do prazo informado, infelizmente sua presença na festa da Maitê foi desconsiderada.
+
+A lista de convidados é bastante restrita e organizada com base nas confirmações recebidas até a data limite. Para garantir o conforto e a segurança de todos, apenas os nomes previamente confirmados estarão autorizados na entrada do buffet Kidahora, conforme orientações da assessoria.
+
+Se por algum motivo você ainda pretende comparecer, pedimos a gentileza de nos informar o quanto antes para verificarmos a possibilidade de inclusão, respeitando os critérios estabelecidos.
+
+Agradecemos pela compreensão e seguimos à disposição.
+Com carinho,
+Família da Maitê 🩷`;
+                    break;
+                default:
+                    alert('Tipo de mensagem não reconhecido.');
+                    return;
+            }
 
             const zap = `https://wa.me/55${fam.telefone}?text=${encodeURIComponent(msg)}`;
             const win = window.open(zap, '_blank');
             if (win && !win.closed) {
-                alert(`Lembrete enviado para ${fam.responsavel}!`);
+                alert(`Mensagem "${messageType}" enviada para ${fam.responsavel}!`);
+                if (messageType === 'convite') {
+                    renderFamilias(); // Re-render to show updated date info
+                }
             } else {
-                alert('Não consegui abrir o WhatsApp para enviar o lembrete. Verifique se o navegador bloqueou pop-ups ou se o número está correto.');
+                alert('Não consegui abrir o WhatsApp. Verifique se o navegador bloqueou pop-ups ou se o número está correto.');
             }
         }
-
 
         function exportCSV() {
             if (!familias.length) {
@@ -674,10 +736,11 @@ ${link}`;
             const id = e.target.getAttribute('data-id');
             const fam = familias.find(f => f.id === id);
 
-            if (e.target.classList.contains('fam-send')) {
-                if (fam) enviarLinkWhatsApp(fam);
-            } else if (e.target.classList.contains('fam-lembrete')) {
-                if (fam) enviarLembreteWhatsApp(fam);
+            if (e.target.classList.contains('fam-send-selected')) {
+                const selectElement = e.target.closest('.fam-actions').querySelector('.send-type');
+                if (fam && selectElement) {
+                    enviarMensagemWhatsApp(fam, selectElement.value);
+                }
             } else if (e.target.classList.contains('fam-edit')) {
                 openEditModal(id);
             } else if (e.target.classList.contains('fam-delete')) {
