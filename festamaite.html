@@ -479,6 +479,7 @@
                             <option value="lembrete5dias">Lembrete do prazo 5 dias</option>
                             <option value="lembretehoje">Lembrete prazo hoje</option>
                             <option value="vencimento">Vencimento</option>
+                            <option value="lembreteFesta">Lembrete da Festa (no dia)</option>
                         </select>
                         <button class="fam-btn fam-send-selected" type="button" data-id="${fam.id}">Enviar</button>
                         <button class="fam-btn fam-edit" type="button" data-id="${fam.id}">Editar</button>
@@ -698,6 +699,20 @@ Com carinho,
 Família da Maitê 🩷`;
                     fam.linkDesativado = true; // Define que o link está desativado
                     saveToStorage(); // Salva a alteração no status do link
+                    break;
+                case 'lembreteFesta':
+                    msg = `Chegou o grande dia! 🎉✨
+
+A festinha mágica da Maitê é AMANHÃ e estamos super ansiosos para comemorar com você! 🥳
+
+Não se esqueça dos detalhes:
+📍 *Local:* Avenida são miguel, 8001 - SP - Buffet Kidáhora
+🕔 *Data e Horário:* 20 de Setembro, à partir das 19h30 ás 23h30
+
+Contamos com sua presença para tornar este dia ainda mais especial! 💖🎈
+
+Com carinho,
+Família da Maitê`;
                     break;
                 default:
                     alert('Tipo de mensagem não reconhecido.');
